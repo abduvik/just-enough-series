@@ -8,7 +8,7 @@
       "strict": true
     },
     "include": [
-      "src/*"
+      "src/*", "utils/*"
     ],
     "exclude": [
       "src/**/*.tree"
