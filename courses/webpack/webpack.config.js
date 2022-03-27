@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { TreePlugin } = require("./utils/TreePlugin");
 
 module.exports = {
   entry: "./src/index.ts",
@@ -30,6 +31,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html'
-    })
+    }),
+    new TreePlugin()
   ]
 };
