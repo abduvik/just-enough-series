@@ -1,0 +1,17 @@
+{
+  "name": "just-enough-series",
+  "private": "true",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "./courses/*"
+  ],
+  "dependencies": {
+    "prettier": "^2.5.1"
+  }
+}

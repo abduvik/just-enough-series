@@ -1,0 +1,11 @@
+root -> stem
+stem -> rightBranch
+stem -> leftBranch
+
+rightBranch -> greenLeaf
+rightBranch -> yellowLeaf
+rightBranch -> blackLeaf
+
+leftBranch -> redLeaf
+leftBranch -> brownLeaf
+leftBranch -> blueLeaf
