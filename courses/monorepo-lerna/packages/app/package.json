@@ -1,11 +1,16 @@
 {
-  "name": "@monorepo-tutorial/app",
+  "name": "@monorepo-lerna/app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "clean": "rm -rf dist",
     "build": "webpack"
+  },
+  "dependencies": {
+    "@monorepo-lerna/cart": "*",
+    "@monorepo-lerna/checkout": "*",
+    "@monorepo-lerna/components": "*"
   },
   "keywords": [],
   "author": "",

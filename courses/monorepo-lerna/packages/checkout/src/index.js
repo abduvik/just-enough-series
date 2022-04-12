@@ -1,4 +1,4 @@
-import { Button } from "@monorepo-tutorial/components";
+import { Button } from "@monorepo-lerna/components";
 
 export const CheckoutPage = () => {
     const container = document.createElement('div');

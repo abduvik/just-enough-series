@@ -1,11 +1,14 @@
 {
-  "name": "@monorepo-tutorial/components",
+  "name": "@monorepo-lerna/checkout",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "clean": "rm -rf dist",
     "build": "webpack"
+  },
+  "dependencies": {
+    "@monorepo-lerna/components": "*"
   },
   "keywords": [],
   "author": "",
