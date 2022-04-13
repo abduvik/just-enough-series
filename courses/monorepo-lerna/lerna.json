@@ -3,7 +3,7 @@
   "packages": [
     "packages/*"
   ],
-  "publish": {
+  "publishConfig": {
     "registry": "http://localhost:4873"
   }
 }
