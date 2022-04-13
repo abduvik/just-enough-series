@@ -8,13 +8,17 @@
     "build": "lerna run build",
     "link": "lerna bootstrap",
     "publish": "lerna bootstrap",
-    "changed": "lerna bootstrap"
+    "changed": "lerna changed",
+    "show-dependency": "lerna ls --graph",
+    "create-version": "lerna version",
+    "registery:serve": "verdaccio"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "lerna": "^4.0.0",
+    "verdaccio": "^5.9.0",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2"
   }
