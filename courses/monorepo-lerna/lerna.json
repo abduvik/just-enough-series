@@ -2,5 +2,8 @@
   "version": "1.1.0",
   "packages": [
     "packages/*"
-  ]
+  ],
+  "publish": {
+    "registry": "http://localhost:4873"
+  }
 }

@@ -4,6 +4,8 @@ import { Header } from "@monorepo-lerna/components";
 
 const app = document.createElement('div');
 
+console.log('testing')
+
 app.appendChild(Header());
 app.appendChild(CheckoutPage());
 app.appendChild(CartPage());
