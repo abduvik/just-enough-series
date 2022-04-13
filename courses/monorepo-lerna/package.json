@@ -7,7 +7,7 @@
     "clean": "lerna run clean",
     "build": "lerna run build",
     "link": "lerna bootstrap",
-    "publish": "lerna publish",
+    "publish": "lerna publish --no-push",
     "changed": "lerna changed",
     "show-dependency": "lerna ls --graph",
     "create-version": "lerna version",
