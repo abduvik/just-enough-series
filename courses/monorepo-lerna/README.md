@@ -10,6 +10,17 @@
 - [storybook](https://github.com/storybookjs/storybook)
 - [vue-cli](https://github.com/vuejs/vue-cli)
 
+## Repository commands
+
+- `npm run clean`: Delete `dist` and `node_modules` directories
+- `npm run build`: Run `webpack` and build the packages
+- `npm run link`: Link node_modules using lerna
+- `npm run publish`: Publish packages
+- `npm run changed`: Get changed packages from the last publish
+- `npm run show-dependency`: Get dependencies of packages
+- `npm run create-version`: Create a new version using lerna
+- `npm run registery:serve`: Run verdaccio registry local server
+
 ## Summary & Ideas
 
 Monorepo is a repository configuration to have different parts of your application microservices under a single respository to improve productivity. If you have multiple packages or components that depend on each other, they usually have similar scripts, commands, dependencies, then having a single repository with everything will reduce the number of duplications, make it easy to access and update different modules and publish different versions at once. It will dramatically increase your team's productivity.
