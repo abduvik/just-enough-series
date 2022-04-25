@@ -1,0 +1,16 @@
+{
+  "name": "@monorepo-lerna/checkout",
+  "version": "1.1.5",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "@monorepo-lerna/components": "^1.1.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

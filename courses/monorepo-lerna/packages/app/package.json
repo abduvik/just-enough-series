@@ -1,0 +1,19 @@
+{
+  "name": "@monorepo-lerna/app",
+  "version": "1.1.5",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "@monorepo-lerna/cart": "^1.1.5",
+    "@monorepo-lerna/checkout": "^1.1.5",
+    "@monorepo-lerna/components": "^1.1.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "gitHead": "f26b96f5f7a8c08f1a1ea6d39dba30dee4736d09"
+}

@@ -1,0 +1,6 @@
+44 error Error: Command failed with exit code 128: git tag v1.1.2 -m v1.1.2
+44 error fatal: tag 'v1.1.2' already exists
+44 error     at makeError (/Users/abduvik/Documents/Projects/just-enough-series/courses/monorepo-lerna/node_modules/execa/lib/error.js:60:11)
+44 error     at handlePromise (/Users/abduvik/Documents/Projects/just-enough-series/courses/monorepo-lerna/node_modules/execa/index.js:118:26)
+44 error     at processTicksAndRejections (node:internal/process/task_queues:96:5)
+44 error     at async Promise.all (index 0)

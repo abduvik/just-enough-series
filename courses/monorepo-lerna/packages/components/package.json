@@ -1,0 +1,16 @@
+{
+  "name": "@monorepo-lerna/components",
+  "version": "1.1.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "@monorepo-lerna/utils": "^1.1.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
