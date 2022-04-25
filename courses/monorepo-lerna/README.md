@@ -2,6 +2,8 @@
 
 ## YouTube Video
 
+[![Just Enough monorepo tutorial youtube thumbnail](http://img.youtube.com/vi/N5pjlJnzrSw/0.jpg)](http://www.youtube.com/watch?v=N5pjlJnzrSw "Just Enough: Monorepos Tutorial - including Lerna project setup")
+
 ## Repositories uses Lerna
 
 - [webpack-cli](https://github.com/webpack/webpack-cli)
