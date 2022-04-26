@@ -1,15 +1,5 @@
-import { ApiAdapter } from './adapters/apiAdapter';
-import { EnvironmentConfigs } from './config/env';
 import { App } from './app';
-import { DependencyContainer } from './stores/dependencyContainer.store';
-
-const dependenciesContainer = new DependencyContainer();
-
-const env = EnvironmentConfigs();
-const api = new ApiAdapter(env);
-
-dependenciesContainer.add(env);
-dependenciesContainer.add(api);
+import { dependenciesContainer } from './dependencies';
 
 const renderApp = () => {
   // unmount the app
@@ -28,4 +18,4 @@ const renderApp = () => {
 window.addEventListener('load', renderApp);
 
 // The could be replaced with a logic to do a rerender
-document.addEventListener('click', renderApp);
+document.addEventListener('rerenderView', renderApp);

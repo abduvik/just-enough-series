@@ -1,3 +1,13 @@
+export const onMountedFactory = () => {
+  let isCalled = false;
+  return (fun) => {
+    if (!isCalled) {
+      isCalled = true;
+      return fun();
+    }
+  };
+};
+
 export const create = (element, props = {}, children = []) => {
   const elementEl = document.createElement(element);
   Object.keys(props).forEach((propKey) => {
@@ -9,4 +19,9 @@ export const create = (element, props = {}, children = []) => {
   });
 
   return elementEl;
+};
+
+export const rerender = () => {
+  const event = new CustomEvent('rerenderView');
+  document.dispatchEvent(event);
 };

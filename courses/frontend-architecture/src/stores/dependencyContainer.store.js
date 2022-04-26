@@ -7,7 +7,7 @@ export class DependencyContainer {
     this.container[key] = dependency;
   }
 
-  get(key) {
+  getDependency(key) {
     return this.container[key];
   }
 }

@@ -1,10 +1,10 @@
 export class RouterStore {
   constructor() {
-    this.routeMaps = {};
+    this.routes = [];
     this.NotFoundPageRenderer = () => document.createElement('div');
   }
 
-  getRoute() {
+  getCurrentRoute() {
     return window.location.pathname;
   }
 
@@ -13,14 +13,21 @@ export class RouterStore {
   }
 
   setRoutePageRender(route, renderer) {
-    this.routeMaps[route] = renderer;
+    this.routes.push({
+      matcher: new RegExp(`^${route}$`),
+      renderer,
+    });
   }
 
   renderFromRouter() {
-    const currentRoute = this.getRoute();
+    const currentRoute = this.getCurrentRoute();
 
-    const renderer = this.routeMaps[currentRoute] || this.NotFoundPageRenderer;
+    const matchedRenderer = this.routes.find(({ matcher }) => {
+      return matcher.test(currentRoute);
+    });
 
-    return renderer();
+    return matchedRenderer
+      ? matchedRenderer.renderer()
+      : this.NotFoundPageRenderer();
   }
 }

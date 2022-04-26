@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
+  devtool: 'eval-source-map',
   mode: 'development',
   devServer: {
     static: {
@@ -23,6 +24,7 @@ module.exports = {
     extensions: ['.js'],
   },
   output: {
+    publicPath: '/',
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.[hash].js',
   },
