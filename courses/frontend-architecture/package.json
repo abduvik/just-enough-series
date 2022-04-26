@@ -1,0 +1,23 @@
+{
+  "name": "frontend-architecture",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "webpack serve --config webpack.dev.config.js",
+    "build": "webpack",
+    "clean": "rm -rf dist",
+    "format": "prettier --write .",
+    "lint": "eslint --ext .js src/"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^6.7.1",
+    "eslint": "^8.14.0",
+    "html-webpack-plugin": "^5.5.0",
+    "prettier": "^2.6.2",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2"
+  }
+}
