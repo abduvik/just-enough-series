@@ -1,3 +1,3 @@
-export const App = () => {
-    
-}
+export const App = (DI) => {
+  console.log(DI);
+};
