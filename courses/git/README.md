@@ -7,9 +7,12 @@
 ## Commands
 
 - `git init`: Intialize the repository
+- `git status`: Checks the current directory changes and staging area
 - `git add <directory>`: Add current files to staging
 - `git commit -m "<commit-message>"`: Commit staging with a message
 - `git commit -am "<commit-message>"`: Add & Commit staging with a message (only for edited and deleted)
+- `git log --oneline`: Prints the log as one line
+- `git reflog`: Shows the log of changing the HEAD. It's useful to find missing commits.
 - `git branch <branch-name>`: Create a new branch
 - `git checkout <branch-name>`: Checkout to a branch
 - `git checkout -b <branch-name>`: Create and checkout to a branch
@@ -28,7 +31,8 @@
 - `git push`: Push local commits
 - `git fetch`: Fetch commits from origin
 - `git pull`: Fetch commits and merge
-- `git remote prune origin`: Remote branches from local repository that no longer in remote
+- `git fetch --prune`: Removes and branches that no longer exists on remote before fetching
+- `git remote prune origin`: Remove branches from local repository that no longer in remote
 
 ## Collaboration
 
