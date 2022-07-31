@@ -20,6 +20,7 @@
 - `docker image rm $(docker image ls -q)`: Remove all images
 - `docker run --name <container_name> -p <host_port>:<container_port> <image>`: Pull, create, start and run a container
 - `docker run -d <image>`: Run in detached mode
+- `docker run -e <key>=<value> <image>`: Run with environment variable
 - `docker run -it <image> <command>`: Run a container and overwrite the default entrypoint
 - `docker run -it --entrypoint <entrypoint_command> <image>`: Run a container and overwrite the default entrypoint
 - `docker exec -it <image_name> <command>`: Execute a command in a running container with interactive mode
@@ -29,6 +30,7 @@
 - `docker volume ls`: List all volumes
 - `docker build <path>`: Build docker image
 - `docker build --tag pinger - < <cutom_path>`: Build docker image when the name is not `Dockerfile`
+- `docker commit <container_name/container_id> <image>`: Create an image from a running container
 
 ### Docker Compose
 
@@ -99,3 +101,4 @@ Source: [Docker Internals](http://docker-saigon.github.io/post/Docker-Internals/
 
 - [Docker API Reference](https://docs.docker.com/engine/reference/run/)
 - [How Docker internally works](http://docker-saigon.github.io/post/Docker-Internals/)
+- [Containers From Scratch by Liz Rice](https://www.youtube.com/watch?v=8fi7uSYlOdc)
