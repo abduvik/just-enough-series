@@ -17,6 +17,7 @@
 - `git merge --squash <branch-name>`: Merge a branch into the current branch as single commit
 - `git branch -D <branch-name>`: Delete a branch
 - `git rebase <branch-name>`: Rebase the current branch on another branch
+- `git rebase <branch-name> -i`: Rebase the current branch on another branch (with interactive mode)
 - `git reset --hard <commit-hash>`: Move the branch Head to a certain commit
 - `git mv <source> <destination>`: Move a file/directory from one place to another while tracking
 - `git remote add origin <repository-name>`: Add a remote tracking branch
