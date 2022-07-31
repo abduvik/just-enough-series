@@ -21,6 +21,7 @@
 - `git mv <source> <destination>`: Move a file/directory from one place to another while tracking
 - `git remote add origin <repository-name>`: Add a remote tracking branch
 - `git push --set-upstream origin <branch-name> <repository-name>`: Set a remote for a brach
+- `git push -u origin <branch-name> <repository-name>`: Set a remote for a brach (Same to the above one)
 - `git push`: Push local commits
 - `git fetch`: Fetch commits from origin
 - `git pull`: Fetch commits and merge
