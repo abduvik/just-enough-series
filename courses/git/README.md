@@ -25,9 +25,9 @@
 - `git cherry-pick <commit>`: Apply changes for a certain commit to the current branch
 - `git reset --hard <commit-hash>`: Move the branch Head to a certain commit
 - `git mv <source> <destination>`: Move a file/directory from one place to another while tracking
-- `git remote add <name> <repository-name>`: Add a remote tracking branch
-- `git push --set-upstream origin <branch-name> <repository-name>`: Set a remote for a bracnh
-- `git push -u origin <branch-name> <repository-name>`: Set a remote for a brach (Same to the above one)
+- `git remote add <remote-name> <repository-name>`: Add a remote tracking branch
+- `git push --set-upstream <remote-name> <branch-name> <repository-name>`: Set a remote for a bracnh
+- `git push -u <remote-name> <branch-name> <repository-name>`: Set a remote for a brach (Same to the above one)
 - `git push`: Push local commits
 - `git fetch`: Fetch commits from origin
 - `git pull`: Fetch commits and merge
