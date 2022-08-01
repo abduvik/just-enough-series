@@ -1,4 +1,4 @@
-# GIT Version Control
+# Git Version Control
 
 ## YouTube Video
 
@@ -62,7 +62,7 @@ Good for personal projects.
 
 We have a single branch and each time there is a feature/bug, we create a new branch, do the changes and then merge back to main branch.
 
-#### GIT Flow
+#### Git Flow
 
 We have two branches develop and main.
 
