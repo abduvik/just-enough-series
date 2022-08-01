@@ -29,7 +29,7 @@
 - `git push --set-upstream <remote-name> <branch-name> <repository-name>`: Set a remote for a branch
 - `git push -u <remote-name> <branch-name> <repository-name>`: Set a remote for a branch (Same to the above one)
 - `git push`: Push local commits
-- `git fetch`: Fetch commits from origin
+- `git fetch`: Fetch commits from remote
 - `git pull`: Fetch commits and merge
 - `git fetch --prune`: Remove branches that no longer exists on remote before fetching
 - `git remote prune origin`: Remove branches from local repository that no longer in remote
