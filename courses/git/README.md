@@ -1,4 +1,4 @@
-# GIT Version Control
+# Git Version Control
 
 ## YouTube Video
 
@@ -6,32 +6,33 @@
 
 ## Commands
 
-- `git init`: Intialize the repository
-- `git status`: Checks the current directory changes and staging area
+- `git init`: Initialize the repository
+- `git status`: Check the current directory changes and staging area
 - `git add <directory>`: Add current files to staging
 - `git commit -m "<commit-message>"`: Commit staging with a message
 - `git commit -am "<commit-message>"`: Add & Commit staging with a message (only for edited and deleted)
-- `git log --oneline`: Prints the log as one line
-- `git reflog`: Shows the log of changing the HEAD. It's useful to find missing commits.
+- `git log --oneline`: Print the log as one line
+- `git log --oneline --decorate --all --graph`: Print the log as one line and in graph-mode
+- `git reflog`: Show the log of changing the HEAD. It's useful to find missing commits.
 - `git branch <branch-name>`: Create a new branch
 - `git checkout <branch-name>`: Checkout to a branch
 - `git checkout -b <branch-name>`: Create and checkout to a branch
-- `git diff <commit-hash-source> <commit-hash-destination>`: Shows the difference between two commits
+- `git diff <commit-hash-source> <commit-hash-destination>`: Show the difference between two commits
 - `git merge <branch-name>`: Merge a branch into the current branch
-- `git merge --squash <branch-name>`: Merge a branch into the current branch as single commit
+- `git merge --squash <branch-name>`: Merge a branch into the current branch as a single commit
 - `git branch -D <branch-name>`: Delete a branch
 - `git rebase <branch-name>`: Rebase the current branch on another branch
 - `git rebase <branch-name> -i`: Rebase the current branch on another branch (with interactive mode)
 - `git cherry-pick <commit>`: Apply changes for a certain commit to the current branch
 - `git reset --hard <commit-hash>`: Move the branch Head to a certain commit
 - `git mv <source> <destination>`: Move a file/directory from one place to another while tracking
-- `git remote add origin <repository-name>`: Add a remote tracking branch
-- `git push --set-upstream origin <branch-name> <repository-name>`: Set a remote for a bracnh
-- `git push -u origin <branch-name> <repository-name>`: Set a remote for a brach (Same to the above one)
+- `git remote add <remote-name> <repository-name>`: Add a remote tracking branch. `<remote-name>` is usually `origin`.
+- `git push --set-upstream <remote-name> <branch-name> <repository-name>`: Set a remote for a branch
+- `git push -u <remote-name> <branch-name> <repository-name>`: Set a remote for a branch (Same to the above one)
 - `git push`: Push local commits
-- `git fetch`: Fetch commits from origin
+- `git fetch`: Fetch commits from remote
 - `git pull`: Fetch commits and merge
-- `git fetch --prune`: Removes and branches that no longer exists on remote before fetching
+- `git fetch --prune`: Remove branches that no longer exists on remote before fetching
 - `git remote prune origin`: Remove branches from local repository that no longer in remote
 
 ## Collaboration
@@ -62,7 +63,7 @@ Good for personal projects.
 
 We have a single branch and each time there is a feature/bug, we create a new branch, do the changes and then merge back to main branch.
 
-#### GIT Flow
+#### Git Flow
 
 We have two branches develop and main.
 
