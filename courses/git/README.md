@@ -1,4 +1,4 @@
-# GIT Version Control
+# Git Version Control
 
 ## YouTube Video
 
@@ -26,7 +26,7 @@
 - `git reset --hard <commit-hash>`: Move the branch Head to a certain commit
 - `git mv <source> <destination>`: Move a file/directory from one place to another while tracking
 - `git remote add origin <repository-name>`: Add a remote tracking branch
-- `git push --set-upstream origin <branch-name> <repository-name>`: Set a remote for a bracnh
+- `git push --set-upstream origin <branch-name> <repository-name>`: Set a remote for a branch
 - `git push -u origin <branch-name> <repository-name>`: Set a remote for a branch (Same to the above one)
 - `git push`: Push local commits
 - `git fetch`: Fetch commits from origin
@@ -62,7 +62,7 @@ Good for personal projects.
 
 We have a single branch and each time there is a feature/bug, we create a new branch, do the changes and then merge back to main branch.
 
-#### GIT Flow
+#### Git Flow
 
 We have two branches develop and main.
 
