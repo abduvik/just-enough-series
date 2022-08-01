@@ -12,6 +12,7 @@
 - `git commit -m "<commit-message>"`: Commit staging with a message
 - `git commit -am "<commit-message>"`: Add & Commit staging with a message (only for edited and deleted)
 - `git log --oneline`: Print the log as one line
+- `git log --oneline --decorate --all --graph`: Print the log as one line and in graph-mode
 - `git reflog`: Show the log of changing the HEAD. It's useful to find missing commits.
 - `git branch <branch-name>`: Create a new branch
 - `git checkout <branch-name>`: Checkout to a branch
