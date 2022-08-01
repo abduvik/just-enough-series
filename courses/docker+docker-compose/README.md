@@ -49,6 +49,7 @@
 - `docker compose pull`: Pull all services' images. It's good when updating services images
 - `docker compose up -d`: Create and start containers in detached mode
 - `docker compose up -d <service>`: Create and start containers in detached mode for a certain service
+- `docker compose up --scale <service>=<count>`: Create and start containers and scale the number of a service
 - `docker compose down`: Stop and remove containers
 
 ### DockerFile

@@ -8,6 +8,8 @@ services:
       - "3000:80"
     networks:
       - wordpress-network
+    links:
+      - db
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wp_db_user
