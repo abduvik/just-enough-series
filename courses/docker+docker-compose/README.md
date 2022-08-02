@@ -29,7 +29,11 @@
 - `docker -v <path_in_host>:<path_in_container> <image>`: Bind path in the container to another path in the host
 - `docker volume ls`: List all volumes
 - `docker build <path>`: Build docker image
-- `docker build --tag pinger - < <cutom_path>`: Build docker image when the name is not `Dockerfile`
+- `docker build --tag <image_name> <path>`: Build docker image with a tag
+- `docker build - < <custom_path>`: Build docker image when the name is not `Dockerfile`
+- `docker tag <image_name> <company>/<new_image_name>:<version>`: Add a Docker Repository tag to an image. It can be also used for adding more tags
+- `docker login`: Log into a Docker Repository
+- `docker push <company>/<new_image_name>:<version>`: Push to a Docker repository, ex: DockerHub
 - `docker commit <container_name/container_id> <image>`: Create an image from a running container
 
 ### Docker Compose
