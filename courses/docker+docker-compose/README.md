@@ -56,6 +56,8 @@
 - `docker compose up -d <service>`: Create and start containers in detached mode for a certain service
 - `docker compose up --scale <service>=<count>`: Create and start containers and scale the number of a service
 - `docker compose down`: Stop and remove containers
+- `docker compose logs -f --tail <lines_count>`: Print the logs for all services
+- `docker compose logs -f --tail <lines_count> <service>`: Print the logs for a certain services
 
 ### DockerFile
 
