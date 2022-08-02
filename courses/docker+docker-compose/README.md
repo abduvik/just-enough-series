@@ -35,6 +35,7 @@
 - `docker login`: Log into a Docker Repository
 - `docker push <company>/<new_image_name>:<version>`: Push to a Docker repository, ex: DockerHub
 - `docker commit <container_name/container_id> <image>`: Create an image from a running container
+- `docker logs -f --tail <lines_count> <container_name>`: Print number of lines of the container logs and keep streaming
 
 ### Docker Compose
 
