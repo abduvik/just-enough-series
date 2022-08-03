@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  wordpress:
+    image: wordpress:6.0.0-php8.0
+    restart: always
+    ports:
+      - "3000:80"
+    networks:
+      - wordpress-network
+    links:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp_db_user
+      WORDPRESS_DB_PASSWORD: wp_db_pass
+      WORDPRESS_DB_NAME: wp_db
+      WORDPRESS_DEBUG: 1
+
+  db:
+    image: mysql:5.7
+    platform: linux/amd64 #needed for M1 Mac users
+    restart: always
+    environment:
+      MYSQL_DATABASE: wp_db
+      MYSQL_USER: wp_db_user
+      MYSQL_PASSWORD: wp_db_pass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    networks:
+      - wordpress-network
+    volumes:
+      - ./dist/host/.db:/var/lib/mysql
+
+networks:
+  wordpress-network:
