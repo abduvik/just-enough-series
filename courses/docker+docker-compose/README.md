@@ -1,4 +1,4 @@
-# GIT Version Control
+# Docker + Docker Compose
 
 ## YouTube Video
 
