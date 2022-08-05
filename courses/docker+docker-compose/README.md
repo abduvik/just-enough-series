@@ -31,6 +31,7 @@
 - `docker volume ls`: List all volumes
 - `docker build <path>`: Build docker image
 - `docker build --tag <image_name> <path>`: Build docker image with a tag
+- `docker build --platform linux/amd64 <path>`: Build for a specific target platform. This is used when building on M1 Macbook but target is linux.
 - `docker build - < <custom_path>`: Build docker image when the name is not `Dockerfile`
 - `docker tag <image_name> <company>/<new_image_name>:<version>`: Add a Docker Repository tag to an image. It can be also used for adding more tags
 - `docker login`: Log into a Docker Repository
