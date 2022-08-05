@@ -1,8 +1,7 @@
 FROM node:16 as Build
 RUN apt-get update
 WORKDIR /usr/src/
-COPY hello-react .
-ENV name Building Nations
+COPY . .
 RUN npm install
 RUN npm run build
 

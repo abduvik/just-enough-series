@@ -12,6 +12,7 @@
 - `docker create <image>`: Create a container from an Image
 - `docker start <container_name/container_id>`: Start a container
 - `docker stop <container_name/container_id>`: Stop a container
+- `docker kill <container_name/container_id>`: Kill the entrypoint process of the container
 - `docker rm <container_name/container_id>`: Remove a container
 - `docker ps`: Get all running containers
 - `docker ps -a`: Get all containers
@@ -77,10 +78,13 @@
 ### Docker Compose File
 
 - `services`: Array of services to start
+  - `image`: Docker image name
+  - `build`: Path to a Dockerfile
   - `port`: Array of exposed ports
   - `environment`: Array of environment variables
   - `volumes`: mapping of volumes
   - `networks`: Define used network
+  - `restart`: Restart policy for the container. `no`, `on-failure`, `always`, `unless-stopped`
 - `networks`: Defines available networks
 
 ## Questions?
