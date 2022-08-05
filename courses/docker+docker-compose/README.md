@@ -26,9 +26,13 @@
 - `docker run -it --entrypoint <entrypoint_command> <image>`: Run a container and overwrite the default entrypoint
 - `docker exec -it <image_name> <command>`: Execute a command in a running container with interactive mode
 - `docker login`: Login into a Docker Repository
-- `docker -v <named_volume>:<path_in_container> <image>`: Bind path in the container to a Docker volume
+- `docker -v <volume_name>:<path_in_container> <image>`: Bind path in the container to a Docker volume
 - `docker -v <path_in_host>:<path_in_container> <image>`: Bind path in the container to another path in the host
 - `docker volume ls`: List all volumes
+- `docker volume create <volume_name>`: Create a Docker volume
+- `docker network create <network_name>`: Create a user-defined network
+- `docker run --network=<network_name> <image>`: Run a docker container in a certain network
+- `docker run --link=<container> <image>`: Run a docker container and link network it with another container (legacy)
 - `docker build <path>`: Build docker image
 - `docker build --tag <image_name> <path>`: Build docker image with a tag
 - `docker build --platform linux/amd64 <path>`: Build for a specific target platform. This is used when building on M1 Macbook but target is linux.
