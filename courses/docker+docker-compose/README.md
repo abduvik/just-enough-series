@@ -2,7 +2,7 @@
 
 ## YouTube Video
 
-[![Just Enough Docker & Docker Compose tutorial youtube thumbnail](http://img.youtube.com/vi/-----/0.jpg)](http://www.youtube.com/watch?v=----- "Docker & Docker Compose | Just Enough Series")
+[![Just Enough Docker & Docker Compose tutorial youtube thumbnail](http://img.youtube.com/vi/HSWDpx8Lo1o/0.jpg)](http://www.youtube.com/watch?v=HSWDpx8Lo1o "Docker & Docker Compose | Just Enough Series")
 
 ## Commands
 
@@ -24,6 +24,7 @@
 - `docker run -e <key>=<value> <image>`: Run with environment variable
 - `docker run -it <image> <command>`: Run a container and overwrite the default entrypoint
 - `docker run -it --entrypoint <entrypoint_command> <image>`: Run a container and overwrite the default entrypoint
+- `docker inspect <container_name>`: Get details about the container
 - `docker exec -it <image_name> <command>`: Execute a command in a running container with interactive mode
 - `docker login`: Login into a Docker Repository
 - `docker -v <volume_name>:<path_in_container> <image>`: Bind path in the container to a Docker volume
