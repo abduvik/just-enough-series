@@ -8,7 +8,7 @@
 
 ### Docker
 
-- `docker pull <image>`: Pull Image from Docke Hub
+- `docker pull <image>`: Pull Image from Docker Hub
 - `docker create <image>`: Create a container from an Image
 - `docker start <container_name/container_id>`: Start a container
 - `docker stop <container_name/container_id>`: Stop a container
