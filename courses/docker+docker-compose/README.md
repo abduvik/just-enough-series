@@ -26,7 +26,6 @@
 - `docker run -it --entrypoint <entrypoint_command> <image>`: Run a container and overwrite the default entrypoint
 - `docker inspect <container_name>`: Get details about the container
 - `docker exec -it <image_name> <command>`: Execute a command in a running container with interactive mode
-- `docker login`: Login into a Docker Repository
 - `docker -v <volume_name>:<path_in_container> <image>`: Bind path in the container to a Docker volume
 - `docker -v <path_in_host>:<path_in_container> <image>`: Bind path in the container to another path in the host
 - `docker volume ls`: List all volumes
