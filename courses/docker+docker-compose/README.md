@@ -8,7 +8,7 @@
 
 ### Docker
 
-- `docker pull <image>`: Pull Image from Docke Hub
+- `docker pull <image>`: Pull Image from Docker Hub
 - `docker create <image>`: Create a container from an Image
 - `docker start <container_name/container_id>`: Start a container
 - `docker stop <container_name/container_id>`: Stop a container
@@ -22,11 +22,10 @@
 - `docker run --name <container_name> -p <host_port>:<container_port> <image>`: Pull, create, start and run a container
 - `docker run -d <image>`: Run in detached mode
 - `docker run -e <key>=<value> <image>`: Run with environment variable
-- `docker run -it <image> <command>`: Run a container and overwrite the default entrypoint
+- `docker run -it <image> <command>`: Run a container and overwrite the default command
 - `docker run -it --entrypoint <entrypoint_command> <image>`: Run a container and overwrite the default entrypoint
 - `docker inspect <container_name>`: Get details about the container
 - `docker exec -it <image_name> <command>`: Execute a command in a running container with interactive mode
-- `docker login`: Login into a Docker Repository
 - `docker -v <volume_name>:<path_in_container> <image>`: Bind path in the container to a Docker volume
 - `docker -v <path_in_host>:<path_in_container> <image>`: Bind path in the container to another path in the host
 - `docker volume ls`: List all volumes
