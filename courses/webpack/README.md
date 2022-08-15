@@ -72,6 +72,8 @@ In Webpack 4, these were achieved by loaders
 
 Asset Module works with both `import` and `new URL()`
 
+[![Webpack 5 Asset Modules youtube thumbnail](http://img.youtube.com/vi/ozVpfLNr0lY/0.jpg)](http://www.youtube.com/watch?v=ozVpfLNr0lY "Webpack 5 Asset Modules")
+
 ### Code Splitting to improve web performance
 
 - Dynamic Code splitting consists of static and "Dynamic" part and webpack actually is splitting every file under the static directory
