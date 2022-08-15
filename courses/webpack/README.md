@@ -1,4 +1,4 @@
-# Wepack Tutorial
+# Wepack
 
 ## YouTube Video
 
@@ -17,34 +17,62 @@
 
 Webpack sample configs
 
-```jsx
+```js
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
 module.exports = (env) => ({
   mode: env.mode,
-  output: {
-    filename: "bundle.js",
+  entry: "src/index.js",
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [{ loader: "css-loader" }],
+      },
+    ],
   },
-  plugins: [
-    new HtmlWebpackPlugin(),
-    new webpack.ProgressPlugin()
-  ],
+  output: {
+    filename: "dist/bundle.js",
+  },
+  plugins: [new HtmlWebpackPlugin(), new webpack.ProgressPlugin()],
 });
 ```
+
+### DevTools
+
+The config `devtools` can be used to define the output of source maps to be used with DevTools
 
 `devtools: "source-maps"` to export source maps
 
 ### Webpack plugins and loaders
 
-The following are some nodes about plugins and loaders:
+The following are some Webpack plugins and loaders:
 
-- `css-loader` to handle css in the ui and changes it to json file and `style-loader` to apply them to the DOM
-- add `--hot` to enable Hot Module Replacement in Webpack
-- `mini-css-extract-plugin` to extract CSS into an independent file
-- `url-loader` transforms files into base64 which would be really helpful for including images inside js and you can have a `limit` prop to limit the size of the imported image an instead of adding base64 it will add the url instead
-- `webpack-bundle-analyzer` Analyzers your project and dependencies
-- `compression-webpack-plugin` Compresses assets
+- `css-loader`: to handle css in the ui and changes it to json file and `style-loader` to apply them to the DOM
+- `mini-css-extract-plugin`: to extract CSS into an independent file
+- `url-loader`: transforms files into base64 which would be really helpful for including images inside js and you can have a `limit` prop to limit the size of the imported image an instead of adding base64 it will add the url instead (Webpack 4)
+- `webpack-bundle-analyzer`: Analyzers your project and dependencies
+- `compression-webpack-plugin`: Compresses assets
+
+### Asset Modules
+
+It's a type of Webpack loaders included within it. There are 4 types of them:
+
+- `asset/resource`: Adds the file to the dist directory and returns a link
+- `asset/inline`: Returns a base64 encoding of the file
+- `asset/source`: Import files as strings
+- `asset`: Automatically switching between `asset/resource` and `asset/inline` depending on the file size
+
+In Webpack 4, these were achieved by loaders
+
+- `asset/resource` -> `file-loader`
+- `asset/inline` -> `url-loader`
+- `asset/source` -> `raw-loader`
+
+Asset Module works with both `import` and `new URL()`
+
+[![Webpack 5 Asset Modules youtube thumbnail](http://img.youtube.com/vi/ozVpfLNr0lY/0.jpg)](http://www.youtube.com/watch?v=ozVpfLNr0lY "Webpack 5 Asset Modules")
 
 ### Code Splitting to improve web performance
 

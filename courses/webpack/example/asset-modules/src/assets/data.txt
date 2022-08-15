@@ -1,0 +1,3 @@
+npm init -y
+npm install
+npm run serve
