@@ -11,6 +11,15 @@
 - etcd: key-value store holds the current state of the cluster
 - Virtual Network: Connects everything
 
+## Cluster components
+
+- k8s Proxy
+- k8s DNS
+- k8s UI
+
 ## Kubernetes Commands
+
+- `kubectl get nodes`: Get available nodes connected to kubernetes cluster
+- `kubectl describe nodes <node_name>`: Get information about the node
 
 ## Kubernetes YAML File
