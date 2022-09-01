@@ -2,8 +2,6 @@
 
 ## Comparison
 
-## Framework Component
-
 |           | Internal State        | Shared State               | Computed State | Side Effects         | Props                     | Events     | Reactivity          |
 | --------- | --------------------- | -------------------------- | -------------- | -------------------- | ------------------------- | ---------- | ------------------- |
 | React     | `useState`            | `useContext`               | `useMemo`      | `useEffect`          | Arguments/Class Variables | Callbacks  | Virtual DOM (Fiber) |
@@ -13,6 +11,8 @@
 | SolidJs   | `createSignal`        | `useContext`               | `createMemo`   | createEffect`        | Arguments                 | Callbacks  | Direct (N/A)        |
 | Svelte    | Variables             | `setContenxt`/`getContext` | `$:`           | `afterUpdate`        | `export`                  | `dispatch` | Direct (N/A)        |
 
+## Framework Component
+
 ### State
 
 It's divided into:
@@ -21,11 +21,24 @@ It's divided into:
 - External State: Used to store state in an external object and use listners to update them
 - Computed State: This is a state drived from another state
 
-State should be part of the single flow of data where
+### Communication
+
+Communication is trying to change the Model through the Controller and then render the View.
+
+It's done through:
+
+- Props: To pass data from parent to child
+- Events: To pass data from child to parent
+
+Communication should be in a one-direction flow:
+
+- For internal communication
 
 ```
 Event -> State -> Render
 ```
+
+- For external communication (can be done from between child & parent or container & service)
 
 ```
 Event (Child) -> Listener (Parent) -> State (Parent) -> Render (Parent) -> Render (Child)
@@ -33,14 +46,7 @@ Event (Child) -> Listener (Parent) -> State (Parent) -> Render (Parent) -> Rende
 
 ### Side-effects
 
-It's how frameworks handles side effects that are not part of the single flow of data
-
-### Communication
-
-It's done through:
-
-- Props: To pass data from parent to child
-- Events: To pass data from child to parent
+It's how frameworks handles side effects that are not part of the single flow of data. Usually they are done either with Life Cycle hooks or watchers
 
 ### Reactivity (Renderer)
 

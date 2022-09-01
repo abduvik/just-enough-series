@@ -12,6 +12,7 @@ I will be sharing here my personal self-learning notes and also the notes of the
 
 ## List of available courses
 
+- [Frontend Frameworks](./courses/frontend-frameworks)
 - [Webpack](./courses/webpack)
 - [Monorepo using Lerna](./courses/monorepo-lerna)
 - [Git](./courses/git)
