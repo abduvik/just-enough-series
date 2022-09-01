@@ -3,6 +3,7 @@
 ## Comparison
 
 <div>
+
 |                | React                     | Angular              | VueJs                 | AngularJs       | SolidJs        | Svelte                     |
 | -------------- | ------------------------- | -------------------- | --------------------- | --------------- | -------------- | -------------------------- |
 | Internal State | `useState`                | Class Variables      | `reactive()`/`data()` | `$state`        | `createSignal` | Variables                  |
@@ -12,6 +13,7 @@
 | Events         | Callbacks                 | `@Output`            | `$emit`               | Callbacks       | Callbacks      | `dispatch`                 |
 | Side Effects   | `useEffect`               | `ngAfterViewChecked` | `watch`               | `$watch`        | `createEffect` | `afterUpdate`              |
 | Reactivity     | Virtual DOM (Fiber)       | Zones.js             | Virtual DOM (Proxy)   | $digest Cycle   | Direct (N/A)   | Direct (N/A)               |
+
 </div>
 
 ## Framework Component
