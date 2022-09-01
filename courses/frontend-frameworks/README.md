@@ -2,7 +2,7 @@
 
 ## Comparison
 
-<div style="white-space: nowrap">
+<div class="no-wrap">
 
 |                | React                     | Angular              | VueJs                 | AngularJs       | SolidJs        | Svelte                     |
 | -------------- | ------------------------- | -------------------- | --------------------- | --------------- | -------------- | -------------------------- |
