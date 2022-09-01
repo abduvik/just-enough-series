@@ -2,6 +2,10 @@
 
 ## Comparison
 
+<style>
+  table td {white-space: nowrap;}
+</style>
+
 |                | React                     | Angular              | VueJs                 | AngularJs       | SolidJs        | Svelte                     |
 | -------------- | ------------------------- | -------------------- | --------------------- | --------------- | -------------- | -------------------------- |
 | Internal State | `useState`                | Class Variables      | `reactive()`/`data()` | `$state`        | `createSignal` | Variables                  |
