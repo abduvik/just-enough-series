@@ -2,14 +2,15 @@
 
 ## Comparison
 
-|           | Internal State        | Shared State               | Computed State | Side Effects         | Props                     | Events     | Reactivity          |
-| --------- | --------------------- | -------------------------- | -------------- | -------------------- | ------------------------- | ---------- | ------------------- |
-| React     | `useState`            | `useContext`               | `useMemo`      | `useEffect`          | Arguments/Class Variables | Callbacks  | Virtual DOM (Fiber) |
-| Angular   | Class Variables       | Sevices/`NgRx`             | Function       | `ngAfterViewChecked` | `@Input`                  | `@Output`  | Zones.js            |
-| VueJs     | `reactive()`/`data()` | `provide`/`inject`         | `computed`     | `watch`              | `props`                   | `$emit`    | Virtual DOM (Proxy) |
-| AngularJs | `$state`              | Services                   | Functions      | `$watch`             | Class Variables           | Callbacks  | $digest Cycle       |
-| SolidJs   | `createSignal`        | `useContext`               | `createMemo`   | createEffect`        | Arguments                 | Callbacks  | Direct (N/A)        |
-| Svelte    | Variables             | `setContenxt`/`getContext` | `$:`           | `afterUpdate`        | `export`                  | `dispatch` | Direct (N/A)        |
+|                | React                     | Angular              | VueJs                 | AngularJs       | SolidJs        | Svelte                     |
+| -------------- | ------------------------- | -------------------- | --------------------- | --------------- | -------------- | -------------------------- |
+| Internal State | `useState`                | Class Variables      | `reactive()`/`data()` | `$state`        | `createSignal` | Variables                  |
+| Shared State   | `useContext`              | Sevices/`NgRx`       | `provide`/`inject`    | Services        | `useContext`   | `setContenxt`/`getContext` |
+| Computed State | `useMemo`                 | Function             | `computed`            | Functions       | `createMemo`   | `$:`                       |
+| Props          | Arguments/Class Variables | `@Input`             | `props`               | Class Variables | Arguments      | `export`                   |
+| Events         | Callbacks                 | `@Output`            | `$emit`               | Callbacks       | Callbacks      | `dispatch`                 |
+| Side Effects   | `useEffect`               | `ngAfterViewChecked` | `watch`               | `$watch`        | `createEffect` | `afterUpdate`              |
+| Reactivity     | Virtual DOM (Fiber)       | Zones.js             | Virtual DOM (Proxy)   | $digest Cycle   | Direct (N/A)   | Direct (N/A)               |
 
 ## Framework Component
 
