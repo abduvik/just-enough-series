@@ -22,6 +22,12 @@ I will be sharing here my personal self-learning notes and also the notes of the
 
 This repository is an open source project and you are welcome to fork it and submit extra interesting content that would make it more useful.
 
+## Join Bi-Weekly Newsletter Summary
+
+I post a newsletter every two weeks on technical topics I learnt and interesting articles I read.
+
+[✉️ Subscribe to the Newsletter](https://newsletter.abdu.dev/)
+
 ## Support
 
 [![Do you like this repository? Maybe you can buy me a coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-1.svg)](https://www.buymeacoffee.com/abduvik)
