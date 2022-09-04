@@ -2,19 +2,19 @@
 
 ## YouTube Video
 
-[![Just Enough Frontent Framework concepts](http://img.youtube.com/vi/xxxxxxxx/0.jpg)](http://www.youtube.com/watch?v=xxxxxx "Concepts Shared between 6 Frontend Frameworks | Just Enough Series")
+[![Just Enough Frontent Framework concepts](http://img.youtube.com/vi/U7EcCfdqbNw/0.jpg)](http://www.youtube.com/watch?v=U7EcCfdqbNw "Concepts Shared between 6 Frontend Frameworks | Just Enough Series")
 
 ## Comparison
 
-|                  | React                     | Angular              | VueJs                 | AngularJs                   | SolidJs        | Svelte                     |
-| ---------------- | ------------------------- | -------------------- | --------------------- | --------------------------- | -------------- | -------------------------- |
-| Internal State   | `useState`                | Class Variables      | `reactive()`/`data()` | `$state`                    | `createSignal` | Variables                  |
-| Shared State     | `useContext`              | Sevices/`NgRx`       | `provide`/`inject`    | Services                    | `useContext`   | `setContenxt`/`getContext` |
-| Computed State   | `useMemo`                 | Function             | `computed`            | Functions                   | `createMemo`   | `$:`                       |
-| Props            | Arguments/Class Variables | `@Input`             | `props`               | Class Variables             | Arguments      | `export`                   |
-| Events           | Callbacks                 | `@Output`            | `$emit`               | Callbacks                   | Callbacks      | `dispatch`                 |
-| Side Effects     | `useEffect`               | `ngAfterViewChecked` | `watch`               | `$watch`                    | `createEffect` | `afterUpdate`              |
-| Change Detection | Virtual DOM (Fiber)       | Zones.js             | Virtual DOM (Proxy)   | $digest Cycle (Dirty Check) | Direct (N/A)   | Direct (N/A)               |
+|                  | React                     | Angular              | VueJs                 | AngularJs                   | SolidJs        | Svelte                    |
+| ---------------- | ------------------------- | -------------------- | --------------------- | --------------------------- | -------------- | ------------------------- |
+| Internal State   | `useState`                | Class Variables      | `reactive()`/`data()` | `$state`                    | `createSignal` | Variables                 |
+| Shared State     | `useContext`              | Sevices/`NgRx`       | `provide`/`inject`    | Services                    | `useContext`   | `setContext`/`getContext` |
+| Computed State   | `useMemo`                 | Function             | `computed`            | Functions                   | `createMemo`   | `$:`                      |
+| Props            | Arguments/Class Variables | `@Input`             | `props`               | Class Variables             | Arguments      | `export`                  |
+| Events           | Callbacks                 | `@Output`            | `$emit`               | Callbacks                   | Callbacks      | `dispatch`                |
+| Side Effects     | `useEffect`               | `ngAfterViewChecked` | `watch`               | `$watch`                    | `createEffect` | `afterUpdate`             |
+| Change Detection | Virtual DOM (Fiber)       | Zones.js             | Virtual DOM (Proxy)   | $digest Cycle (Dirty Check) | Direct (N/A)   | Direct (N/A)              |
 
 ## Framework Component
 
