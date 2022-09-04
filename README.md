@@ -1,6 +1,6 @@
 # Just Enough Series
 
-Repository to host files for "Just Enough" YouTube Series by @abduvik.
+Repository to host files for "Just Enough" YouTube Series by [@abduvik](https://www.youtube.com/abduvik).
 
 Everyday there is a new technology and it's hard to follow them. And what makes matters worse is that after we learn them we forget them.
 
