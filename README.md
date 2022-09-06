@@ -1,6 +1,6 @@
 # Just Enough Series
 
-Repository to host files for "Just Enough" YouTube Series by @abduvik.
+Repository to host files for "Just Enough" YouTube Series by [@abduvik](https://www.youtube.com/abduvik).
 
 Everyday there is a new technology and it's hard to follow them. And what makes matters worse is that after we learn them we forget them.
 
@@ -12,6 +12,7 @@ I will be sharing here my personal self-learning notes and also the notes of the
 
 ## List of available courses
 
+- [Frontend Frameworks](./courses/frontend-frameworks)
 - [Webpack](./courses/webpack)
 - [Monorepo using Lerna](./courses/monorepo-lerna)
 - [Git](./courses/git)
@@ -20,6 +21,12 @@ I will be sharing here my personal self-learning notes and also the notes of the
 ## Contribution
 
 This repository is an open source project and you are welcome to fork it and submit extra interesting content that would make it more useful.
+
+## Join Bi-Weekly Newsletter Summary
+
+I post a newsletter every two weeks on technical topics I learnt and interesting articles I read.
+
+[✉️ Subscribe to the Newsletter](https://newsletter.abdu.dev/)
 
 ## Support
 
