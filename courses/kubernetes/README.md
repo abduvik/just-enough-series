@@ -105,9 +105,17 @@ spec: ...
 
 ### Pod
 
-```yaml
+[Example YAML file for pods](./examples/pods.yml)
 
-```
+Pods can support:
+
+- Images to run using `image`
+- Acessing pods using `exec`
+- Getting logs using `kubectl logs`
+- Health Checks for: Liveness (container is healthy), Readness (container ready to serve)
+- Resource Managment to set maximum and minimum resources
+- Persisting data using volumes
+- Ports mapping
 
 ## Questions
 
