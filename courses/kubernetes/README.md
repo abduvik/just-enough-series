@@ -103,6 +103,47 @@ metadata: ...
 spec: ...
 ```
 
+### Labels and Annotations
+
+They exists in every k8s resource.
+
+- Labels: used for querying and grouping objects
+- Annotations: used as extra metadata for specific objects
+
+Commands
+
+- `kubectl run ... --labels="ver-1,app=alpca"`: Create object with certain labels
+- ` kubectl get ... --selector="ver=2"`: Use selectors to filter objects
+
+Selectors Operators
+
+| Operator                     | Description                        |
+| ---------------------------- | ---------------------------------- |
+| `key=value `                 | key is set to value                |
+| `key!=value`                 | key is not set to value            |
+| `key in (value1, value2)`    | key is one of value1 or value2     |
+| `key notin (value1, value2)` | key is not one of value1 or value2 |
+| `key`                        | key is set                         |
+| `!key `                      | key is not set                     |
+
+Inside yaml
+
+```yaml
+selector:
+  matchLabels:
+    app: alpaca
+  matchExpressions:
+    - { key: ver, operator: In, values: [1, 2] }
+```
+
+Annotations are defined under `metadata.annotations`
+
+```yaml
+metadata:
+  annotations:
+  example.com/icon-url: "https://example.com/icon.png"
+```
+
 ### Pod
 
 [Example YAML file for pods](./examples/pods.yml)
