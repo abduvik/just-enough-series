@@ -67,6 +67,9 @@ All objects in kubernetes are RESTful resources and can be accessed with
 ### Managing Objects
 
 - `kubectl run <container_name> --image <image_name>`: Run a container in the cluster
+- `kubectl create deployment <deployment_name> --image <image_name> --port=<port)id>`: Run a deployment
+- `kubectl scale deployment <deployment_name> --replicas <replica_count>`: Scale a deployment
+- `kubectl expose deployment <deployment_name>`: Expose a deployment through a service
 - `kubectl apply -f <file.yaml>`: Apply YAML file to k8s
 - `kubectl edit <resource_type> <object>`: Open interactive edit for the object
 - `kubectl delete <resource_type> <object>`: Delete object
@@ -157,6 +160,14 @@ Pods can support:
 - Resource Managment to set maximum and minimum resources
 - Persisting data using volumes
 - Ports mapping
+
+### Services
+
+They are the DNS resolvion/Load Balancer for pods in k8s. You can create a service for a deployment to communicate with other containers through DNS instead of ip address.
+
+Format of a service name
+
+`alpaca-prod.default.svc.cluster.local` -> `<service_name>.<namespace>.svc.<base_domain>`
 
 ## Questions
 
