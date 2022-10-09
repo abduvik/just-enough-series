@@ -8,6 +8,8 @@
 - [Article on What is .NET](https://www.codecademy.com/article/what-is-net)
 - [C# for Beginners](https://www.youtube.com/playlist?list=PLdo4fOcmZ0oVxKLQCHpiUWun7vlJJvUiN)
 - [ASP.NET Tutorial](https://www.youtube.com/watch?v=lE8NdaX97m0&list=PLdo4fOcmZ0oW8nviYduHq7bmKode-p8Wy)
+- [Another Good Summary](https://learnxinyminutes.com/docs/csharp/)
+- [Asynchronous Programming with C#](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/)
 
 ## Topics
 
@@ -26,3 +28,41 @@ There is a package manager callend NuGet
 - We can use Visual Studio, Visual Studio Code or JetBrains Rider
 - We need to install the .NET Sdk
 - There is also a CLI tool `dotnet` which supports multiple templates
+
+### Language Summary
+
+- Generic Example
+
+```csharp
+namespace ProgramNamespace;
+
+public class BankAccount {
+  public BankAccount() {
+
+  }
+
+  public string getTransactions() {
+    // Object-Initializer: https://www.youtube.com/watch?v=4_J_CLKwoto
+    // It's a way to avoid creating multiple constructors
+    var person = new Person {
+      Name: "Abdu",
+      City: "Berlin"
+    }
+  }
+
+  public static Task async callVisa(){
+    Task<VisaOperation> = await VisaService.CallVisa();
+    // Task.WhenAll === Promise.all
+    // Task.WhenAny === Promise.any
+  }
+}
+
+public class Person {
+  string Name;
+  string City;
+
+  public Person() {
+
+  }
+}
+```
