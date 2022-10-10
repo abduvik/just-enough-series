@@ -66,3 +66,8 @@ public class Person {
   }
 }
 ```
+
+### Important Classes
+
+- `JsonSerializer`: To Serialize/Deserialize JSON to Object
+- `HttpClient`: To do HTTP requests
