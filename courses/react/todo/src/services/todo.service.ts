@@ -12,6 +12,10 @@ export class TodoService {
     return this.httpAdapter.get<Todo[]>("/todos");
   }
 
+  addTodo(todo: string) {
+    return this.httpAdapter.post<{ todo: string }>("/todos", { todo });
+  }
+
   getTodo() {}
 
   updateTodo() {}

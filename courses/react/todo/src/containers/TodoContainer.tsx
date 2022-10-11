@@ -18,9 +18,17 @@ const TodoContainer = ({ todoService }: TodoContainerProps) => {
     });
   }, []);
 
+  const onAddClicked = (value: any) => {
+    todoService.addTodo(value);
+
+    todoService.getAllTodos().then((todos) => {
+      setTodos(todos);
+    });
+  };
+
   return (
     <div>
-      <AddTodoItem />
+      <AddTodoItem onAddClicked={onAddClicked} />
       {todos.map((todo) => (
         <TodoItem
           key={todo.id}

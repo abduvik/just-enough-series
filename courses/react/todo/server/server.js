@@ -17,21 +17,22 @@ app.get("/todos", (req, res) => {
   res.send(JSON.stringify(todosDB));
 });
 
-app.get("/todo/:id", (req, res) => {
+app.get("/todos/:id", (req, res) => {
   const item = todosDB.find((item) => item.id === req.params.id);
   res.send(JSON.stringify(item)); //@todo to be implmented
 });
 
-app.post("/todo", (req, res) => {
-  const item = req.body;
-  todosDB.push({
-    ...item,
+app.post("/todos", (req, res) => {
+  const todo = req.body.todo;
+  const newTask = {
+    task: todo,
     id: todosDB[todosDB.length - 1].id + 1,
-  });
-  res.send(JSON.stringify(item));
+  };
+  todosDB.push(newTask);
+  res.send(JSON.stringify(newTask));
 });
 
-app.patch("/todo", (req, res) => {
+app.patch("/todos", (req, res) => {
   const itemId = req.body.id;
   const itemIndex = todosDB.findIndex((todo) => todo.id === itemId);
   const updatedItem = {
@@ -44,14 +45,14 @@ app.patch("/todo", (req, res) => {
   res.send(JSON.stringify(updatedItem));
 });
 
-app.delete("/todo", (req, res) => {
+app.delete("/todos", (req, res) => {
   const itemId = req.body.id;
   const itemIndex = todosDB.findIndex((todo) => todo.id === itemId);
   todosDB.splice(itemIndex, 1);
   res.send({ id: req.body.id });
 });
 
-app.listen(4000, () => {
+app.listen(3001, () => {
   console.log("Server Started!");
 });
 
