@@ -13,13 +13,13 @@ const todosDB = JSON.parse(
 );
 
 // API Endpoints
-app.get("/todo", (req, res) => {
-  res.send(JSON.parse(todosDB));
+app.get("/todos", (req, res) => {
+  res.send(JSON.stringify(todosDB));
 });
 
 app.get("/todo/:id", (req, res) => {
   const item = todosDB.find((item) => item.id === req.params.id);
-  res.send(JSON.parse(item)); //@todo to be implmented
+  res.send(JSON.stringify(item)); //@todo to be implmented
 });
 
 app.post("/todo", (req, res) => {
@@ -28,29 +28,30 @@ app.post("/todo", (req, res) => {
     ...item,
     id: todosDB[todosDB.length - 1].id + 1,
   });
-  res.send(item);
+  res.send(JSON.stringify(item));
 });
 
 app.patch("/todo", (req, res) => {
   const itemId = req.body.id;
   const itemIndex = todosDB.findIndex((todo) => todo.id === itemId);
-  todosDB[itemIndex] = {
+  const updatedItem = {
     ...todosDB[itemIndex],
     ...req.body,
     id: itemId,
   };
+  todosDB[itemIndex] = updatedItem;
   todosDB.splice(itemIndex, 1);
-  res.send({});
+  res.send(JSON.stringify(updatedItem));
 });
 
 app.delete("/todo", (req, res) => {
   const itemId = req.body.id;
   const itemIndex = todosDB.findIndex((todo) => todo.id === itemId);
   todosDB.splice(itemIndex, 1);
-  res.send({});
+  res.send({ id: req.body.id });
 });
 
-app.listen(3000, () => {
+app.listen(4000, () => {
   console.log("Server Started!");
 });
 
