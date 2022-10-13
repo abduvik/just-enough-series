@@ -8,6 +8,10 @@ export class TodoService {
     this.httpAdapter = httpAdapter;
   }
 
+  getTodo(id: number) {
+    return this.httpAdapter.get<Todo>(`/todos/${id}`);
+  }
+
   getAllTodos() {
     return this.httpAdapter.get<Todo[]>("/todos");
   }
@@ -16,9 +20,9 @@ export class TodoService {
     return this.httpAdapter.post<{ todo: string }>("/todos", { todo });
   }
 
-  getTodo() {}
-
   updateTodo() {}
 
-  deleteTodo() {}
+  deleteTodo(id: number) {
+    return this.httpAdapter.delete<{ id: number }>("/todos", { id });
+  }
 }

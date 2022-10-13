@@ -4,7 +4,6 @@ import { TodoItem } from "../components/TodoItem";
 import { withDependencies } from "../hoc/withDependencies";
 import { Todo } from "../models/Todo";
 import { TodoService } from "../services/todo.service";
-
 type TodoContainerProps = {
   todoService: TodoService;
 };
@@ -18,12 +17,23 @@ const TodoContainer = ({ todoService }: TodoContainerProps) => {
     });
   }, []);
 
-  const onAddClicked = (value: any) => {
-    todoService.addTodo(value);
-
+  const refresh = () => {
     todoService.getAllTodos().then((todos) => {
       setTodos(todos);
     });
+  };
+
+  const onAddClicked = (value: any) => {
+    todoService.addTodo(value).then(() => refresh());
+  };
+
+  const onEditClicked = ({ id }: { id: number }) => {
+    todoService.getTodo(id).then(() => refresh());
+  };
+
+  const onDeleteClicked = ({ id }: { id: number }) => {
+    // delete item
+    todoService.deleteTodo(id).then(() => refresh());
   };
 
   return (
@@ -37,6 +47,8 @@ const TodoContainer = ({ todoService }: TodoContainerProps) => {
           handnotes={todo.handnotes}
           status={todo.status}
           task={todo.task}
+          onEditClicked={onEditClicked}
+          onDeleteClicked={onDeleteClicked}
         />
       ))}
     </div>

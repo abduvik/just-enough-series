@@ -29,9 +29,13 @@ export class HttpAdapter {
     }).then((response) => response.json());
   }
 
-  delete(url: string) {
-    return fetch(this.baseUrl + url, { method: "DELETE" }).then((response) =>
-      response.json()
-    );
+  delete<T>(url: string, data: T) {
+    return fetch(this.baseUrl + url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((response) => response.json());
   }
 }
