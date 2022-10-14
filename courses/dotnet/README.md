@@ -31,6 +31,8 @@ There is a package manager callend NuGet
 
 ### Language Summary
 
+- The config files for a project is under `*.csproj`. It's similar to `package.json`
+
 - Generic Example
 
 ```csharp
@@ -41,7 +43,7 @@ public class BankAccount {
 
   }
 
-  public string getTransactions() {
+  public string GetTransactions() {
     // Object-Initializer: https://www.youtube.com/watch?v=4_J_CLKwoto
     // It's a way to avoid creating multiple constructors
     var person = new Person {
@@ -50,7 +52,14 @@ public class BankAccount {
     }
   }
 
-  public static Task async callVisa(){
+  public int getSum(int x, int y) {
+
+  }
+
+  /**
+  Async/Await operation is handled by Tasks
+  **/
+  public static Task async CallVisa(){
     Task<VisaOperation> = await VisaService.CallVisa();
     // Task.WhenAll === Promise.all
     // Task.WhenAny === Promise.any
@@ -67,7 +76,51 @@ public class Person {
 }
 ```
 
+### Modifiers
+
+- `abstract`: Can't use `new`, need to be inherited and implemented. In case of preprties, methods, indexers, events -> you must implement them
+- `override`: Required to extend or modify the abstract or virtual implementation of an inherited method, property, indexer, or event.
+
+### Keywords
+
+- `using` statement forces the code to run `Dispose` method instead of writing `try...finally`
+- `new` It can be used as a modifier to override inherited properties and methods in a class by creating a new one
+
 ### Important Classes
 
 - `JsonSerializer`: To Serialize/Deserialize JSON to Object
 - `HttpClient`: To do HTTP requests
+
+### Questions
+
+- What is the difference between `interface` and `abstract` class?
+
+We inherit from one class but can implement multiple interfaces. Abstract class are used as base classes and can have partial implementation but interfaces are more as contract
+
+- What is the difference between `new` and `override`+`virtual`?
+
+`new` will create a new method that only exists for this type. So if we used casting it will use the parent method rather than the child method
+
+`override`+`virtual` is to actually override the member methods in correct polymorphism
+
+- How C# complier knows where is Main method?
+
+Newer versions can find main implicitly. You can set the flag `EnableDefaultCompileItems` to false in the project configs and then you will need to explicitly include the entry point
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Program.cs" />
+    </ItemGroup>
+
+</Project>
+```
