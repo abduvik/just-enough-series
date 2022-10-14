@@ -62,6 +62,17 @@ They are grouping of different resources
   // @todo: need to read more about it again
 
 - [Azure Functions Core tools](https://github.com/Azure/azure-functions-core-tools): Used for local development
+- [Testing functions locally with http-triggers and non-http triggers](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash)
+
+#### Azure Cosmos DB
+
+- Multi-master replication support which reduces latency to almost real-time
+- 99.999% read and write availability all around the world.
+- Add and remove regions at anytime without the need to pause/redeploy the application
+- Multiple data consistency mode: Strong, Bounded Staleness, Session, Consistent Prefix, Excentual
+- There are multiple APIs available: Core (SQL), MonogoDB, Cassandra, Table, Gremlin
+- Item index = Partition Key + Item ID
+- Cosmos DB Account > Container > Table > Items
 
 #### Service Bus
 
@@ -121,3 +132,9 @@ az servicebus queue create --resource-group az204-svcbus-rg \
 
 - Delete a resource group
   `az group delete --name az204-svcbus-rg --no-wait`
+
+## Extra resources
+
+- [Adam Marczak - Azure for Everyone
+  ](https://www.youtube.com/c/Azure4Everyone)
+- [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer/#getting-started)
