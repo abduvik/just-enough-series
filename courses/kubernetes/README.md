@@ -163,11 +163,31 @@ Pods can support:
 
 ### Services
 
-They are the DNS resolvion/Load Balancer for pods in k8s. You can create a service for a deployment to communicate with other containers through DNS instead of ip address.
+They are selectors for pods. so instead of talking to a specific pod with specific ip, services can be used to group these pods under a single name. This helps for service discovery across the system.
 
 Format of a service name
 
 `alpaca-prod.default.svc.cluster.local` -> `<service_name>.<namespace>.svc.<base_domain>`
+
+[Learn how to get this information here](https://stackoverflow.com/questions/59559438/retrieve-the-full-name-of-a-service-in-kubernetes)
+
+Services have endpoints which are the addresses the service is sending traffic to. You can check them by writing
+
+```shell
+kubectl get endpoints <service_name> --watch
+```
+
+Services have different types
+
+- `ClusterIP`: Exposes the services on a cluster-internal IP.
+- `NodePort`: Exposes a certain port on all nodes and route traffic to the service
+-
+
+You can tunnel traffic from your machine to a services on minikube using
+
+```shell
+minikube service <service_name> --url
+```
 
 ## Questions
 
