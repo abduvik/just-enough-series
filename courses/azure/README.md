@@ -122,8 +122,12 @@ az servicebus queue create --resource-group az204-svcbus-rg \
   - Good for logging
   - It's a subset of the Blob storage
   - It consists of a queue and an Azure Storage
+  - It's simplier than Service Bus
 
 // @todo: Check this later https://learn.microsoft.com/en-us/azure/storage/queues/storage-dotnet-how-to-use-queues?tabs=dotnet
+
+- [Azure Storage vs Service Bus](https://medium.com/awesome-azure/azure-difference-between-azure-storage-queue-and-service-bus-queue-azure-queue-storage-vs-servicebus-3f7921b0159e)
+- [Azure Queues and Service Bus queues - compared and contrasted](https://github.com/Huachao/azure-content/blob/master/articles/service-bus/service-bus-azure-and-service-bus-queues-compared-contrasted.md)
 
 ### General Commands
 
