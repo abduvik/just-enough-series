@@ -32,54 +32,125 @@ There is a package manager callend NuGet
 ### Language Summary
 
 - The config files for a project is under `*.csproj`. It's similar to `package.json`
+- namespaces are a way to organize our code similar to folders and make sure that if two classes with same under different namespaces are still unique (especially when sharing code through pacakges)
 
 - Generic Example
 
 ```csharp
-namespace ProgramNamespace;
+using System;
 
-public class BankAccount {
-  public BankAccount() {
+namespace CSharpTestingConsole
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var bank = new BankAccount();
+            Person person = new(); // will do object creation implicitly
 
-  }
+            Console.WriteLine("Hello World");
 
-  public string GetTransactions() {
-    // Object-Initializer: https://www.youtube.com/watch?v=4_J_CLKwoto
-    // It's a way to avoid creating multiple constructors
-    var person = new Person {
-      Name: "Abdu",
-      City: "Berlin"
+            string wage = Console.ReadLine();
+
+            // int wageValue = int.Parse(wage);
+
+            int wageValue;
+            if (int.TryParse(wage, out wageValue))
+            {
+                Console.WriteLine("Success");
+            }
+        }
     }
-  }
 
-  public int getSum(int x, int y) {
+    public class BankAccount {
+        public string GetTransactions() {
+            // Object-Initializer: https://www.youtube.com/watch?v=4_J_CLKwoto
+            // It's a way to avoid creating multiple constructors
+            var person = new Person
+            {
+                Name = "Abdu",
+                City = "Berlin"
+            };
 
-  }
 
-  /**
-  Async/Await operation is handled by Tasks
-  **/
-  public static Task async CallVisa(){
-    Task<VisaOperation> = await VisaService.CallVisa();
-    // Task.WhenAll === Promise.all
-    // Task.WhenAny === Promise.any
-  }
-}
+        GetSum(y: 10, x: 20);
 
-public class Person {
-  string Name;
-  string City;
+        return person.Name;
+    }
 
-  public Person() {
+    public int GetSum(int x, int y)
+    {
+        return x + y;
+    }
 
-  }
-}
+    /**
+     * `ref` pass by reference and need to be initialized
+     * `out` will pass by reference but doesn't need to be initialized. It's used in case you need to return n+1 things
+     */
+    public int GetSumAndRef(int x, out int y)
+    {
+        y = 10;
+        return x + y;
+    }
+
+    /**
+    Async/Await operation is handled by Tasks
+    **/
+    // public static Task async callVisa(){
+    //     Task<VisaOperation> = await VisaService.CallVisa();
+    //     // Task.WhenAll === Promise.all
+    //     // Task.WhenAny === Promise.any
+    // }
+    }
+
+    public class Person {
+        public string Name;
+        public string City;
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
+
+        public Person() {
+
+        }
+
+        public string GetFullName()
+        {
+            // return String.Format("{0} {1}", FirstName, LastName);
+            // return String.Concat(FirstName, LastName);
+            return FirstName + LastName;
+        }
+    }
+};
+
+
 ```
 
 ### Modifiers
 
 - `abstract`: Can't use `new`, need to be inherited and implemented. In case of preprties, methods, indexers, events -> you must implement them
 - `override`: Required to extend or modify the abstract or virtual implementation of an inherited method, property, indexer, or event.
+- `static`: method,proptery is shared across all objects on the class-level and we call them through the class, so no need to use the `new` keyword
+
+### Types in .NET
+
+Value Types:
+
+- `enum`: Collection of values as a string
+- `struct`: Similar to classes by lightweight and is value type instead of a pointer like classes
+
+Reference Types:
+
+- `class`
+- `interface`
+- `delegate`
+
+### null and nullable
+
+Reference types can hold the value null when they reference to nothing
+
+Value Types needs to hold a value but we can define them as "Nullable Value Types" which means that they can hold a value or null. They are defined by appending a `?` ex: `int? x`.
 
 ### Keywords
 
@@ -89,7 +160,11 @@ public class Person {
 ### Important Classes
 
 - `JsonSerializer`: To Serialize/Deserialize JSON to Object
+- `JsonSerializerOptions`: To pass options for the `JsonSerializer`. Use `JsonSerializerDefaults.web` to get default options used for the web.
 - `HttpClient`: To do HTTP requests
+- `StringBuilder`: Used when we are doing too many operations on strings to save memory. THat's because strings are immutable and are referenced-type instead of value
+- `HttpClientJsonExtensions`: Extentions to the `HttpClient` to send/recieve HTTP content as JSON
+- `HttpContentJsonExtensions`: Extentions to the `HttpClient` to read and parse the HttpContent based on JSON
 
 ### Questions
 
@@ -124,3 +199,9 @@ Newer versions can find main implicitly. You can set the flag `EnableDefaultComp
 
 </Project>
 ```
+
+- What is the difference between struct and classes?
+
+struct are value-typed, so when you assign the value of a variable to another variable we create a new complete copy of it while classes is a pointer to an object on the heap and when we assign an object to another variable it gets the pointer instead of the whole object.
+
+[Read more here](https://stackoverflow.com/questions/13049/whats-the-difference-between-struct-and-class-in-net)
