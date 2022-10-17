@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppState } from "../App";
 import { AddTodoItem } from "../components/AddTodoItem";
 import { TodoItem } from "../components/TodoItem";
 import { withDependencies } from "../hoc/withDependencies";
@@ -8,7 +9,10 @@ type TodoContainerProps = {
   todoService: TodoService;
 };
 
-const TodoContainer = ({ todoService }: TodoContainerProps) => {
+const TodoContainer = ({ todoService, ...props }: TodoContainerProps) => {
+  const appState = useContext(AppState);
+  console.log(appState);
+
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
@@ -24,7 +28,7 @@ const TodoContainer = ({ todoService }: TodoContainerProps) => {
   };
 
   const onAddClicked = (value: any) => {
-    todoService.addTodo(value).then(() => refresh());
+    todoService.addTodo(value);
   };
 
   const onEditClicked = ({ id }: { id: number }) => {
