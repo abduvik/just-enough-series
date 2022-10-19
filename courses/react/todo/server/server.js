@@ -18,7 +18,8 @@ app.get("/todos", (req, res) => {
 });
 
 app.get("/todos/:id", (req, res) => {
-  const item = todosDB.find((item) => item.id === req.params.id);
+  const todoId = parseInt(req.params.id);
+  const item = todosDB.find((item) => item.id === todoId);
   res.send(JSON.stringify(item)); //@todo to be implmented
 });
 

@@ -1,7 +1,8 @@
 import { createContext, useContext, useState } from "react";
 
 const initialState = {
-  isUp: "false",
+  showEdit: false,
+  editTodoId: -1,
 };
 
 const AppState = createContext<any>({});

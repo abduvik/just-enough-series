@@ -4,7 +4,7 @@ import { TodoItem } from "../components/TodoItem";
 import { withDependencies } from "../hoc/withDependencies";
 import { Todo } from "../models/Todo";
 import { TodoService } from "../services/todo.service";
-import { useAppState, withAppState } from "../store/app.store";
+import { withAppState } from "../store/app.store";
 type TodoContainerProps = {
   todoService: TodoService;
   appState: any;
@@ -30,12 +30,11 @@ const TodoContainer = ({
   };
 
   const onAddClicked = (value: any) => {
-    todoService.addTodo(value);
-    appState.setState({ isUp: "yes" });
+    todoService.addTodo(value).then(() => refresh());
   };
 
   const onEditClicked = ({ id }: { id: number }) => {
-    todoService.getTodo(id).then(() => refresh());
+    appState.setState({ showEdit: true, editTodoId: id });
   };
 
   const onDeleteClicked = ({ id }: { id: number }) => {
