@@ -1,7 +1,6 @@
 type TodoProps = {
   itemId: number;
   description?: string;
-  handnotes?: string;
   status: string;
   task: string;
   onEditClicked?: ({ id }: { id: number }) => void;

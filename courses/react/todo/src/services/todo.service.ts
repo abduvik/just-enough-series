@@ -20,7 +20,9 @@ export class TodoService {
     return this.httpAdapter.post<{ todo: string }>("/todos", { todo });
   }
 
-  updateTodo() {}
+  updateTodo(id: number, data: any) {
+    return this.httpAdapter.patch<{ id: number }>(`/todos/${id}`, { ...data });
+  }
 
   deleteTodo(id: number) {
     return this.httpAdapter.delete<{ id: number }>("/todos", { id });

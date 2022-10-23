@@ -3,7 +3,7 @@
     "id": 1,
     "task": "Create a video",
     "description": "Get the camera, shoot the video and edit",
-    "handnotes": "",
+    "handNotes": "",
     "status": "NOT_DONE"
   }
 ]

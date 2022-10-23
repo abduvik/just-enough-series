@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { withDependencies } from "../hoc/withDependencies";
 import { TodoStatus } from "../models/Todo";
 import { withAppState } from "../store/app.store";
+import { TextField } from "../components/fields/TextField";
+import { CheckBoxField } from "../components/fields/CheckBoxField";
+import { TextAreaField } from "../components/fields/TextAreaField";
+import { CanvasField } from "../components/fields/CanvasField";
+import { Button } from "../components/fields/Button";
 
 const EditTodoContainer = ({ todoService, appState }: any) => {
   const [todo, setTodoState] = useState({
     task: "",
     description: "",
-    handnotes: "",
+    handNotes: "",
     status: TodoStatus.NOT_DONE,
   });
 
@@ -17,25 +22,48 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
       .then((data: any) => setTodoState(data));
   }, [appState.state.editTodoId]);
 
+  const updateFormData = (fieldName: string, value: any) => {
+    setTodoState((state) => ({
+      ...state,
+      [fieldName]: value,
+    }));
+  };
+
+  useEffect(() => {
+    console.log(todo);
+  }, [todo]);
+
+  const onSaveClicked = () => {
+    todoService.updateTodo(appState.state.editTodoId, {
+      ...todo,
+    });
+  };
+
+  const onCancelClicked = () => {
+    appState.setState({ showEdit: false, editTodoId: null });
+  };
+
   return (
     <div>
       <div>
-        <div>
-          <label htmlFor="task">Task</label>
-          <input name="task" value={todo.task} type="text" />
-        </div>
-        <div>
-          <label htmlFor="task">Done</label>
-          <input type="checkbox" name="task" />
-        </div>
-        <div>
-          <label htmlFor="task">Description</label>
-          <textarea name="task" />
-        </div>
-        <div>
-          <label htmlFor="task">Handnotes</label>
-          <canvas />
-        </div>
+        <TextField
+          onInput={(value: any) => updateFormData("task", value)}
+          value={todo.task}
+        />
+        <CheckBoxField
+          onInput={(value: any) => updateFormData("description", value)}
+          value={todo.status}
+        />
+        <TextAreaField
+          onInput={(value: any) => updateFormData("status", value)}
+          value={todo.description}
+        />
+        <CanvasField
+          onInput={(value: any) => updateFormData("handNotes", value)}
+          value={todo.handNotes}
+        />
+        <Button onClick={onSaveClicked}>Save</Button>
+        <Button onClick={onCancelClicked}>Cancel</Button>
       </div>
     </div>
   );

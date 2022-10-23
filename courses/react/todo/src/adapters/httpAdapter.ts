@@ -19,7 +19,7 @@ export class HttpAdapter {
     }).then((response) => response.json());
   }
 
-  update<T>(url: string, data: T) {
+  patch<T>(url: string, data: T) {
     return fetch(this.baseUrl + url, {
       method: "PATCH",
       headers: {

@@ -1,6 +1,6 @@
 export type Todo = {
   description?: string;
-  handnotes?: string;
+  handNotes?: string;
   id: number;
   status: TodoStatus;
   task: string;

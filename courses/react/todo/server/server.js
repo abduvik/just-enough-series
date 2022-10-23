@@ -25,16 +25,17 @@ app.get("/todos/:id", (req, res) => {
 
 app.post("/todos", (req, res) => {
   const todo = req.body.todo;
+  const todoId = todosDB.length ? todosDB[todosDB.length - 1].id + 1 : 1;
   const newTask = {
     task: todo,
-    id: todosDB[todosDB.length - 1].id + 1,
+    id: todoId,
   };
   todosDB.push(newTask);
   res.send(JSON.stringify(newTask));
 });
 
-app.patch("/todos", (req, res) => {
-  const itemId = req.body.id;
+app.patch("/todos/:id", (req, res) => {
+  const itemId = parseInt(req.params.id);
   const itemIndex = todosDB.findIndex((todo) => todo.id === itemId);
   const updatedItem = {
     ...todosDB[itemIndex],
@@ -42,7 +43,6 @@ app.patch("/todos", (req, res) => {
     id: itemId,
   };
   todosDB[itemIndex] = updatedItem;
-  todosDB.splice(itemIndex, 1);
   res.send(JSON.stringify(updatedItem));
 });
 
