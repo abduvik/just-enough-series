@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { withDependencies } from "../hoc/withDependencies";
-import { TodoStatus } from "../models/Todo";
 import { withAppState } from "../store/app.store";
 import { TextField } from "../components/fields/TextField";
 import { CheckBoxField } from "../components/fields/CheckBoxField";
@@ -13,7 +12,7 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
     task: "",
     description: "",
     handNotes: "",
-    status: TodoStatus.NOT_DONE,
+    isDone: false,
   });
 
   useEffect(() => {
@@ -34,6 +33,7 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
   }, [todo]);
 
   const onSaveClicked = () => {
+    console.log(todo);
     todoService.updateTodo(appState.state.editTodoId, {
       ...todo,
     });
@@ -51,11 +51,11 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
           value={todo.task}
         />
         <CheckBoxField
-          onInput={(value: any) => updateFormData("description", value)}
-          value={todo.status}
+          onInput={(value: any) => updateFormData("isDone", value)}
+          value={todo.isDone}
         />
         <TextAreaField
-          onInput={(value: any) => updateFormData("status", value)}
+          onInput={(value: any) => updateFormData("description", value)}
           value={todo.description}
         />
         <CanvasField
@@ -63,7 +63,7 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
           value={todo.handNotes}
         />
         <Button onClick={onSaveClicked}>Save</Button>
-        <Button onClick={onCancelClicked}>Cancel</Button>
+        <Button onClick={onCancelClicked}>Close</Button>
       </div>
     </div>
   );

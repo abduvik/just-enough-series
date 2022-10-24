@@ -15,16 +15,18 @@ export const CanvasField = ({ value, onInput }: any) => {
       if (renderCtx) {
         setContext(renderCtx);
       }
-      // @todo: see why this is not working
-      if (value) {
-        const image = new Image();
-        image.onload = () => {
-          renderCtx?.drawImage(image, 0, 0);
-        };
-        image.src = value;
-      }
     }
   }, []);
+
+  useEffect(() => {
+    if (value) {
+      const image = new Image();
+      image.onload = () => {
+        context?.drawImage(image, 0, 0);
+      };
+      image.src = value;
+    }
+  }, [value]);
 
   const mouseDown = () => setIsDrawing(true);
   const mouseUp = () => endDrawing();
@@ -36,7 +38,7 @@ export const CanvasField = ({ value, onInput }: any) => {
       y: 0,
     });
     setIsDrawing(false);
-    // onInput(canvasRef.current?.toDataURL());
+    onInput(canvasRef.current?.toDataURL());
   };
 
   const startDrawing = (

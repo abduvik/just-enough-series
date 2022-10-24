@@ -50,7 +50,6 @@ const TodoContainer = ({
           key={todo.id}
           itemId={todo.id}
           description={todo.description}
-          status={todo.status}
           task={todo.task}
           onEditClicked={onEditClicked}
           onDeleteClicked={onDeleteClicked}

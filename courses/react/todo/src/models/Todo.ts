@@ -2,11 +2,6 @@ export type Todo = {
   description?: string;
   handNotes?: string;
   id: number;
-  status: TodoStatus;
   task: string;
+  isDone: boolean;
 };
-
-export enum TodoStatus {
-  DONE = "DONE",
-  NOT_DONE = "NOT_DONE",
-}
