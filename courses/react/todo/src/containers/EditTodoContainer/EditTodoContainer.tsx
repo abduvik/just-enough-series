@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { withDependencies } from "../hoc/withDependencies";
-import { withAppState } from "../store/app.store";
-import { TextField } from "../components/fields/TextField";
-import { CheckBoxField } from "../components/fields/CheckBoxField";
-import { TextAreaField } from "../components/fields/TextAreaField";
-import { CanvasField } from "../components/fields/CanvasField";
-import { Button } from "../components/fields/Button";
+import { withDependencies } from "../../hoc/withDependencies";
+import { withAppState } from "../../store/app.store";
+import { TextField } from "../../components/TextField/TextField";
+import { CheckBoxField } from "../../components/CheckBoxField/CheckBoxField";
+import { TextAreaField } from "../../components/TextAreaField/TextAreaField";
+import { CanvasField } from "../../components/CanvasField/CanvasField";
+import { Button } from "../../components/Button/Button";
+import classes from "./EditTodoContainer.module.scss";
+import { Title } from "../../components/Title/Title";
 
 const EditTodoContainer = ({ todoService, appState }: any) => {
   const [todo, setTodoState] = useState({
@@ -28,12 +30,7 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
     }));
   };
 
-  useEffect(() => {
-    console.log(todo);
-  }, [todo]);
-
   const onSaveClicked = () => {
-    console.log(todo);
     todoService.updateTodo(appState.state.editTodoId, {
       ...todo,
     });
@@ -44,26 +41,44 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
   };
 
   return (
-    <div>
+    <div className={classes.EditTodoContainer}>
+      <Title level={2}>Edit Todo</Title>
       <div>
         <TextField
+          label="Task"
+          name="task"
+          className="mt-1"
           onInput={(value: any) => updateFormData("task", value)}
           value={todo.task}
         />
         <CheckBoxField
           onInput={(value: any) => updateFormData("isDone", value)}
+          label="Done"
+          name="isDone"
+          className="mt-1"
           value={todo.isDone}
         />
         <TextAreaField
+          label="Description"
+          name="description"
+          className="mt-1"
           onInput={(value: any) => updateFormData("description", value)}
           value={todo.description}
         />
         <CanvasField
+          label="Hand Notes"
+          className="mt-1"
           onInput={(value: any) => updateFormData("handNotes", value)}
           value={todo.handNotes}
         />
-        <Button onClick={onSaveClicked}>Save</Button>
-        <Button onClick={onCancelClicked}>Close</Button>
+      </div>
+      <div className="flex mt-2">
+        <Button className="flex-grow-1 mr-2" onClick={onSaveClicked} primary>
+          Save
+        </Button>
+        <Button className="flex-grow-1" onClick={onCancelClicked} secondary>
+          Close
+        </Button>
       </div>
     </div>
   );

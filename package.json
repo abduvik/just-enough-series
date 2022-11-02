@@ -12,6 +12,7 @@
     "./courses/*"
   ],
   "dependencies": {
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "react-router-dom": "^6.4.2"
   }
 }

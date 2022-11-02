@@ -1,18 +1,12 @@
-import { EditTodoContainer } from "./containers/EditTodoContainer";
-import { TodoContainer } from "./containers/TodoContainer";
-import { TodoStatsContainer } from "./containers/TodoStatsContainer";
-import "./App.css";
-import { withAppState } from "./store/app.store";
+import { Router } from "./Router";
+import { RouterProvider } from "react-router";
 
-function App({ appState }: any) {
-  console.log(appState.state.showEdit);
+function App() {
   return (
     <>
-      <TodoContainer />
-      {appState.state.showEdit ? <EditTodoContainer /> : null}
-      <TodoStatsContainer />
+      <RouterProvider router={Router} />
     </>
   );
 }
 
-export default withAppState(App);
+export default App;
