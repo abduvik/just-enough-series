@@ -1,4 +1,4 @@
-import { FormEventHandler, MouseEventHandler, useState } from "react";
+import { FormEventHandler, useState } from "react";
 import { TextField } from "../../../components/TextField/TextField";
 import { Button } from "../../../components/Button/Button";
 import { withAutoFocus } from "../../../hoc/withAutoFocus";
@@ -12,8 +12,7 @@ export const AddTodoItem = ({ onAddClicked }: any) => {
     setValue(value);
   };
 
-  const onAddClick: MouseEventHandler<HTMLButtonElement> &
-    FormEventHandler<HTMLFormElement> = (event) => {
+  const onAddClick: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     onAddClicked(value);
     setValue("");
@@ -24,7 +23,7 @@ export const AddTodoItem = ({ onAddClicked }: any) => {
       <div className="mr-1 flex-grow-1">
         <AddTodoItemTextField value={value} onInput={onInput} />
       </div>
-      <Button onClick={onAddClick} primary>
+      <Button type="submit" primary>
         Add
       </Button>
     </form>

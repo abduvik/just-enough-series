@@ -4,6 +4,7 @@ import { useMemo } from "react";
 export const Button = ({
   children,
   onClick,
+  type = "button",
   className = "",
   ...props
 }: any) => {
@@ -22,7 +23,7 @@ export const Button = ({
   }, [props.primary, props.secondary, props.transparent]);
 
   return (
-    <button className={classNames} onClick={onClick}>
+    <button type={type} className={classNames} onClick={onClick}>
       {children}
     </button>
   );
