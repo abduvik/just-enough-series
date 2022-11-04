@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { TextField } from "../../../components/TextField/TextField";
 import { Button } from "../../../components/Button/Button";
+import { withAutoFocus } from "../../../hoc/withAutoFocus";
+
+const AddTodoItemTextField = withAutoFocus(TextField);
 
 export const AddTodoItem = ({ onAddClicked }: any) => {
   const [value, setValue] = useState<string>("");
@@ -9,7 +12,7 @@ export const AddTodoItem = ({ onAddClicked }: any) => {
     setValue(value);
   };
 
-  const onAddClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+  const onAddClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     onAddClicked(value);
     setValue("");
   };
@@ -17,7 +20,7 @@ export const AddTodoItem = ({ onAddClicked }: any) => {
   return (
     <div className="flex">
       <div className="mr-1 flex-grow-1">
-        <TextField value={value} onInput={onInput} />
+        <AddTodoItemTextField value={value} onInput={onInput} />
       </div>
       <Button onClick={onAddClick} primary>
         Add
