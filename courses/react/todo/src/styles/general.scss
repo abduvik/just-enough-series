@@ -28,25 +28,27 @@ body {
   width: 100%;
 }
 
-// Spacing
-@each $KEY, $SPACE in $SPACES {
-  .m-#{$KEY} {
-    margin: $SPACE;
-  }
+// Spacings Classes Generators
+$SPACES: (
+  "auto": $SPACE-AUTO,
+  1: $SPACE-1,
+  2: $SPACE-2,
+  3: $SPACE-3,
+  4: $SPACE-4,
+);
 
-  .mt-#{$KEY} {
-    margin-top: $SPACE;
-  }
+$SPACES_PROPS: (
+  m: "margin",
+  mr: "margin-right",
+  ml: "margin-left",
+  mb: "margin-bottom",
+  mt: "margin-top",
+);
 
-  .mb-#{$KEY} {
-    margin-bottom: $SPACE;
-  }
-
-  .ml-#{$KEY} {
-    margin-left: $SPACE;
-  }
-
-  .mr-#{$KEY} {
-    margin-right: $SPACE;
+@each $spacing_name, $spacing_value in $SPACES {
+  @each $spaceCssClass, $spaceCssProp in $SPACES_PROPS {
+    .#{$spaceCssClass}-#{$spacing_name} {
+      #{$spaceCssProp}: $spacing_value;
+    }
   }
 }

@@ -12,8 +12,8 @@ export class TodoService {
     return this.httpAdapter.get<Todo>(`/todos/${id}`);
   }
 
-  getAllTodos() {
-    return this.httpAdapter.get<Todo[]>("/todos");
+  getAllTodos({ params }: { params?: { isDone: string } } = {}) {
+    return this.httpAdapter.get<Todo[]>("/todos", { query: params });
   }
 
   addTodo(todo: string) {

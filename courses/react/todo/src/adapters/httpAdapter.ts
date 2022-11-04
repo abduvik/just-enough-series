@@ -5,8 +5,13 @@ export class HttpAdapter {
     this.baseUrl = baseUrl;
   }
 
-  get<T>(url: string): Promise<T> {
-    return fetch(this.baseUrl + url).then((response) => response.json());
+  get<T>(url: string, params: any = {}): Promise<T> {
+    const query = Object.keys(params?.query || {})
+      .map((key) => `${key}=${params.query[key]}`)
+      .join("&");
+
+    const requestUrl = this.baseUrl + url + (query ? `?${query}` : "");
+    return fetch(requestUrl).then((response) => response.json());
   }
 
   post<T>(url: string, data: T) {

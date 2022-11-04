@@ -1,13 +1,20 @@
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+
 export const AboutContainer = () => {
-  // @ts-ignore
-  // @todo: fix this
-  import("./About.md").then((module) => {
-    fetch(module.default).then((response) => {
-      response.text().then((text) => {
-        document.getElementById("about")!.innerHTML = text;
+  const [content, setContent] = useState("");
+
+  useEffect(() => {
+    // @todo: fix this
+    // @ts-ignore
+    import("./About.md").then((module) => {
+      fetch(module.default).then((response) => {
+        response.text().then((text) => {
+          setContent(text);
+        });
       });
     });
-  });
+  }, []);
 
-  return <div id={"about"}>About</div>;
+  return <ReactMarkdown>{content}</ReactMarkdown>;
 };

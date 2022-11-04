@@ -7,8 +7,10 @@ type TodoProps = {
   itemId: number;
   description?: string;
   task: string;
+  isDone: boolean;
   onEditClicked?: ({ id }: { id: number }) => void;
   onDeleteClicked?: ({ id }: { id: number }) => void;
+  onDoneChecked?: ({ id, isDone }: { id: number; isDone: boolean }) => void;
 };
 
 export const TodoItem = (props: TodoProps) => {
@@ -20,12 +22,21 @@ export const TodoItem = (props: TodoProps) => {
     props.onDeleteClicked && props.onDeleteClicked({ id: props.itemId });
   };
 
+  const onDoneChecked = () => {
+    props.onDoneChecked &&
+      props.onDoneChecked({ id: props.itemId, isDone: !props.isDone });
+  };
+
   return (
     <div className={`${classes.TodoItemContainer} flex`}>
       <div className="mt-2 mr-1">
-        <CheckBoxField />
+        <CheckBoxField value={props.isDone} onInput={onDoneChecked} />
       </div>
-      <div className="flex-grow-1 mt-auto mb-auto">{props.task}</div>
+      <div className="flex-grow-1 mt-auto mb-auto">
+        <span className={props.isDone ? classes.TodoIsDone : ""}>
+          {props.task}
+        </span>
+      </div>
       <div>
         <Button onClick={onEditClicked} transparent>
           <i className="fa fa-pencil" />

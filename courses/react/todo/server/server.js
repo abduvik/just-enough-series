@@ -14,13 +14,23 @@ const todosDB = JSON.parse(
 
 // API Endpoints
 app.get("/todos", (req, res) => {
-  res.send(JSON.stringify(todosDB));
+  const { isDone } = req.query;
+
+  if (isDone === "true") {
+    const filteredTodos = todosDB.filter((todo) => todo.isDone === true);
+    res.json(filteredTodos);
+  } else if (isDone === "false") {
+    const filteredTodos = todosDB.filter((todo) => todo.isDone === false);
+    res.json(filteredTodos);
+  } else {
+    res.json(todosDB);
+  }
 });
 
 app.get("/todos/:id", (req, res) => {
   const todoId = parseInt(req.params.id);
   const item = todosDB.find((item) => item.id === todoId);
-  res.send(JSON.stringify(item)); //@todo to be implmented
+  res.json(item);
 });
 
 app.post("/todos", (req, res) => {
@@ -31,7 +41,7 @@ app.post("/todos", (req, res) => {
     id: todoId,
   };
   todosDB.push(newTask);
-  res.send(JSON.stringify(newTask));
+  res.json(newTask);
 });
 
 app.patch("/todos/:id", (req, res) => {
@@ -43,14 +53,14 @@ app.patch("/todos/:id", (req, res) => {
     id: itemId,
   };
   todosDB[itemIndex] = updatedItem;
-  res.send(JSON.stringify(updatedItem));
+  res.json(updatedItem);
 });
 
 app.delete("/todos", (req, res) => {
   const itemId = req.body.id;
   const itemIndex = todosDB.findIndex((todo) => todo.id === itemId);
   todosDB.splice(itemIndex, 1);
-  res.send({ id: req.body.id });
+  res.json({ id: req.body.id });
 });
 
 app.listen(3001, () => {
