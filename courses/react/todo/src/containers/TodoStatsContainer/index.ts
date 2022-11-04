@@ -1,4 +1,9 @@
 import { TodoStatsContainer } from "./TodoStatsContainer";
-import { withPageLayout } from "../../hoc/withPageLayout";
+import { withDependencies } from "../../hoc/withDependencies";
 
-export default TodoStatsContainer;
+export default withDependencies(
+  {
+    todoService: "todoService",
+  },
+  TodoStatsContainer
+);
