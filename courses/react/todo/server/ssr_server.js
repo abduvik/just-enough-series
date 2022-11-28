@@ -2,14 +2,13 @@ const express = require("express");
 const fs = require("fs");
 const ReactDOMServer = require("react-dom/server");
 const React = require("react");
-require("../dist/ssr/commonjs/src_containers_AboutContainer_About_md.js");
-const App = require("../dist/ssr/commonjs/main.js");
+const App = require("../dist/ssr/main.js");
 
 const app = express();
 
-const htmlPageContent = fs.readFileSync("./dist/ssr/index.html", "utf8");
+const htmlPageContent = fs.readFileSync("./dist/hydrate/index.html", "utf8");
 
-app.use(express.static("dist/ssr/", { index: false }));
+app.use(express.static("dist/hydrate/", { index: false }));
 
 app.get("*", (req, res) => {
   const html = ReactDOMServer.renderToString(

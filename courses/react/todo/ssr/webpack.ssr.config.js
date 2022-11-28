@@ -61,7 +61,7 @@ module.exports = [
     entry: path.resolve(__dirname, "hydrate.tsx"),
     output: {
       clean: true,
-      path: path.resolve(__dirname, "../dist/ssr"),
+      path: path.resolve(__dirname, "../dist/hydrate"),
     },
     plugins: [
       ...CommonWebpackConfig.plugins,
@@ -83,7 +83,7 @@ module.exports = [
     output: {
       clean: true,
       publicPath: "/",
-      path: path.resolve(__dirname, "../dist/ssr/commonjs"),
+      path: path.resolve(__dirname, "../dist/ssr"),
       library: {
         type: "commonjs2",
       },
