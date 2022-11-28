@@ -1,6 +1,7 @@
 # Todos
 
-- [] Create CRUD Operations
-- [] Create SideDrawer
-- [] Use ReactContext/Redux/Mobx/Zustand to create stats page
-- [] Use React Router
+- [x] Create CRUD Operations
+- [x] Create SideDrawer
+- [x] Use ReactContext to create stats page
+- [x] Use React Router
+- [x] Use React-Server-Rendering
