@@ -17,31 +17,176 @@ npx create-react-app todo --template typescript
 
 #### Internal State
 
-#### Shared State
+- `useState` hook
+
+```tsx
+export const TodoContainer = (props: TodoContainerProps) => {
+    const [todos, setTodos] = useState<Todo[]>([]);
+    '...'
+};
+```
 
 #### Computed State
 
+- `useMemo` hook
+
+```tsx
+export const TodoContainer = (props: TodoContainerProps) => {
+    '...'
+    const undoneTodos = useMemo(() => todos.filter(todo => !todo.done), [todos]);
+    '...'
+};
+```
+
+#### Shared State
+
+- `React.createContext` and `useContext` hooks
+
+```tsx
+export const TodoContainer = (props: TodoContainerProps) => {
+    '...'
+    const {todos, setTodos} = useContext(TodoContext);
+    '...'
+};
+```
+
 #### Props
+
+- `React.PropsWithChildren` type
+
+```tsx
+export const TodoContainer = (props: TodoContainerProps) => {
+    '...'
+    return (
+        <div className="todo-container">
+            <TodoForm addTodo={props.addTodo}/>
+            <TodoList todos={props.todos}/>
+            <TodoStats todos={props.todos}/>
+        </div>
+    );
+};
+```
 
 #### Events
 
+```tsx
+export const TodoContainer = (props: TodoContainerProps) => {
+    '...'
+    return (
+        <div className="todo-container">
+            <TodoList onToggleTodo={props.onToggleTodo}/>
+        </div>
+    );
+};
+```
+
 #### Side Effects
 
+- `useEffect` hook
+
+```tsx
+export const TodoContainer = (props: TodoContainerProps) => {
+    '...'
+    useEffect(() => {
+        props.loadTodos();
+    }, []);
+    '...'
+};
+```
+
 #### Change Detection
+
+React uses a virtual DOM to detect changes. It compares the virtual DOM with the real DOM and updates the real DOM only
+when there are changes.
+
+React changes detection is called reconciliation. It is a process of comparing two trees and figuring out the minimum.
+It is called React Fiber.
 
 ### Patterns
 
 #### Component
 
+They hold the visual representation of the data. They are stateless and receive data via props.
+
+- `React.FC` type
+
+```tsx
+export const TodoItem: React.FC<TodoContainerProps> = (props) => {
+    '...'
+};
+```
+
 #### Container
+
+They hold the state and logic of the application. They are stateful and receive data via props.
+
+- `React.FC` type
+
+```tsx
+export const TodoContainer: React.FC<TodoContainerProps> = (props) => {
+    '...'
+};
+```
 
 #### HoC
 
+They are functions that take a component as an argument and return a new component.
+
+- `React.FC` type
+
+```tsx
+export const withTodoContainer = (Component: React.FC<TodoContainerProps>) => {
+    '...'
+
+    return (props: TodoContainerProps) => {
+        '...'
+        return <Component {...props} {...containerProps}/>;
+    };
+};
+```
+
 #### Service
 
-#### Adapater
+They are functions that hold the business logic of the application. They are stateless and receive data via arguments.
+Famous examples are: API calls and State Management etc.
+
+```tsx
+export class TodoService {
+    public static addTodo = (todos: Todo[], todo: Todo): Todo[] => {
+        '...'
+    };
+}
+```
+
+#### Adapter
+
+They allow us to use different implementations of the same interface. They are stateless and receive data via arguments.
+
+```tsx
+export class HttpAdapter {
+    public static get = (url: string): Promise<any> => {
+        '...'
+    };
+}
+```
 
 #### Store
+
+They hold the state of the application. They are stateful and receive data via props.
+
+Famous examples are: Redux, MobX, React Context etc.
+
+```tsx
+export class TodoStore {
+    public todos: Todo[] = [];
+
+    public addTodo = (todo: Todo): void => {
+        '...'
+    };
+}
+
+export const TodoContext = React.createContext(new TodoStore());
+```
 
 ## Important Libraries
 
@@ -65,9 +210,10 @@ Official routing system for react and support multiple features:
 
 There are couple of routers supported
 
-- `createbrowserrouter`: Uses the DOM Hostory APi and is the recommended router
+- `createbrowserrouter/BrowserRouter`: Uses the DOM Hostory APi and is the recommended router
 - `createHasRouter`: Use the `#` to append the routes
 - `createMemoryRouter`: Use memory, recommended for writing tests
+- `StaticRouter`: Used for server side rendering
 
 ## Extra content
 

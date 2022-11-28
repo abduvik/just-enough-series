@@ -17,6 +17,7 @@ I will be sharing here my personal self-learning notes and also the notes of the
 - [Monorepo using Lerna](./courses/monorepo-lerna)
 - [Git](./courses/git)
 - [Docker & Docker-Compose](./courses/docker+docker-compose)
+- [React](./courses/react)
 
 ## Contribution
 
