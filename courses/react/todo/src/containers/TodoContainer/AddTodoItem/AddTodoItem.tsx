@@ -3,9 +3,13 @@ import { TextField } from "../../../components/TextField/TextField";
 import { Button } from "../../../components/Button/Button";
 import { withAutoFocus } from "../../../hoc/withAutoFocus";
 
+type AddTodoFormProps = {
+  onAddClicked: (task: string) => void;
+};
+
 const AddTodoItemTextField = withAutoFocus(TextField);
 
-export const AddTodoItem = ({ onAddClicked }: any) => {
+export const AddTodoItem = ({ onAddClicked }: AddTodoFormProps) => {
   const [value, setValue] = useState<string>("");
 
   const onInput = (value: string) => {

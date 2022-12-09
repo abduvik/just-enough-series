@@ -1,27 +1,45 @@
-import { createContext, useContext, useState } from "react";
+import React, {
+  ComponentProps,
+  createContext,
+  ElementType,
+  ReactNode,
+  useContext,
+  useState,
+} from "react";
 
-const initialState = {
+type InitialState = {
+  showEdit: boolean;
+  editTodoId: number;
+};
+
+const initialState: InitialState = {
   showEdit: false,
   editTodoId: -1,
+};
+
+export type AppStateType = {
+  state: InitialState;
+  setState: (state: InitialState) => void;
 };
 
 const AppState = createContext<any>({});
 
 export const useAppState = () => useContext(AppState);
 
-export const withAppState = (Component: any) => {
-  return (props: any) => {
+export const withAppState = (Component: ElementType) => {
+  return (props: ComponentProps<ElementType>) => {
     const appState = useAppState();
+
     return <Component appState={appState} {...props} />;
   };
 };
 
-export const AppStateProvider = ({ children }: any) => {
+export const AppStateProvider = ({ children }: { children: ReactNode }) => {
   const [appState, setAppState] = useState(initialState);
 
   const state = { ...appState };
 
-  const setState = (updatedState: any) => {
+  const setState = (updatedState: Partial<InitialState>) => {
     setAppState((currentState) => ({
       ...currentState,
       ...updatedState,

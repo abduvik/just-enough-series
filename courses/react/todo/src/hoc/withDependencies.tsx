@@ -7,8 +7,17 @@ export const withDependencies: DependencyInjector = (
 ) => {
   const resolvedDependencies: any = {};
   Object.keys(dependencies).forEach((prop) => {
-    const dependencyKey = dependencies[prop];
-    resolvedDependencies[prop] = container.get(dependencyKey);
+    const dependencyKey = Object.getOwnPropertyDescriptor(dependencies, prop);
+
+    if (dependencyKey) {
+      resolvedDependencies[prop] = container.get(dependencyKey.value);
+
+      // Object.defineProperty(resolvedDependencies, prop, {
+      //   value: container.get(dependencyKey.value),
+      // });
+    } else {
+      throw new Error(`Dependency ${prop} not found`);
+    }
   });
 
   return (props: any) => <Component {...resolvedDependencies} {...props} />;

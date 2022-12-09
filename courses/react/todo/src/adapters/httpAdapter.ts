@@ -1,3 +1,7 @@
+type ParamsType = object & {
+  query: object;
+};
+
 export class HttpAdapter {
   baseUrl: string;
 
@@ -5,9 +9,11 @@ export class HttpAdapter {
     this.baseUrl = baseUrl;
   }
 
-  get<T>(url: string, params: any = {}): Promise<T> {
+  get<T>(url: string, params: ParamsType = { query: {} }): Promise<T> {
     const query = Object.keys(params?.query || {})
-      .map((key) => `${key}=${params.query[key]}`)
+      .map(
+        (key) => `${key}=${Object.getOwnPropertyDescriptor(params.query, key)}`
+      )
       .join("&");
 
     const requestUrl = this.baseUrl + url + (query ? `?${query}` : "");

@@ -1,11 +1,14 @@
-import React from "react"
+import React from "react";
 
-type DependencyContainer = {
+type IDependencyContainer = {
   _dependencies: {
-    [key:string]: object
-  }
-  add: (key: string, dependency: object ) => void,
-  get: (key: string) => object
-}
+    [key: symbol]: object;
+  };
+  add: (key: symbol, dependency: object) => void;
+  get: <T>(key: symbol) => T;
+};
 
-type DependencyInjector = (dependencies: {[key:string]: string}, Component: React.ElementType) => any
+type DependencyInjector = (
+  dependencies: { [key: string]: symbol },
+  Component: React.ElementType
+) => any;

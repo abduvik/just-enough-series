@@ -1,12 +1,20 @@
 import classes from "./TextAreaField.module.scss";
 
+type TextAreaFieldProps = {
+  label: string;
+  name: string;
+  className?: string;
+  onInput: (value: string) => void;
+  value: string;
+};
+
 export const TextAreaField = ({
   value,
   onInput,
   label = "",
   name = "",
   className,
-}: any) => {
+}: TextAreaFieldProps) => {
   return (
     <div className={className}>
       <label htmlFor={name}>{label}</label>

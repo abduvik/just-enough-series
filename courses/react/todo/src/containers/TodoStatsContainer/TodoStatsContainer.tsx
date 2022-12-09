@@ -2,9 +2,17 @@ import { useEffect, useState } from "react";
 import { Todo } from "../../models/Todo";
 
 import classes from "./TodoStatsContainer.module.scss";
+import { TodoService } from "../../services/todo.service";
 
-export const TodoStatsContainer = ({ todoService }: any) => {
+type TodoStatsContainerProps = {
+  todoService: TodoService;
+};
+
+export const TodoStatsContainer = ({
+  todoService,
+}: TodoStatsContainerProps) => {
   const [todos, setTodos] = useState<Todo[]>([]);
+
   useEffect(() => {
     todoService.getAllTodos().then((todos: Todo[]) => {
       setTodos(todos);

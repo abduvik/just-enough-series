@@ -217,5 +217,7 @@ There are couple of routers supported
 
 ## Extra content
 
+- [Lin Clark - A Cartoon Intro to Fiber - React Conf 2017](https://www.youtube.com/watch?v=ZCuYPiUIONs)
 - [What Is React Fiber? React.js Deep Dive #2](https://www.youtube.com/watch?v=0ympFIwQFJw)
 - [React 16 (React Fiber) explained as simply as possible](https://www.youtube.com/watch?v=gsvHmZ3hXjo&t=166s)
+- 

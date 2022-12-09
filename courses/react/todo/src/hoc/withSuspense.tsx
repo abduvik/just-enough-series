@@ -1,6 +1,8 @@
-import React, { Suspense } from "react";
+import React, { ComponentType, Suspense } from "react";
 
-export const withSuspense = (importMethod: any) => {
+type ImportMethodType = () => Promise<{ default: ComponentType<any> }>;
+
+export const withSuspense = (importMethod: ImportMethodType) => {
   const LazyComponent = React.lazy(importMethod);
 
   return (

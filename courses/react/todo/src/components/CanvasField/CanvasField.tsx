@@ -1,7 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./CanvasField.module.scss";
 
-export const CanvasField = ({ value, onInput, label, className }: any) => {
+type CanvasFieldProps = {
+  value: string;
+  onInput: (value: string) => void;
+  className?: string;
+  label?: string;
+};
+
+export const CanvasField = ({
+  value,
+  onInput,
+  label,
+  className,
+}: CanvasFieldProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
@@ -39,7 +51,7 @@ export const CanvasField = ({ value, onInput, label, className }: any) => {
       y: 0,
     });
     setIsDrawing(false);
-    onInput(canvasRef.current?.toDataURL());
+    onInput(canvasRef.current?.toDataURL() || "");
   };
 
   const startDrawing = (

@@ -4,36 +4,34 @@ import { TodoItem } from "./TodoItem/TodoItem";
 import { Todo } from "../../models/Todo";
 import { TodoService } from "../../services/todo.service";
 import classes from "./TodoContainer.module.scss";
-import { EditTodoContainer } from "../EditTodoContainer/EditTodoContainer";
+import { EditTodoContainer } from "../EditTodoContainer/";
 import { ButtonSelect } from "../../components/ButtonSelect/ButtonSelect";
+import { AppStateType } from "../../store/app.store";
 
 type TodoContainerProps = {
   todoService: TodoService;
-  appState: any;
+  appState: AppStateType;
 };
 
 export const TodoContainer = ({
   todoService,
   appState,
-  ...props
 }: TodoContainerProps) => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [todoStateFilter, setTodoStateFilter] = useState<string>("all");
 
-  useEffect(() => {
-    todoService.getAllTodos().then((todos) => {
-      setTodos(todos);
-    });
-  }, []);
-
-  const refresh = () => {
+  const fetchTodos = () => {
     todoService.getAllTodos().then((todos) => {
       setTodos(todos);
     });
   };
 
-  const onAddClicked = (value: any) => {
-    todoService.addTodo(value).then(() => refresh());
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  const onAddClicked = (value: string) => {
+    todoService.addTodo(value).then(() => fetchTodos());
   };
 
   const onEditClicked = ({ id }: { id: number }) => {
@@ -42,7 +40,7 @@ export const TodoContainer = ({
 
   const onDeleteClicked = ({ id }: { id: number }) => {
     // delete item
-    todoService.deleteTodo(id).then(() => refresh());
+    todoService.deleteTodo(id).then(() => fetchTodos());
   };
 
   const onSelectTodoStateFilter = (value: string) => {
@@ -53,7 +51,7 @@ export const TodoContainer = ({
   };
 
   const onDoneChecked = ({ id, isDone }: { id: number; isDone: boolean }) => {
-    todoService.updateTodo(id, { isDone }).then(() => refresh());
+    todoService.updateTodo(id, { isDone }).then(() => fetchTodos());
   };
 
   const buttonSelectOptions = [

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { withDependencies } from "../../hoc/withDependencies";
-import { withAppState } from "../../store/app.store";
 import { TextField } from "../../components/TextField/TextField";
 import { CheckBoxField } from "../../components/CheckBoxField/CheckBoxField";
 import { TextAreaField } from "../../components/TextAreaField/TextAreaField";
@@ -8,9 +6,27 @@ import { CanvasField } from "../../components/CanvasField/CanvasField";
 import { Button } from "../../components/Button/Button";
 import classes from "./EditTodoContainer.module.scss";
 import { Title } from "../../components/Title/Title";
+import { TodoService } from "../../services/todo.service";
+import { AppStateType } from "../../store/app.store";
+import { Todo } from "../../models/Todo";
 
-const EditTodoContainer = ({ todoService, appState }: any) => {
-  const [todo, setTodoState] = useState({
+type EditTodoContainerProps = {
+  todoService: TodoService;
+  appState: AppStateType;
+};
+
+type TodoState = {
+  task: string;
+  description: string;
+  handNotes: string;
+  isDone: boolean;
+};
+
+export const EditTodoContainer = ({
+  todoService,
+  appState,
+}: EditTodoContainerProps) => {
+  const [todo, setTodoState] = useState<TodoState>({
     task: "",
     description: "",
     handNotes: "",
@@ -20,24 +36,24 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
   useEffect(() => {
     todoService
       .getTodo(appState.state.editTodoId)
-      .then((data: any) => setTodoState(data));
+      .then((data: Todo) => setTodoState(data));
   }, [appState.state.editTodoId]);
 
-  const updateFormData = (fieldName: string, value: any) => {
+  const updateFormData = (updatedState: Partial<TodoState>) => {
     setTodoState((state) => ({
       ...state,
-      [fieldName]: value,
+      ...updatedState,
     }));
   };
 
-  const onSaveClicked = () => {
-    todoService.updateTodo(appState.state.editTodoId, {
+  const onSaveClicked = async () => {
+    await todoService.updateTodo(appState.state.editTodoId, {
       ...todo,
     });
   };
 
   const onCancelClicked = () => {
-    appState.setState({ showEdit: false, editTodoId: null });
+    appState.setState({ showEdit: false, editTodoId: -1 });
   };
 
   return (
@@ -48,11 +64,11 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
           label="Task"
           name="task"
           className="mt-1"
-          onInput={(value: any) => updateFormData("task", value)}
+          onInput={(value: string) => updateFormData({ task: value })}
           value={todo.task}
         />
         <CheckBoxField
-          onInput={(value: any) => updateFormData("isDone", value)}
+          onInput={(value: boolean) => updateFormData({ isDone: value })}
           label="Done"
           name="isDone"
           className="mt-1"
@@ -62,13 +78,13 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
           label="Description"
           name="description"
           className="mt-1"
-          onInput={(value: any) => updateFormData("description", value)}
+          onInput={(value: string) => updateFormData({ description: value })}
           value={todo.description}
         />
         <CanvasField
           label="Hand Notes"
           className="mt-1"
-          onInput={(value: any) => updateFormData("handNotes", value)}
+          onInput={(value: string) => updateFormData({ handNotes: value })}
           value={todo.handNotes}
         />
       </div>
@@ -83,10 +99,3 @@ const EditTodoContainer = ({ todoService, appState }: any) => {
     </div>
   );
 };
-
-const EditTodoContainerWithAppState = withDependencies(
-  { todoService: "todoService" },
-  withAppState(EditTodoContainer)
-);
-
-export { EditTodoContainerWithAppState as EditTodoContainer };

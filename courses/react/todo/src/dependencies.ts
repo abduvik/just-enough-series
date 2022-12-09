@@ -1,31 +1,42 @@
-// import { ContextStoreAdapter } from "./adapters/contextStoreAdapter";
 import { HttpAdapter } from "./adapters/httpAdapter";
 import { config } from "./config";
 import { TodoService } from "./services/todo.service";
-// import { AppStore } from "./store/app.store";
 import { TodoStore } from "./store/todo.store";
-import { DependencyContainer } from "./types";
+import { IDependencyContainer } from "./types";
 
-const container: DependencyContainer = {
-  _dependencies: {},
-  add(key, dependency) {
-    this._dependencies[key] = dependency;
-  },
-  get(key: string) {
-    return this._dependencies[key];
-  },
-};
+export class DependencyContainer implements IDependencyContainer {
+  _dependencies = {};
+
+  add<T>(key: symbol, dependency: T) {
+    Object.defineProperty(this._dependencies, key, {
+      value: dependency,
+    });
+  }
+
+  get<T>(key: symbol): T {
+    const descriptor = Object.getOwnPropertyDescriptor(this._dependencies, key);
+    return descriptor?.value as T;
+  }
+}
+
+const container = new DependencyContainer();
 
 const httpAdapter = new HttpAdapter({ baseUrl: config.baseUrl });
 const todoService = new TodoService({ httpAdapter });
 
-// const contextAdapter = new ContextStoreAdapter();
-// const appStore = new AppStore(contextAdapter);
+// AppStore can be used with a dependency container as well
+// const appStore = new AppStore();
 const todoStore = new TodoStore();
 
-container.add("httpAdapter", httpAdapter);
-container.add("todoStore", todoStore);
-container.add("todoService", todoService);
-// container.add("appStore", appStore);
+const dependencies = {
+  httpAdapter: Symbol("httpAdapter"),
+  todoStore: Symbol("todoStore"),
+  todoService: Symbol("todoService"),
+};
 
-export { container };
+container.add(dependencies.httpAdapter, httpAdapter);
+container.add(dependencies.todoStore, todoStore);
+container.add(dependencies.todoService, todoService);
+// container.add("dependencies.appStore", appStore);
+
+export { container, dependencies };

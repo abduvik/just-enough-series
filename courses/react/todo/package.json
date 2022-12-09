@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "start:server": "nodemon ./server/server.js",
+    "server": "nodemon ./server/server.js",
     "server:ssr": "nodemon --inspect ./server/ssr_server.js",
     "build": "react-scripts build",
     "build:ssr": "webpack --config ./ssr/webpack.ssr.config.js",

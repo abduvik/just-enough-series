@@ -5,7 +5,6 @@ export const AboutContainer = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    // @todo: fix this
     // @ts-ignore
     import("./About.md").then((module) => {
       fetch(module.default).then((response) => {

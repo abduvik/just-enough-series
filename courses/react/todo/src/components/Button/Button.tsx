@@ -1,5 +1,15 @@
 import classes from "./Button.module.scss";
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
+
+type ButtonProps = {
+  children?: ReactNode;
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset";
+  className?: string;
+  primary?: boolean;
+  secondary?: boolean;
+  transparent?: boolean;
+};
 
 export const Button = ({
   children,
@@ -7,7 +17,7 @@ export const Button = ({
   type = "button",
   className = "",
   ...props
-}: any) => {
+}: ButtonProps) => {
   const classNames = useMemo(() => {
     const classNames = [classes.Button, ...className.split(" ")];
     if (props.primary) {

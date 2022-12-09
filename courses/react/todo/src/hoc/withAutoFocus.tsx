@@ -1,4 +1,10 @@
-import { ElementType, forwardRef, useEffect, useRef } from "react";
+import {
+  ComponentPropsWithRef,
+  ElementType,
+  forwardRef,
+  useEffect,
+  useRef,
+} from "react";
 
 /**
  * @example
@@ -20,7 +26,7 @@ export const useAutoFocus = () => {
  * return <TextField ref={focusRef} value={value} onInput={onInput} />
  */
 export const withAutoFocus = (Component: ElementType) => {
-  return (props: any) => {
+  return (props: ComponentPropsWithRef<ElementType>) => {
     const inputRef = useAutoFocus();
     return <Component ref={inputRef} {...props} />;
   };

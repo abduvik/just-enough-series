@@ -1,16 +1,21 @@
 import classes from "./ButtonSelect.module.scss";
 
+type ButtonSelectProps = {
+  onSelect: (value: string) => void;
+  className?: string;
+  options: { label: string; value: string }[];
+  value: string;
+};
+
 export const ButtonSelect = ({
-  children,
   onSelect,
   className = "",
   options,
   value,
-  ...props
-}: any) => {
+}: ButtonSelectProps) => {
   return (
     <div className={className + " " + classes.ButtonSelectWrapper}>
-      {options.map((option: any) => (
+      {options.map((option) => (
         <button
           key={option.value}
           className={
