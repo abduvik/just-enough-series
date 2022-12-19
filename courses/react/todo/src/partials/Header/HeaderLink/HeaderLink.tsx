@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import classes from "./HeaderLink.module.scss";
-import { ReactElement, ReactNode } from "react";
+import { ReactNode } from "react";
 
 type HeaderLinkProps = {
   to: string;

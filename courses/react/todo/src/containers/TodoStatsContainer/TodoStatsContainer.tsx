@@ -17,6 +17,7 @@ export const TodoStatsContainer = ({
     todoService.getAllTodos().then((todos: Todo[]) => {
       setTodos(todos);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const doneTodos = todos.filter((todo) => todo.isDone);

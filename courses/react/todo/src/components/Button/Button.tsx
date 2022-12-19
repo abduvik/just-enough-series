@@ -30,7 +30,7 @@ export const Button = ({
       classNames.push(classes.Transparent);
     }
     return classNames.join(" ");
-  }, [props.primary, props.secondary, props.transparent]);
+  }, [props.primary, props.secondary, props.transparent, className]);
 
   return (
     <button type={type} className={classNames} onClick={onClick}>

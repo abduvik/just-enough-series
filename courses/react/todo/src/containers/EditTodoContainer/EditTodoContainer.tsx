@@ -37,7 +37,7 @@ export const EditTodoContainer = ({
     todoService
       .getTodo(appState.state.editTodoId)
       .then((data: Todo) => setTodoState(data));
-  }, [appState.state.editTodoId]);
+  }, [appState.state.editTodoId, todoService]);
 
   const updateFormData = (updatedState: Partial<TodoState>) => {
     setTodoState((state) => ({

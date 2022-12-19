@@ -1,10 +1,4 @@
-import {
-  ComponentPropsWithRef,
-  ElementType,
-  forwardRef,
-  useEffect,
-  useRef,
-} from "react";
+import { ComponentPropsWithRef, ElementType, useEffect, useRef } from "react";
 
 /**
  * @example
@@ -26,7 +20,7 @@ export const useAutoFocus = () => {
  * return <TextField ref={focusRef} value={value} onInput={onInput} />
  */
 export const withAutoFocus = (Component: ElementType) => {
-  return (props: ComponentPropsWithRef<ElementType>) => {
+  return (props: ComponentPropsWithRef<typeof Component>) => {
     const inputRef = useAutoFocus();
     return <Component ref={inputRef} {...props} />;
   };
@@ -40,8 +34,8 @@ export const withAutoFocus = (Component: ElementType) => {
  *   )}
  * </AutoFocus>
  */
-export const AutoFocus = ({ children }: any) => {
-  const Component = withAutoFocus(forwardRef((props, ref) => children(ref)));
-
-  return <Component />;
-};
+// export const AutoFocus = ({ children }: PropsWithChildren) => {
+//   const Component = withAutoFocus(forwardRef((props, ref) => children(ref)));
+//
+//   return <Component />;
+// };
