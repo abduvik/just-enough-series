@@ -1,6 +1,6 @@
 import { HttpAdapter } from "./adapters/httpAdapter";
 import { config } from "./config";
-import { TodoService } from "./services/todo.service";
+import { TodoService } from "./services/Todo.service";
 import { TodoStore } from "./store/todo.store";
 import { IDependencyContainer } from "./types";
 

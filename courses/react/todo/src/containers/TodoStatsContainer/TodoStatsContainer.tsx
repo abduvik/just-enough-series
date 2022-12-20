@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Todo } from "../../models/Todo";
 
 import classes from "./TodoStatsContainer.module.scss";
-import { TodoService } from "../../services/todo.service";
+import { TodoService } from "../../services/Todo.service";
 
 type TodoStatsContainerProps = {
   todoService: TodoService;

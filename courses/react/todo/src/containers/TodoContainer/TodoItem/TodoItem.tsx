@@ -5,7 +5,6 @@ import classes from "./TodoItem.module.scss";
 
 type TodoProps = {
   itemId: number;
-  description?: string;
   task: string;
   isDone: boolean;
   onEditClicked?: ({ id }: { id: number }) => void;

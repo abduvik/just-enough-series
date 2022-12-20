@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { AddTodoItem } from "./AddTodoItem/AddTodoItem";
 import { TodoItem } from "./TodoItem/TodoItem";
 import { Todo } from "../../models/Todo";
-import { TodoService } from "../../services/todo.service";
+import { TodoService } from "../../services/Todo.service";
 import { EditTodoContainer } from "../EditTodoContainer/";
 import { ButtonSelect } from "../../components/ButtonSelect/ButtonSelect";
 import { AppStateType } from "../../store/app.store";
@@ -76,7 +76,6 @@ export const TodosContainer = ({
           <TodoItem
             key={todo.id}
             itemId={todo.id}
-            description={todo.description}
             task={todo.task}
             isDone={todo.isDone}
             onEditClicked={onEditClicked}

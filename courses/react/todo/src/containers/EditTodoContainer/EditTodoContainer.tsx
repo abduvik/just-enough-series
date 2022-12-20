@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TextField } from "../../components/TextField/TextField";
 import { CheckBoxField } from "../../components/CheckBoxField/CheckBoxField";
 import { TextAreaField } from "../../components/TextAreaField/TextAreaField";
@@ -6,7 +6,7 @@ import { CanvasField } from "../../components/CanvasField/CanvasField";
 import { Button } from "../../components/Button/Button";
 import classes from "./EditTodoContainer.module.scss";
 import { Title } from "../../components/Title/Title";
-import { TodoService } from "../../services/todo.service";
+import { TodoService } from "../../services/Todo.service";
 import { AppStateType } from "../../store/app.store";
 import { Todo } from "../../models/Todo";
 
@@ -56,6 +56,22 @@ export const EditTodoContainer = ({
     appState.setState({ showEdit: false, editTodoId: -1 });
   };
 
+  const updateTaskName = useCallback((value: string) => {
+    updateFormData({ task: value });
+  }, []);
+
+  const updateDone = useCallback((value: boolean) => {
+    updateFormData({ isDone: value });
+  }, []);
+
+  const updateDescription = useCallback((value: string) => {
+    updateFormData({ description: value });
+  }, []);
+
+  const updateHandNotes = useCallback((value: string) => {
+    updateFormData({ handNotes: value });
+  }, []);
+
   return (
     <div className={classes.EditTodoContainer}>
       <Title level={2}>Edit Todo</Title>
@@ -64,11 +80,11 @@ export const EditTodoContainer = ({
           label="Task"
           name="task"
           className="mt-1"
-          onInput={(value: string) => updateFormData({ task: value })}
+          onInput={updateTaskName}
           value={todo.task}
         />
         <CheckBoxField
-          onInput={(value: boolean) => updateFormData({ isDone: value })}
+          onInput={updateDone}
           label="Done"
           name="isDone"
           className="mt-1"
@@ -78,13 +94,13 @@ export const EditTodoContainer = ({
           label="Description"
           name="description"
           className="mt-1"
-          onInput={(value: string) => updateFormData({ description: value })}
+          onInput={updateDescription}
           value={todo.description}
         />
         <CanvasField
           label="Hand Notes"
           className="mt-1"
-          onInput={(value: string) => updateFormData({ handNotes: value })}
+          onInput={updateHandNotes}
           value={todo.handNotes}
         />
       </div>
