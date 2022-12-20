@@ -3,7 +3,6 @@ import { AddTodoItem } from "./AddTodoItem/AddTodoItem";
 import { TodoItem } from "./TodoItem/TodoItem";
 import { Todo } from "../../models/Todo";
 import { TodoService } from "../../services/todo.service";
-import classes from "./TodoContainer.module.scss";
 import { EditTodoContainer } from "../EditTodoContainer/";
 import { ButtonSelect } from "../../components/ButtonSelect/ButtonSelect";
 import { AppStateType } from "../../store/app.store";
@@ -13,7 +12,7 @@ type TodoContainerProps = {
   appState: AppStateType;
 };
 
-export const TodoContainer = ({
+export const TodosContainer = ({
   todoService,
   appState,
 }: TodoContainerProps) => {
@@ -63,7 +62,7 @@ export const TodoContainer = ({
 
   return (
     <>
-      <div className={`${classes.TodoContainer} m-auto`}>
+      <div className="m-auto">
         <AddTodoItem onAddClicked={onAddClicked} />
 
         <ButtonSelect
