@@ -28,7 +28,11 @@ export const TodoContainer = (props: TodoContainerProps) => {
 
 #### Computed State
 
-- `useMemo` hook
+They are computed from the internal state. When using `useMemo` & `useCallback` hook, the function is only called when
+the dependencies change.
+They are useful when you want to avoid re-rendering the child component when the internal state of the parent changes.
+
+- `useMemo`hook
 
 ```tsx
 export const TodoContainer = (props: TodoContainerProps) => {
@@ -36,7 +40,24 @@ export const TodoContainer = (props: TodoContainerProps) => {
     const undoneTodos = useMemo(() => todos.filter(todo => !todo.done), [todos]);
     '...'
 };
+
 ```
+
+- `useCallback` hook
+
+```tsx
+export const TodoContainer = (props: TodoContainerProps) => {
+    '...'
+    const addTodo = useCallback((todo: Todo) => {
+        setTodos([...todos, todo]);
+    }, [todos]);
+    '...'
+};
+```
+
+Components that use the `useMemo` & `useCallback` hook are called `Memoized Components`. They are useful when you want
+to avoid re-rendering the child component when the internal state of the parent changes.
+To avoid re-rendering the child component, you can use `React.memo` or `React.PureComponent`.
 
 #### Shared State
 
@@ -188,6 +209,14 @@ export class TodoStore {
 export const TodoContext = React.createContext(new TodoStore());
 ```
 
+## Reactivity in React
+
+Reactivity in React is made possible through the use of a virtual DOM (Document Object Model). The virtual DOM is a
+lightweight in-memory representation of the actual DOM that is used to calculate the changes that need to be made to the
+actual DOM in order to update the UI. When the state or props of a component change, the virtual DOM is updated to
+reflect the new data. Then, the virtual DOM calculates the differences between the current virtual DOM and the previous
+virtual DOM, and applies those changes to the actual DOM in an efficient manner.
+
 ## Important Libraries
 
 ### [react-router](https://reactrouter.com/en/main/start/overview)
@@ -220,4 +249,3 @@ There are couple of routers supported
 - [Lin Clark - A Cartoon Intro to Fiber - React Conf 2017](https://www.youtube.com/watch?v=ZCuYPiUIONs)
 - [What Is React Fiber? React.js Deep Dive #2](https://www.youtube.com/watch?v=0ympFIwQFJw)
 - [React 16 (React Fiber) explained as simply as possible](https://www.youtube.com/watch?v=gsvHmZ3hXjo&t=166s)
-- 
