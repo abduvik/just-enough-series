@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import classes from "./CanvasField.module.scss";
 
 type CanvasFieldProps = {
@@ -11,23 +11,17 @@ type CanvasFieldProps = {
 export const CanvasField = memo(
   ({ value, onInput, label, className }: CanvasFieldProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [canvasContext, setCanvasContext] =
-      useState<CanvasRenderingContext2D | null>(null);
+    const canvasContext = useMemo(() => {
+      if (canvasRef.current) {
+        return canvasRef.current.getContext("2d");
+      }
+    }, [canvasRef.current]);
 
     const [isDrawing, setIsDrawing] = useState<boolean>(false);
     const [previousCoordinates, setPreviousCoordinates] = useState<any>({
       x: 0,
       y: 0,
     });
-
-    useEffect(() => {
-      if (canvasRef.current) {
-        const renderCtx = canvasRef.current.getContext("2d");
-        if (renderCtx) {
-          setCanvasContext(renderCtx);
-        }
-      }
-    }, []);
 
     useEffect(() => {
       if (value) {
@@ -42,15 +36,6 @@ export const CanvasField = memo(
     const mouseDown = () => setIsDrawing(true);
     const mouseUp = () => endDrawing();
     const mouseLeave = () => endDrawing();
-
-    const endDrawing = () => {
-      setPreviousCoordinates({
-        x: 0,
-        y: 0,
-      });
-      setIsDrawing(false);
-      onInput(canvasRef.current?.toDataURL() || "");
-    };
 
     const startDrawing = (
       event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
@@ -91,6 +76,15 @@ export const CanvasField = memo(
         canvasContext.stroke();
         setPreviousCoordinates(currentCoordinates);
       }
+    };
+
+    const endDrawing = () => {
+      setPreviousCoordinates({
+        x: 0,
+        y: 0,
+      });
+      setIsDrawing(false);
+      onInput(canvasRef.current?.toDataURL() || "");
     };
 
     return (
