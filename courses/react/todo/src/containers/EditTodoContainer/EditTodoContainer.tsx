@@ -46,15 +46,17 @@ export const EditTodoContainer = ({
     }));
   };
 
-  const onSaveClicked = async () => {
-    await todoService.updateTodo(appState.state.editTodoId, {
+  const onSaveClicked = useCallback(() => {
+    todoService.updateTodo(appState.state.editTodoId, {
       ...todo,
     });
-  };
+    // Because todo is updated in the state and we need to update the memoized callback
+  }, [appState, todo]);
 
-  const onCancelClicked = () => {
+  const onCancelClicked = useCallback(() => {
     appState.setState({ showEdit: false, editTodoId: -1 });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateTaskName = useCallback((value: string) => {
     updateFormData({ task: value });
@@ -71,6 +73,10 @@ export const EditTodoContainer = ({
   const updateHandNotes = useCallback((value: string) => {
     updateFormData({ handNotes: value });
   }, []);
+
+  if (!appState.state.showEdit) {
+    return null;
+  }
 
   return (
     <div className={classes.EditTodoContainer}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AddTodoItem } from "./AddTodoItem/AddTodoItem";
 import { TodoItem } from "./TodoItem/TodoItem";
 import { Todo } from "../../models/Todo";
@@ -11,6 +11,12 @@ type TodoContainerProps = {
   todoService: TodoService;
   appState: AppStateType;
 };
+
+const buttonSelectOptions = [
+  { label: "All", value: "all" },
+  { label: "Done", value: "true" },
+  { label: "Not Done", value: "false" },
+];
 
 export const TodosContainer = ({
   todoService,
@@ -30,35 +36,37 @@ export const TodosContainer = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onAddClicked = (value: string) => {
+  const onAddClicked = useCallback((value: string) => {
     todoService.addTodo(value).then(() => fetchTodos());
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const onEditClicked = ({ id }: { id: number }) => {
+  const onEditClicked = useCallback(({ id }: { id: number }) => {
     appState.setState({ showEdit: true, editTodoId: id });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const onDeleteClicked = ({ id }: { id: number }) => {
+  const onDeleteClicked = useCallback(({ id }: { id: number }) => {
     // delete item
     todoService.deleteTodo(id).then(() => fetchTodos());
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const onSelectTodoStateFilter = (value: string) => {
+  const onSelectTodoStateFilter = useCallback((value: string) => {
     setTodoStateFilter(value);
     todoService.getAllTodos({ params: { isDone: value } }).then((todos) => {
       setTodos(todos);
     });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const onDoneChecked = ({ id, isDone }: { id: number; isDone: boolean }) => {
-    todoService.updateTodo(id, { isDone }).then(() => fetchTodos());
-  };
-
-  const buttonSelectOptions = [
-    { label: "All", value: "all" },
-    { label: "Done", value: "true" },
-    { label: "Not Done", value: "false" },
-  ];
+  const onDoneChecked = useCallback(
+    ({ id, isDone }: { id: number; isDone: boolean }) => {
+      todoService.updateTodo(id, { isDone }).then(() => fetchTodos());
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <>
@@ -84,7 +92,7 @@ export const TodosContainer = ({
           />
         ))}
       </div>
-      {appState.state.showEdit ? <EditTodoContainer /> : null}
+      <EditTodoContainer />
     </>
   );
 };

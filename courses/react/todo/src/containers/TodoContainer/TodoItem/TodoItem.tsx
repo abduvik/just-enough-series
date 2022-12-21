@@ -2,6 +2,7 @@ import { CheckBoxField } from "../../../components/CheckBoxField/CheckBoxField";
 import { Button } from "../../../components/Button/Button";
 
 import classes from "./TodoItem.module.scss";
+import React from "react";
 
 type TodoProps = {
   itemId: number;
@@ -12,7 +13,7 @@ type TodoProps = {
   onDoneChecked?: ({ id, isDone }: { id: number; isDone: boolean }) => void;
 };
 
-export const TodoItem = (props: TodoProps) => {
+export const TodoItem = React.memo((props: TodoProps) => {
   const onEditClicked = () => {
     props.onEditClicked && props.onEditClicked({ id: props.itemId });
   };
@@ -48,4 +49,4 @@ export const TodoItem = (props: TodoProps) => {
       </div>
     </div>
   );
-};
+});
