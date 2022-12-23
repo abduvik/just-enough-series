@@ -21,10 +21,12 @@ Cypress is an E2E testing tool.
 ### Commands
 
 - `cypress open`: Start the testing tool
+- `cypress run`: Run tests headless
 
 ### Configurations
 
 - `e2e.baseUrl`: base url to test against
+- `e2e.experimentalStudio`: Enable/Disable Cypress Studio which is helpful for recording tests instead of writing the code
 
 ### APIs
 
@@ -41,6 +43,8 @@ Core
 - `cy.location(<prop>)`: Get a certain prop of the location object. ex: `cy.location('pathname')`.
   - Others are: `host`, `origin`, `href`, `search`, `hash`, `hostname`, `protocol`, `toString`, ...
 - `cy.get(<field_selector>).invoke('prop', 'validity').its('<validityObjectProp>').should(<condition>)`: Input fields have validity props which we can use to know if the field is valid and what is the error if exists
+- `cy.setCookie()`: Set Cookies
+- `cy.getCookie()`: Get Cookies
 
 ### Input Changes
 
@@ -51,6 +55,7 @@ Core
 - `cy.get(<selector>).check()`: Mark field as checked
 - `cy.get(<selector>).invoke(<prop>, <value>).trigger(<event>)`: This is for custom elements. When we don't have a DOM API method. We change the value/attribute and then invoke the input/change event to affect the DOM and re-render.
   - ex `cy.get('range').invoke('value', 7).trigger('input')`
+- `cy.get(<selector>).its(<prop>)`: Get a property's value on the previously yielded subject.
 
 ### Assert statements
 
@@ -138,6 +143,19 @@ cy.get(".selector", { timeout: 1000 }).should("be.visible");
 ```
 
 ### API Interceptions and Mocking
+
+Cypress allows to intercept API calls to either stub them or even mock them.
+
+`cy.intercept(<matcher>, <response>)`
+
+- `<matcher>`: can be `url` or `method, url` or `routeMatcher`
+- `<response>`: is optional an can be `staticResponse` and `routeHandler`
+
+We can also use fixtures for a full file
+
+- `cy.intercept('/users.json', { fixture: 'users.json' })`
+
+You can create a script that updates your fixtures with real data which would be more valuable than using objects inside the code.
 
 ## Extra Content
 
