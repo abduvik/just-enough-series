@@ -11,6 +11,8 @@ npm install -g create-react-app
 npx create-react-app todo --template typescript
 ```
 
+> Note: Please don't use `create-react-app` for production projects
+
 ## Summary
 
 ### Features
@@ -110,10 +112,15 @@ export const TodoContainer = (props: TodoContainerProps) => {
     '...'
     useEffect(() => {
         props.loadTodos();
+
+        return cleanUpMethod;
     }, []);
     '...'
 };
 ```
+
+`useEffect` run twice when using `React.StrictMode` as a way to protect against unpredicted or bad side effects. This to
+make sure you call the clean-up function for example and make sure the components are always predictable.
 
 #### Change Detection
 
