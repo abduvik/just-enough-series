@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import classes from "./CanvasField.module.scss";
 
 type CanvasFieldProps = {
@@ -11,11 +11,7 @@ type CanvasFieldProps = {
 export const CanvasField = memo(
   ({ value, onInput, label, className }: CanvasFieldProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const canvasContext = useMemo(() => {
-      if (canvasRef.current) {
-        return canvasRef.current.getContext("2d");
-      }
-    }, [canvasRef.current]);
+    const canvasContext = canvasRef.current?.getContext("2d");
 
     const [isDrawing, setIsDrawing] = useState<boolean>(false);
     const [previousCoordinates, setPreviousCoordinates] = useState<any>({
@@ -31,7 +27,7 @@ export const CanvasField = memo(
         };
         image.src = value;
       }
-    }, [value]);
+    }, [value, canvasContext]);
 
     const mouseDown = () => setIsDrawing(true);
     const mouseUp = () => endDrawing();
