@@ -159,12 +159,86 @@ Value Types needs to hold a value but we can define them as "Nullable Value Type
 
 ### Important Classes
 
-- `JsonSerializer`: To Serialize/Deserialize JSON to Object
-- `JsonSerializerOptions`: To pass options for the `JsonSerializer`. Use `JsonSerializerDefaults.web` to get default options used for the web.
-- `HttpClient`: To do HTTP requests
-- `StringBuilder`: Used when we are doing too many operations on strings to save memory. THat's because strings are immutable and are referenced-type instead of value
-- `HttpClientJsonExtensions`: Extentions to the `HttpClient` to send/recieve HTTP content as JSON
-- `HttpContentJsonExtensions`: Extentions to the `HttpClient` to read and parse the HttpContent based on JSON
+- JSON
+
+  - `JsonSerializer`: To Serialize/Deserialize JSON to Object
+  - `JsonSerializerOptions`: To pass options for the `JsonSerializer`. Use `JsonSerializerDefaults.web` to get default options used for the web.
+  - `JsonNode`: It's very similar to what `JSON` does in Javascript and is very simple and we can use `JsonNode.Parse` to do the exact same thing as `JSON.parse` in JS.
+  - `JsonObject/JsonArray`: It's used to create Json objects and arrays quickly instead of having a class for it.
+  - `JsonDocument`: Faster than the `JsonNode` and is good if we have a large JSON. It works similar to how DOM access works in HTML.
+  - `Utf8JsonWriter/Utf8JsonReader`: High performace JSON writer and reader and it's low level and works as streams
+
+- HTTP
+
+  - `HttpClient`: To do HTTP requests
+  - `HttpClientJsonExtensions`: Extentions to the `HttpClient` to send/recieve HTTP content as JSON
+  - `HttpContentJsonExtensions`: Extentions to the `HttpClient` to read and parse the HttpContent based on JSON
+
+- Files & Directories
+
+  - `System.IO.Directory`: Class with static methods to deal with directories
+  - `System.IO.File`: Class with static methods to deal with files
+
+- Others
+
+  - `StringBuilder`: Used when we are doing too many operations on strings to save memory. THat's because strings are immutable and are referenced-type instead of value
+
+### LINQ
+
+`n` is an integer, `r` is a range `5..9`, `3..`, `..9`, `^9..^5`, `l` is a list, `λ` is a lamda function, `pc` is a comparer function
+
+Possible LINQ operations
+
+- Select: `select/Select(λ)` to get a single property, use it with `new` if we need multiple properties
+- Ordering (ascending, descending): `orderby/OrderBy(λ)` & `orderby descending/OrderByDescending(λ)`. We can order by multiple fields by just adding a `,` between them
+- Projection (change shape)
+- Get an Element (find, first last, single): `First(λ)`, `FirstOrDefault(λ)`, `Last(λ)`, `LastOrDefault(λ)`, `Single(λ)`, `SingleOrDefault(λ)`
+- Filter (`where`)
+- Iteration/Partioning (foreach, skip, take)
+  - `Take(n)`, `Take(r)`, `TakeWhile(λ)`: To get couple of items
+  - `Skip(n)`, `Skip(r)`, `SkipWhile(λ)`: To skip few items
+  - `Skip` + `Take` can be used to do pagination, they are like `LIMIT` in SQL
+  - `Distinct()`, `DistinctBy(λ)`: To get unique values
+  - `Chunk(n)`: Divide an enumerable into chucks of arrays
+- Quantify (any, all, contains)
+  - `Any(λ)`: If any item validate the condition
+  - `All(λ)`: If All item validate the condition
+  - `Contains(v)`: If enumerable contains a primative value
+  - `Contains(new Obj { prop = val}, comparer)`: To find if contains an object, comparer inherits from `EqualityComparer` and overrides methods `Equals` & `GetHashCode`
+- Set Comparison (equal, except, intersection)
+  - `SequenceEqual(l)`, `SequenceEqual(l,pc)`: If they are equal
+  - `Except(l)`, `Except(l,pc)`, `ExceptBy(l, λ)`: To find what doesn't exists in list
+  - `Intersect(l)`, `Intersect(l,pc)`, `IntersectBy(l, λ)`: To find what is common between two lists
+- Set Operations (union, concat)
+  - `Union(l)`, `Union(l,pc)`, `UnionBy(l, λ)`: To combine two lists and remove the duplicates
+  - `Concat(l)`: To concat two lists and keep the duplicates
+- Joining (inner joins, outer joins)
+  - `join .. in .. on .. equals ..`: To Inner Join two lists
+  - `Join(l, λ(1), λ(2), λ(new))`: To Inner Join two lists
+  - `join .. in .. on .. equals .. into ..`: To Inner Join two lists and group each of them to a new list which can further has more Linq operations
+  - `GroupJoin(l, λ(1), λ(2), λ(new)`: It will do the same thing as `into` keyword
+  - Left Outer Join is simulated. it's mainly done by doing an inner join and return a default null if it doesn't exists and then creating new objects from that list.
+    // @todo: read more about left outer join
+- Aggregation (count, sum, min, max, average)
+  - Methods are `Count(λ)`, `Min(λ)`, `Max(λ)`, `Sum(λ)`, `Average(λ)` returns numbers
+  - Methods `MinBy(λ)`, `MaxBy(λ)` will return objects
+  - Method `Aggregate(λ)` will perform a reduce
+- Grouping (groupby, subquery, groupjoin)
+- Distinct Sets (distinct)
+
+Linq supports two formats
+
+- Lamda (Method) Syntax
+- Query (Comprehension) Syntax
+
+Linq operations can be divided into Immediate and Deferred. Deferred can also be divided into Streaming and Non-Streaming
+
+- Immediate: the operation is executed immiedately
+- Deferred: The operation execution is deferred for later
+  - Non-Streaming: Operation is done completely
+  - Streaming: Operation runs on every request and `yield` a new value each time it's needed
+
+[More on LINQ operations types](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/classification-of-standard-query-operators-by-manner-of-execution)
 
 ### Questions
 
