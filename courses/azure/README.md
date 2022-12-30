@@ -95,6 +95,8 @@ They are grouping of different resources
     - Subscription is in this case like a virtual queue
     - Subscriptions supports filters to select a certain sub-set of messages
 
+Access Policy (Auth Keys) can be per queue or a shared access policy across all queues
+
 **Commands**
 
 - Create a service bus namespace
@@ -117,6 +119,7 @@ az servicebus queue create --resource-group az204-svcbus-rg \
 #### Storage Queue
 
 - Similar to Service bus and supports the following
+
   - Queue size over 80 GB
   - Track progress in the queue // @todo: what it means?
   - Good for logging
@@ -124,10 +127,14 @@ az servicebus queue create --resource-group az204-svcbus-rg \
   - It consists of a queue and an Azure Storage
   - It's simplier than Service Bus
 
+- When to use Storage Queues and Service Bus?
+
+If you just need queues then Storage queues or Service Bus (Basic) should be enough as we only pay per operation or per storage. While Serivce Bus (Standard+Premium) will cover more complicated cases with Deduplication, topics and sessions.
+
 // @todo: Check this later https://learn.microsoft.com/en-us/azure/storage/queues/storage-dotnet-how-to-use-queues?tabs=dotnet
 
 - [Azure Storage vs Service Bus](https://medium.com/awesome-azure/azure-difference-between-azure-storage-queue-and-service-bus-queue-azure-queue-storage-vs-servicebus-3f7921b0159e)
-- [Azure Queues and Service Bus queues - compared and contrasted](https://github.com/Huachao/azure-content/blob/master/articles/service-bus/service-bus-azure-and-service-bus-queues-compared-contrasted.md)
+- [What messaging queue should I use in Azure?](https://todaysoftmag.com/article/1260/what-messaging-queue-should-i-use-in-azure)
 
 ### General Commands
 
@@ -142,3 +149,4 @@ az servicebus queue create --resource-group az204-svcbus-rg \
 - [Adam Marczak - Azure for Everyone
   ](https://www.youtube.com/c/Azure4Everyone)
 - [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer/#getting-started)
+- [Azurite - Simulate Azure's Blob, Queue and Table](https://github.com/Azure/Azurite)
