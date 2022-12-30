@@ -27,6 +27,8 @@ Cypress is an E2E testing tool.
 
 - `e2e.baseUrl`: base url to test against
 - `e2e.experimentalStudio`: Enable/Disable Cypress Studio which is helpful for recording tests instead of writing the code
+- `viewportWidth`: Testing window width
+- `viewportHeight`: Testing window height
 
 ### APIs
 
@@ -44,18 +46,25 @@ Core
   - Others are: `host`, `origin`, `href`, `search`, `hash`, `hostname`, `protocol`, `toString`, ...
 - `cy.get(<field_selector>).invoke('prop', 'validity').its('<validityObjectProp>').should(<condition>)`: Input fields have validity props which we can use to know if the field is valid and what is the error if exists
 - `cy.setCookie()`: Set Cookies
-- `cy.getCookie()`: Get Cookies
+- `cy.getCookie()`: Get
+- `cy.request(method, url, body)`: Send an API request
+- `cy.get(<selectorA>).find(<selectorB>)`: It will try to find the element B in element A. If you chain two `get`, it will look in the whole document and return both of them. Check [Get vs Find](https://docs.cypress.io/api/commands/get#Get-vs-Find)
+  The cy.get command always starts its search from the cy.root element. In most cases, it is the document element, unless used inside the .within() command. The .find command starts its search from the current subject.
 
 ### Input Changes
 
 - `cy.get(<selector>).type(<text>)`: Get a field and type into it
 - `cy.get(<selector>).type(<text>{enter})`: Cypress allows typing and then clicking non-char keys like enter and it's written in braces `{...}`
+- `cy.get(<selector>).clear()`: Clear text field. It's good to clear before typing too to remove defaults
+- `cy.get(<selector>).clear().type()`: Chaining to clear and type
 - `cy.get(<selector>).click()`: Click on element
 - `cy.get(<selector>).select(<label>)`: Select a value from a select field
 - `cy.get(<selector>).check()`: Mark field as checked
 - `cy.get(<selector>).invoke(<prop>, <value>).trigger(<event>)`: This is for custom elements. When we don't have a DOM API method. We change the value/attribute and then invoke the input/change event to affect the DOM and re-render.
   - ex `cy.get('range').invoke('value', 7).trigger('input')`
 - `cy.get(<selector>).its(<prop>)`: Get a property's value on the previously yielded subject.
+- `cy.get('input[type=file]').selectFile('file.txt', {force: true});`: Upload file to a file input field
+- `cy.reload()`: Reloads the page
 
 ### Assert statements
 
@@ -156,6 +165,28 @@ We can also use fixtures for a full file
 - `cy.intercept('/users.json', { fixture: 'users.json' })`
 
 You can create a script that updates your fixtures with real data which would be more valuable than using objects inside the code.
+
+### Tips
+
+When writing a test, it can be in the following format:
+
+- Seed
+- Do action
+- Confirm action effect is done correctly (reduces flakiness)
+- Assert (optional)
+- Do more actions
+
+Have a css global styles to know which items have data-testid values already
+
+```css
+[data-testid]:not([data-testid=""]) {
+  border: 2px solid red;
+}
+```
+
+To access other `data-*` attribute use
+
+`cy.get().invoke('data', 'another-data-attribute')`
 
 ## Extra Content
 
