@@ -1,4 +1,4 @@
-import { HttpAdapter } from "../adapters/httpAdapter";
+import { HttpAdapter } from "../adapters/HttpAdapter";
 import { Todo } from "../models/Todo";
 
 export class TodoService {

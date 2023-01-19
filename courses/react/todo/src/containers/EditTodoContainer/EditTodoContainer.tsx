@@ -7,12 +7,12 @@ import { Button } from "../../components/Button/Button";
 import classes from "./EditTodoContainer.module.scss";
 import { Title } from "../../components/Title/Title";
 import { TodoService } from "../../services/Todo.service";
-import { AppStateType } from "../../store/app.store";
 import { Todo } from "../../models/Todo";
+import { AppStateContextType } from "../../custom-hooks/useAppState";
 
 type EditTodoContainerProps = {
   todoService: TodoService;
-  appState: AppStateType;
+  appState: AppStateContextType;
 };
 
 type TodoState = {
@@ -24,7 +24,7 @@ type TodoState = {
 
 export const EditTodoContainer = ({
   todoService,
-  appState,
+  appState: { appState, setAppState },
 }: EditTodoContainerProps) => {
   const [todo, setTodoState] = useState<TodoState>({
     task: "",
@@ -35,9 +35,9 @@ export const EditTodoContainer = ({
 
   useEffect(() => {
     todoService
-      .getTodo(appState.state.editTodoId)
+      .getTodo(appState.editTodoId)
       .then((data: Todo) => setTodoState(data));
-  }, [appState.state.editTodoId, todoService]);
+  }, [appState.editTodoId, todoService]);
 
   const updateFormData = (updatedState: Partial<TodoState>) => {
     setTodoState((state) => ({
@@ -46,17 +46,16 @@ export const EditTodoContainer = ({
     }));
   };
 
-  const onSaveClicked = useCallback(() => {
-    todoService.updateTodo(appState.state.editTodoId, {
+  const onSaveClicked = useCallback(async () => {
+    await todoService.updateTodo(appState.editTodoId, {
       ...todo,
     });
-    // Because todo is updated in the state and we need to update the memoized callback
-  }, [appState, todo]);
+    setAppState({ isDrawerOpen: false, editTodoId: -1 });
+  }, [appState, todo, todoService]);
 
   const onCancelClicked = useCallback(() => {
-    appState.setState({ showEdit: false, editTodoId: -1 });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setAppState({ isDrawerOpen: false, editTodoId: -1 });
+  }, [setAppState]);
 
   const updateTaskName = useCallback((value: string) => {
     updateFormData({ task: value });
@@ -73,10 +72,6 @@ export const EditTodoContainer = ({
   const updateHandNotes = useCallback((value: string) => {
     updateFormData({ handNotes: value });
   }, []);
-
-  if (!appState.state.showEdit) {
-    return null;
-  }
 
   return (
     <div className={classes.EditTodoContainer}>

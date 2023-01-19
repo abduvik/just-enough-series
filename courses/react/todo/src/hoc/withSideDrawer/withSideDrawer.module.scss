@@ -1,6 +1,4 @@
-/*todo: delete this scss and move to withSideDrawer */
-
-.EditTodoContainer {
+.WithSideDrawer {
   position: absolute;
   top: 0;
   right: 0;
@@ -8,5 +6,4 @@
   bottom: 0;
   padding: 10px 15px;
   box-shadow: 0 0 5px #c7c7c7;
-  overflow: auto;
 }

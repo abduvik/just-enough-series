@@ -1,14 +1,14 @@
 import classes from "./ButtonSelect.module.scss";
 
 type ButtonSelectProps = {
-  onSelect: (value: string) => void;
+  onInput: (value: string) => void;
   className?: string;
   options: { label: string; value: string }[];
   value: string;
 };
 
 export const ButtonSelect = ({
-  onSelect,
+  onInput,
   className = "",
   options,
   value,
@@ -23,7 +23,7 @@ export const ButtonSelect = ({
             " " +
             (value === option.value ? classes.Selected : "")
           }
-          onClick={() => onSelect(option.value)}
+          onClick={() => onInput(option.value)}
         >
           {option.label}
         </button>

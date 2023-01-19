@@ -1,7 +1,6 @@
-import { HttpAdapter } from "./adapters/httpAdapter";
+import { HttpAdapter } from "./adapters/HttpAdapter";
 import { config } from "./config";
 import { TodoService } from "./services/Todo.service";
-import { TodoStore } from "./store/todo.store";
 import { IDependencyContainer } from "./types";
 
 export class DependencyContainer implements IDependencyContainer {
@@ -24,19 +23,12 @@ const container = new DependencyContainer();
 const httpAdapter = new HttpAdapter({ baseUrl: config.baseUrl });
 const todoService = new TodoService({ httpAdapter });
 
-// AppStore can be used with a dependency container as well
-// const appStore = new AppStore();
-const todoStore = new TodoStore();
-
 const dependencies = {
   httpAdapter: Symbol("httpAdapter"),
-  todoStore: Symbol("todoStore"),
   todoService: Symbol("todoService"),
 };
 
 container.add(dependencies.httpAdapter, httpAdapter);
-container.add(dependencies.todoStore, todoStore);
 container.add(dependencies.todoService, todoService);
-// container.add("dependencies.appStore", appStore);
 
 export { container, dependencies };

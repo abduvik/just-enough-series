@@ -1,18 +1,16 @@
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import AboutText from "./About.md";
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
 
 export const AboutContainer = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    // @ts-ignore
-    import("./About.md").then((module) => {
-      fetch(module.default).then((response) => {
-        response.text().then((text) => {
-          setContent(text);
-        });
+    fetch(AboutText)
+      .then((response) => response.text())
+      .then((content) => {
+        setContent(content);
       });
-    });
   }, []);
 
   return <ReactMarkdown>{content}</ReactMarkdown>;

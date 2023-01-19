@@ -1,5 +1,5 @@
-import { PageLayout } from "../partials/PageLayout/PageLayout";
 import { ElementType } from "react";
+import { PageLayout } from "../components/PageLayout/PageLayout";
 
 export const withPageLayout = (Component: ElementType) => {
   return () => (

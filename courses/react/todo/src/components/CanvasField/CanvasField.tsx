@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, MouseEvent, useRef, useState } from "react";
 import classes from "./CanvasField.module.scss";
 
 type CanvasFieldProps = {
@@ -8,16 +8,20 @@ type CanvasFieldProps = {
   label?: string;
 };
 
+type Coordinates = { x: number; y: number };
+
 export const CanvasField = memo(
   ({ value, onInput, label, className }: CanvasFieldProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const canvasContext = canvasRef.current?.getContext("2d");
 
     const [isDrawing, setIsDrawing] = useState<boolean>(false);
-    const [previousCoordinates, setPreviousCoordinates] = useState<any>({
-      x: 0,
-      y: 0,
-    });
+    const [previousCoordinates, setPreviousCoordinates] = useState<Coordinates>(
+      {
+        x: 0,
+        y: 0,
+      }
+    );
 
     useEffect(() => {
       if (value) {
@@ -29,49 +33,35 @@ export const CanvasField = memo(
       }
     }, [value, canvasContext]);
 
-    const mouseDown = () => setIsDrawing(true);
-    const mouseUp = () => endDrawing();
-    const mouseLeave = () => endDrawing();
+    const enableDrawing = () => setIsDrawing(true);
 
-    const startDrawing = (
-      event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-    ) => {
-      if (isDrawing && canvasContext) {
-        const offsetX =
-          (event as any).target.offsetLeft +
-          (event as any).target.offsetParent.offsetLeft;
-        const offsetY =
-          (event as any).target.offsetTop +
-          (event as any).target.offsetParent.offsetTop;
-
-        // get canvas scale
-        const scaleX =
-          (canvasRef.current as any)?.width /
-          (canvasRef.current as any)?.clientWidth;
-        const scaleY =
-          (canvasRef.current as any)?.height /
-          (canvasRef.current as any)?.clientHeight;
-
-        if (previousCoordinates.x === 0 && previousCoordinates.y === 0) {
-          setPreviousCoordinates({
-            x: (event.clientX - offsetX) * scaleX,
-            y: (event.clientY - offsetY) * scaleY,
-          });
-          return;
-        }
-
-        canvasContext.fillStyle = "blue";
-        canvasContext.lineWidth = 8;
-        const currentCoordinates = {
-          x: (event.clientX - offsetX) * scaleX,
-          y: (event.clientY - offsetY) * scaleY,
-        };
-        // @ts-ignore
-        canvasContext.moveTo(previousCoordinates.x, previousCoordinates.y);
-        canvasContext.lineTo(currentCoordinates.x, currentCoordinates.y);
-        canvasContext.stroke();
-        setPreviousCoordinates(currentCoordinates);
+    const startDrawing = (event: MouseEvent<HTMLCanvasElement>) => {
+      if (!(isDrawing && canvasContext && canvasRef.current)) {
+        return;
       }
+
+      const canvasEl = canvasRef.current;
+      const { x: offsetX, y: offsetY } = canvasEl.getBoundingClientRect();
+
+      // get canvas scale
+      const scaleX = canvasEl.width / canvasEl.clientWidth;
+      const scaleY = canvasEl.height / canvasEl.clientHeight;
+      const updatedCoordinates = {
+        x: (event.clientX - offsetX) * scaleX,
+        y: (event.clientY - offsetY) * scaleY,
+      };
+
+      if (previousCoordinates.x === 0 && previousCoordinates.y === 0) {
+        setPreviousCoordinates(updatedCoordinates);
+        return;
+      }
+
+      canvasContext.fillStyle = "blue";
+      canvasContext.lineWidth = 8;
+      canvasContext.moveTo(previousCoordinates.x, previousCoordinates.y);
+      canvasContext.lineTo(updatedCoordinates.x, updatedCoordinates.y);
+      canvasContext.stroke();
+      setPreviousCoordinates(updatedCoordinates);
     };
 
     const endDrawing = () => {
@@ -90,10 +80,10 @@ export const CanvasField = memo(
           width="1024"
           height="768"
           className={classes.CanvasField}
-          onMouseDown={mouseDown}
+          onMouseDown={enableDrawing}
           onMouseMove={startDrawing}
-          onMouseUp={mouseUp}
-          onMouseLeave={mouseLeave}
+          onMouseUp={endDrawing}
+          onMouseLeave={endDrawing}
           ref={canvasRef}
         />
       </div>

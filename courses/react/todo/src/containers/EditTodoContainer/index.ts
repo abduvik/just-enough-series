@@ -1,11 +1,10 @@
 import { withDependencies } from "../../hoc/withDependencies";
-import { withAppState } from "../../store/app.store";
+import { withAppState } from "../../hoc/withAppState";
 import { dependencies } from "../../dependencies";
 import { EditTodoContainer } from "./EditTodoContainer";
+import { withSideDrawer } from "../../hoc/withSideDrawer/withSideDrawer";
 
-const EditTodoContainerWithAppState = withDependencies(
+export default withDependencies(
   { todoService: dependencies.todoService },
-  withAppState(EditTodoContainer)
+  withSideDrawer(withAppState(EditTodoContainer))
 );
-
-export { EditTodoContainerWithAppState as EditTodoContainer };

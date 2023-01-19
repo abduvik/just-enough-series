@@ -8,12 +8,10 @@ const app = express();
 
 const htmlPageContent = fs.readFileSync("./dist/hydrate/index.html", "utf8");
 
-app.use(express.static("dist/hydrate/", { index: false }));
+app.use(express.static("dist/hydrate", { index: false }));
 
 app.get("*", (req, res) => {
-  const html = ReactDOMServer.renderToString(
-    React.createElement(App.SsrApp(req.url))
-  );
+  const html = ReactDOMServer.renderToString(App.SsrApp(req.url));
 
   const finalHtml = htmlPageContent.replace(
     "<body>",
@@ -22,6 +20,6 @@ app.get("*", (req, res) => {
   res.send(finalHtml);
 });
 
-app.listen(3004, () => {
-  console.log("SRR Server is listening on port 3004");
+app.listen(3002, () => {
+  console.log("SRR Server is listening on port 3002");
 });

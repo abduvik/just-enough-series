@@ -5,6 +5,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CommonWebpackConfig = {
   mode: "development",
   devtool: "inline-source-map",
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
   module: {
     rules: [
       {
@@ -44,42 +47,13 @@ const CommonWebpackConfig = {
       },
     ],
   },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: "[name].css",
-    }),
-  ],
 };
 
 module.exports = [
-  // Hydrate Output
-  {
-    ...CommonWebpackConfig,
-    entry: path.resolve(__dirname, "hydrate.tsx"),
-    output: {
-      clean: true,
-      path: path.resolve(__dirname, "../dist/hydrate"),
-    },
-    plugins: [
-      ...CommonWebpackConfig.plugins,
-      new HtmlWebpackPlugin({
-        options: {
-          tags: {
-            bodyTags: `<div id="root"></div>`,
-          },
-        },
-        scriptLoading: "defer",
-      }),
-    ],
-  },
-  // SSR Output
   {
     ...CommonWebpackConfig,
     target: "node",
-    entry: path.resolve(__dirname, "ssr-app.tsx"),
+    entry: path.resolve(__dirname, "./SsrApp.tsx"),
     output: {
       clean: true,
       publicPath: "/",
@@ -92,5 +66,26 @@ module.exports = [
     externals: {
       react: "react",
     },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: "[name].css",
+      }),
+    ],
+  },
+  {
+    ...CommonWebpackConfig,
+    entry: path.resolve(__dirname, "./Hydrate.tsx"),
+    output: {
+      clean: true,
+      path: path.resolve(__dirname, "../dist/hydrate"),
+    },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: "[name].css",
+      }),
+      new HtmlWebpackPlugin({
+        scriptLoading: "defer",
+      }),
+    ],
   },
 ];

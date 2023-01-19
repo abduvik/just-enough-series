@@ -23,7 +23,7 @@ export const CheckBoxField = memo(
           name={name}
           checked={value}
           type="checkbox"
-          onChange={(event) => onInput(event.target.value === "on")}
+          onChange={(event) => onInput(event.target.checked)}
         />
         {label ? (
           <label className="ml-1" htmlFor={name}>

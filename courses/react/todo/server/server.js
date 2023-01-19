@@ -39,6 +39,7 @@ app.post("/todos", (req, res) => {
   const newTask = {
     task: todo,
     id: todoId,
+    isDone: false,
   };
   todosDB.push(newTask);
   res.json(newTask);

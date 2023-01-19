@@ -1,8 +1,16 @@
 import classes from "./TextField.module.scss";
 import { forwardRef, memo } from "react";
 
+type TextFieldProps = {
+  value: string;
+  onInput: (value: string) => void;
+  label?: string;
+  name?: string;
+  className?: string;
+};
+
 export const TextField = memo(
-  forwardRef<HTMLInputElement, any>(
+  forwardRef<HTMLInputElement, TextFieldProps>(
     ({ value, onInput, label = "", name = "", className }, ref?) => {
       return (
         <div className={className}>
@@ -13,7 +21,9 @@ export const TextField = memo(
             value={value}
             type="text"
             className={classes.TextField}
-            onChange={(event) => onInput(event.target.value)}
+            onChange={(event) =>
+              onInput((event.target as HTMLInputElement).value)
+            }
           />
         </div>
       );

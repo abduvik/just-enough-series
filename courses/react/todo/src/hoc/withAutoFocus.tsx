@@ -1,18 +1,5 @@
-import { ComponentPropsWithRef, ElementType, useEffect, useRef } from "react";
-
-/**
- * @example
- * const AddTodoItemTextField = withAutoFocus(TextField);
- */
-export const useAutoFocus = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, [inputRef]);
-
-  return inputRef;
-};
+import { ComponentPropsWithRef, ElementType } from "react";
+import { useAutoFocus } from "../custom-hooks/useAutoFocus";
 
 /**
  * @example
