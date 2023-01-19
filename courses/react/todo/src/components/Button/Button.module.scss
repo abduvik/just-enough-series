@@ -1,0 +1,32 @@
+@use "../../styles/tokens" as *;
+
+.Button {
+  border-radius: $BORDER-RADIUS;
+  border: 0;
+  padding: $SPACE-2 $SPACE-3;
+  text-transform: uppercase;
+  font-size: $FONT-SIZE-2;
+  line-height: ($FONT-SIZE-2 + 1);
+  cursor: pointer;
+}
+
+.Button.Primary {
+  background-color: $PRIMARY_COLOR;
+  color: $INVERSE_TEXT_COLOR;
+}
+
+.Button.Secondary {
+  background-color: $SECONDARY_COLOR;
+  color: $INVERSE_TEXT_COLOR;
+}
+
+.Button.Disabled {
+  background-color: $BG_COLOR;
+  color: $TEXT_COLOR;
+  opacity: 0.5;
+}
+
+.Button.Transparent {
+  background-color: transparent;
+  color: $TEXT_COLOR;
+}

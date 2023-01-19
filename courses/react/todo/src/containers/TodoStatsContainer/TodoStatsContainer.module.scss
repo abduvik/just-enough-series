@@ -1,0 +1,31 @@
+@use "../../styles/tokens" as *;
+
+.StatsBoardContainer {
+  display: flex;
+  margin: 0 (-$SPACE-2);
+}
+
+.StatsBoard {
+  padding: 0 $SPACE-2;
+  flex: 1;
+
+  .BoardTitle {
+    font-size: $FONT-SIZE-2;
+    font-weight: 600;
+    margin-bottom: $SPACE-2;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      background-color: $WHITE;
+      border-radius: $BORDER-RADIUS;
+      box-shadow: 0 0 5px #c7c7c7;
+      padding: $SPACE-1 $SPACE-3;
+      margin-bottom: $SPACE-2;
+    }
+  }
+}

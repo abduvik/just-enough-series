@@ -1,0 +1,11 @@
+.TodoItem {
+  background-color: #fff;
+  margin: 10px 0;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #c7c7c7;
+
+  .TodoIsDone {
+    text-decoration: line-through;
+  }
+}

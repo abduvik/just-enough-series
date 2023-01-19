@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "task": "Create a video",
+    "description": "Get the camera, shoot the video and edit",
+    "handNotes": "",
+    "isDone": true
+  },
+  {
+    "id": 2,
+    "task": "Edit a video",
+    "description": "",
+    "handNotes": "",
+    "isDone": false
+  },
+  {
+    "id": 3,
+    "task": "Publish the video",
+    "description": "",
+    "handNotes": "",
+    "isDone": false
+  }
+]

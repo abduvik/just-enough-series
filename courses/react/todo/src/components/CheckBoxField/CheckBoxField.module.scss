@@ -1,0 +1,13 @@
+.CheckBox {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  input {
+    margin: -1px;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    border-radius: 5px;
+  }
+}

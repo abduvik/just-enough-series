@@ -1,0 +1,14 @@
+@use "../../styles/tokens" as *;
+
+.Header {
+  display: flex;
+  background-color: #2f80ed;
+  padding: 20px 10px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.HeaderTitle {
+  font-weight: bold;
+  font-size: $FONT-SIZE-3;
+}
