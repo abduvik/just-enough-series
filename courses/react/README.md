@@ -2,6 +2,8 @@
 
 ## YouTube Video
 
+[![Advanced React Course with Typescript, React Router, React SSR and Clean Frontend Architecture youtube thumbnail](http://img.youtube.com/vi/5hXoIIRoWqQ/0.jpg)](http://www.youtube.com/watch?v=5hXoIIRoWqQ "Advanced React Course with Typescript, React Router, React SSR and Clean Frontend Architecture")
+
 ## Tooling
 
 - Create a new app using `create-react-app`
@@ -13,7 +15,22 @@ npx create-react-app todo --template typescript
 
 > Note: Please don't use `create-react-app` for production projects
 
+## Project Commands
+
+- `npm start` - start the development server
+- `npm run build` - build the production bundle
+- `npm run server` - start the API server
+- `npm run build:ssr` - build the SSR bundle
+- `npm run server:ssr` - start the SSR Sever
+
 ## Summary
+
+### Components Types
+
+- `ReactElement` - the result of a component function
+- `ReactNode` - `ReactElement | ReactText`
+- `ComponentType` - a component that can be rendered
+- `PropsWithChildren` - props with `children` prop
 
 ### Features
 
@@ -27,6 +44,8 @@ export const TodoContainer = (props: TodoContainerProps) => {
     '...'
 };
 ```
+
+- [Why use functions for useState instead of value directly](https://reactjs.org/docs/react-component.html#setstate)
 
 #### Computed State
 
@@ -124,19 +143,32 @@ make sure you call the clean-up function for example and make sure the component
 
 #### Change Detection
 
-React uses a virtual DOM to detect changes. It compares the virtual DOM with the real DOM and updates the real DOM only
-when there are changes.
+Reactivity in React is made possible through the use of a virtual DOM (Document Object Model). The virtual DOM is a
+lightweight in-memory representation of the actual DOM that is used to calculate the changes that need to be made to the
+actual DOM in order to update the UI. When the state or props of a component change, the virtual DOM is updated to
+reflect the new data. Then, the virtual DOM calculates the differences between the current virtual DOM `workInProgress`
+and the previous virtual DOM, and applies those changes to the actual DOM in an efficient manner.
+
+This happens in two phases:
+
+1. `render` phase - React creates the new Virtual DOM
+2. `commit` phase - React updates the DOM
 
 React changes detection is called reconciliation. It is a process of comparing two trees and figuring out the minimum.
-It is called React Fiber.
+The reconciliation is done in chunks. This is to avoid blocking the main thread.
+
+Two methods are used to queue the changes:
+
+- `requestIdleCallback` - when the browser is idle, for high priority updates
+- `requestAnimationFrame` - when the browser is ready to paint, for low priority updates
+
+The old reconciliation algorithm is called `Stack Reconciliation`. The new one is called `Fiber Reconciliation`.
 
 ### Patterns
 
 #### Component
 
 They hold the visual representation of the data. They are stateless and receive data via props.
-
-- `React.FC` type
 
 ```tsx
 export const TodoItem: React.FC<TodoContainerProps> = (props) => {
@@ -148,8 +180,6 @@ export const TodoItem: React.FC<TodoContainerProps> = (props) => {
 
 They hold the state and logic of the application. They are stateful and receive data via props.
 
-- `React.FC` type
-
 ```tsx
 export const TodoContainer: React.FC<TodoContainerProps> = (props) => {
     '...'
@@ -160,10 +190,8 @@ export const TodoContainer: React.FC<TodoContainerProps> = (props) => {
 
 They are functions that take a component as an argument and return a new component.
 
-- `React.FC` type
-
 ```tsx
-export const withTodoContainer = (Component: React.FC<TodoContainerProps>) => {
+export const withTodoContainer = (Component: ComponentType<typeof Component>) => {
     '...'
 
     return (props: TodoContainerProps) => {
@@ -216,14 +244,6 @@ export class TodoStore {
 export const TodoContext = React.createContext(new TodoStore());
 ```
 
-## Reactivity in React
-
-Reactivity in React is made possible through the use of a virtual DOM (Document Object Model). The virtual DOM is a
-lightweight in-memory representation of the actual DOM that is used to calculate the changes that need to be made to the
-actual DOM in order to update the UI. When the state or props of a component change, the virtual DOM is updated to
-reflect the new data. Then, the virtual DOM calculates the differences between the current virtual DOM and the previous
-virtual DOM, and applies those changes to the actual DOM in an efficient manner.
-
 ## Important Libraries
 
 ### [react-router](https://reactrouter.com/en/main/start/overview)
@@ -244,7 +264,7 @@ Official routing system for react and support multiple features:
 - Error Handing using `errorElement` prop
 - Scroll Restoration on navigation using `<ScrollRestoration />`
 
-There are couple of routers supported
+There are a couple of routers supported
 
 - `createbrowserrouter/BrowserRouter`: Uses the DOM Hostory APi and is the recommended router
 - `createHasRouter`: Use the `#` to append the routes
