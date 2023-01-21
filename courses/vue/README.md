@@ -7,7 +7,7 @@
 ### Create project using Vite
 
 ```bash
-npm init @vitejs/app vue-app -- --template vue
+npm create vite@latest contacts -- --template vue-ts
 ```
 
 ## Extra
