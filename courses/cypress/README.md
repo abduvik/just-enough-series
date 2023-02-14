@@ -50,6 +50,22 @@ Core
 - `cy.request(method, url, body)`: Send an API request
 - `cy.get(<selectorA>).find(<selectorB>)`: It will try to find the element B in element A. If you chain two `get`, it will look in the whole document and return both of them. Check [Get vs Find](https://docs.cypress.io/api/commands/get#Get-vs-Find)
   The cy.get command always starts its search from the cy.root element. In most cases, it is the document element, unless used inside the .within() command. The .find command starts its search from the current subject.
+- `cy.session`: It's used to create a session to avoid re-logging again for each step. Make sure to start the method with a `cy.visit`
+
+````js
+cy.session('loginSessionName', () => {
+  cy.visit('/');
+
+  // steps
+});
+
+// it's also possible to have it as an array
+cy.session([username, password], () => {
+  cy.visit('/');
+
+  // steps
+});
+```
 
 ### Input Changes
 
@@ -84,7 +100,7 @@ cy.get("tbody tr:first").should(($tr) => {
   expect($tr).to.have.class("active");
   expect($tr).to.have.attr("href", "/users");
 });
-```
+````
 
 ### Cypress Tasks and Commands
 
@@ -188,6 +204,23 @@ To access other `data-*` attribute use
 
 `cy.get().invoke('data', 'another-data-attribute')`
 
+If you need to clean-up seeding, add it in the `before` & `beforeEach` and not in `after` or `afterEach` to make sure they run every time we run the tests since we can interrupt the test in the middle and clean-up won't run by then.
+
+When creating a new test, build it with `it.only` to make sure it can run independently.
+
+### Libraries that Cypress uses
+
+- `mocha`: To organize tests using `it`, `describe`
+- `chai`: as assertion library for tests
+- `chai-jquery`: extends chai with jquery methods
+- `sinon`: for stubs and spies
+- `sinon-chai`: Integrate both of them
+- `lodash`: By using `Cypress._`
+- `jquery`: By using `Cypress.$`
+
+[Full list here](https://docs.cypress.io/guides/references/bundled-libraries)
+
 ## Extra Content
 
 - [Cypress Reciepes Examples](https://github.com/cypress-io/cypress-example-recipes#testing-the-dom)
+- [Awesome Cypress](https://github.com/brunopulis/awesome-cypress)
