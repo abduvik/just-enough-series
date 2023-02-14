@@ -240,6 +240,8 @@ Linq operations can be divided into Immediate and Deferred. Deferred can also be
 
 [More on LINQ operations types](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/classification-of-standard-query-operators-by-manner-of-execution)
 
+### Async Programming
+
 ### Questions
 
 - What is the difference between `interface` and `abstract` class?
@@ -279,3 +281,12 @@ Newer versions can find main implicitly. You can set the flag `EnableDefaultComp
 struct are value-typed, so when you assign the value of a variable to another variable we create a new complete copy of it while classes is a pointer to an object on the heap and when we assign an object to another variable it gets the pointer instead of the whole object.
 
 [Read more here](https://stackoverflow.com/questions/13049/whats-the-difference-between-struct-and-class-in-net)
+
+## Important Commands
+
+- `dotnet publish`: To publish the app
+
+When publishing too, we can either publish as:
+
+- Framework Dependent: Expect the .NET framework is installed
+- Self-contained: dotnet will ship .NET with the project
