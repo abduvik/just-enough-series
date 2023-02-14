@@ -160,7 +160,7 @@ Pods can support:
 - Getting logs using `kubectl logs`
 - Health Checks for: Liveness (container is healthy), Readness (container ready to serve)
 - Resource Managment to set maximum and minimum resources
-- Persisting data using volumes
+- Persisting data using volumes `spec.volumes[]`. Note that this lives only for the pods life, and if we need to presist beyond this we can create a `PersistentVolume`.
 - Ports mapping
 
 ### Services
@@ -200,6 +200,27 @@ kubectl port-forward service <service_name> <host_port>:<pod_port>
 We can create selector-less services and we can assign ip addresses manually. This is good if we would like to redirect traffic to an external resource outside of the cluster.
 
 Services are connected to an endpoint resource that keeps track of the ips of the pods depending on the selectors. k8s creates it automatically with a selector. The controller for the Service selector continuously scans for Pods that match its selector, and then POSTs any updates to an Endpoint object also named "my-service".
+
+#### External Services
+
+If we need to direct requests to external domain with DNS, we can create an external service that will direct to a totally another server. We dont' need to then set selectors.
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  namespace: prod
+spec:
+  type: ExternalName
+  externalName: my.database.example.com
+```
+
+This will create a CNAME record in k8s DNS for `my-service.svc.prod.cluster` to `my.database.example.com`
+
+If you need to direct to an IP address instead, you will need to create an External Service but without setting the `externalName`, this will create an endpoint-less service and you can assign an endpoint mainly and set the `subsets.address[].ip` in its configs.
+
+But k8s doesn't support health checking for these types of services, so we have to do it manually.
 
 ### Ingress
 
@@ -407,6 +428,137 @@ Aggregated ClusterRoles are way to aggregate several ClusterRoles into one combi
 > If you are running a Kubernetes service on the public internet
 > or an other hostile environment, you should ensure that the
 > `--anonymous-auth=false` flag is set on your API server.
+
+### Service Mesh
+
+Services and Ingress helps to connect pods from outside to inside or between pods but Service Mesh is an upgrade to this and it spans the whole cluster to provide more advanced networking capabilities, mainly:
+
+- Traffic Encyption and Authentication between pods
+- Traffic shaping to route some traffic to a service and the rest of traffic to the other service which is good for A/B testing
+- Observerability between different microservices for debugging so we can trace a certain request among them
+
+There is no standard or defacto Service Mesh and they are implementing using CUstom Resource Definitions in kubernetes. A service mesh will add a side car pod in the app to intercept network requests and apply the needed rules. And there is no need to change the pod yml definitions as they are basically injected through the Admission Controller in kubernetes that incepts requests when doing any operations on Kubernetes objects such as creating new ones.
+
+Few know implementations are:
+
+- Istio
+- Linkerd
+- Consul Connection
+- Open Service Mesh
+- AWS App Mesh (proprietary)
+
+### Persistent Volumes
+
+Similar to nodes & pods for managing compute resources and consumers in the cluster, we also have `PersistentVolume` and `PersistentVolumeClaim` resources to define what volumnes we have and what resources can be used.
+
+-`PersistentVolume` will define volumes that we have in the cluster and they can be NFS, iSCSI, or a cloud-provider-specific storage system
+
+- `PersistentVolumeClaim` will define usage requests for volumes and they can be used by pods for example
+
+### Storage Solutions
+
+There are two types of storage in kubernetes. One that lives for the life of the pod and another that lives beyond this and it's called `PersistentVolume`
+
+How we can integrate storage solutions to kubernetes:
+
+- We can use External Services to connect an external storage to our cluster without the need to create statefulsets
+- Creating a single pod to host our data as a singleton instance
+  We can do this with a combination of:
+  - Creating a PersistentVolume
+  - Create a PersistentVolumeClaim
+  - Create our Pod (using ReplicaSets) and make use our PersistentVolumeClaim
+
+We also have StorageClass resources which can dynamically create a PV when we request a PVC. This is helpful we don't want to create a PV first.
+
+But keep in mind that when we provision them dynamically, the life span of the PV is now tied to the PVC which is by default tied to the Node using it, so if we deleted the node it will be all deleted.
+
+#### StatefulSets
+
+StatefulSets are just like ReplicaSets but they are used to create and maintain stateful pods. They create them with the following steps:
+
+- Each replica gets a persistent hostname with a unique index (e.g., `database-0`, `database-1`, etc.).
+- Each replica is created in order from lowest to highest index, and creation will pause until the Pod at the previous index is healthy and available. This also applies to scaling up.
+- When a StatefulSet is deleted, each of the managed replica Pods is also deleted in order from highest to lowest. This also applies to scaling down the number of replicas.
+
+That's why it's also important to add health & liveness probes to our pods so that when they are created it can follow-up creating the rest.
+
+If we are creating a statefulset for a database app for example and we need to assign which one is the primary pod and which one is the replica. If we need to configure them, we can use `initContainers` which will start a container to do this configuration before running the actual pod.
+
+#### Extending Kubernetes
+
+We can extend kubernetes using two things:
+
+- Admission Controllers: They are like proxy between Authenticatin the k8s api call and the k8s server. They can be used to either mutatue the api or validate it or do both.
+- Custom Resource Definitions: They are used to define new resources in the cluster that can be created and controlled by k8s as a native resource
+
+There are other ways to extend k8s like: Container Network Interface/Container
+Storage Interface/Container Runtime Interface
+
+CRUD for custom resources consists of two parts
+
+- Creating a CustomResourceDefinition to define it as a CRUD resource in k8s
+- Custom Controller to act on the api changes and watch them. We can either poll the api server or implement the Watch API
+
+We then need to do two other functionalities which are
+
+- Validating: To validate that the submitted object is valid and this can be done by Open API specification or a validating Admission Controller which is of kind `ValidatingWebhookConfiguration` which defines an endpoint to do HTTP requests and confirms if it's working correctly. Requests are done over HTTPS, so a certificate is needed, either from a certified issuer or k8s own certificate authority (CA)
+- Defaulting: Some like validating, we will implement another type of hook of adminission controller which is the `MutatingWebhookConfiguration`
+
+Use cases for CRD:
+
+- Stronging Typed data, using CongfigMaps is not typed, but with CRDs we can use `MutatingWebhookConfiguration` to do the type checking
+- Complier or Abstraction pattern, where a CRD represents different pods and services that are going to be "complied".
+- Operator pattern which is the most complex use case and here we are building an app that monitors and do operations on pods while listening to k8s, things like restarting, taking snapshots, backups and more complex operations which opens a big gate for k8s
+
+[Kubebuilder](https://kubebuilder.io/introduction.html) is a great resource to learn to extend k8s API
+
+#### Using CPL with Kubernetes
+
+There are k8s clients for Go,Java, .NET and Python. They are created from the same [OpenAPI specification](https://github.com/kubernetes/kubernetes/blob/master/api/openapi-spec/swagger.json)
+
+To authenticate the API, there are two ways:
+
+- Using kubeconfig file or KUBECONFIG environment variable
+- Inside the pod, it relies on its context and k8s exposes endpoints under `kubernetes` DNS
+
+There are two important concepts to understand before interacting with k8s API through it's clients/SDK:
+
+- Resources can be namespaced or cluster-level and it appears in the SDK's methods:
+  - Namespaced like pods and deployments
+  - Cluster-level like CustomResourceDefinitions and ClusterRoleBindings
+- APIs are groupped under different API Groups and each API group will have its client, ex: `AppsV1Api()`
+
+Examples:
+
+```python
+config.load_kube_config()
+api = client.CoreV1Api()
+pod_list = api.list_namespaced_pod('default')
+```
+
+```Java
+ApiClient client = Config.defaultClient();
+Configuration.setDefaultApiClient(client);
+CoreV1Api api = new CoreV1Api();
+V1PodList list = api.listNamespacedPod("default");
+```
+
+```csharp
+var config = KubernetesClientConfiguration.BuildDefaultConfig();
+var client = new Kubernetes(config);
+var list = client.ListNamespacedPod("default");
+```
+
+For Kubernetes resources you can:
+
+- Create, Replace, Patch, Delete resources
+- Watch changes either with polling or listening to event changes
+- Interact with individual pods to:
+  - Get logs
+  - exec a list of commands and listend to outputs using streams (stdin, stdout, stderr) and relying on WebSockets
+  - do port-forwarding and, similar to exec, relies on WebSockets
+
+#### Securing Kubernetes
 
 ## Questions
 
