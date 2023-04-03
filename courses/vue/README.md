@@ -54,6 +54,46 @@ h1 {
 </style>
 ```
 
+- To register a component, you can:
+  - Use `app.component` to register a global component
+  - Use `components` option in Options API to register a local component
+  - Just import file in `<script setup>` in SFC
+
+```vue
+<template>
+  <div>
+    <h1>{{ title }}</h1>
+    <app-header></app-header>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import AppHeader from "./components/AppHeader.vue";
+
+export default defineComponent({
+  name: "App",
+  components: {
+    AppHeader,
+  },
+  setup() {
+    const title = "Hello World";
+    return {
+      title,
+    };
+  },
+});
+
+// Or, using app.component
+import { createApp } from "vue";
+import App from "./App.vue";
+import AppHeader from "./components/AppHeader.vue";
+
+const app = createApp(App);
+app.component("AppHeader", AppHeader);
+app.mount("#app");
+```
+
 #### To create a Vue app
 
 ```js
@@ -110,20 +150,20 @@ export default defineComponent({
       validator: (value) => value.length > 0,
     },
   },
+  setup(props) {
+    // setup() receives props as the first argument.
+    console.log(props.title);
+  },
 });
 
-// Or, using defineProps
-export default defineComponent({
-  name: "App",
-  props: defineProps({
-    title: {
-      type: String,
-      required: true,
-      default: "Hello World",
-      validator: (value) => value.length > 0,
-    },
-  }),
-});
+// Or, using Options API we use this instead
+export default {
+  props: ["foo"],
+  created() {
+    // props are exposed on `this`
+    console.log(this.foo);
+  },
+};
 </script>
 
 <script setup lang="ts">
@@ -146,7 +186,102 @@ const withTypesProps = defineProps<{ title: string }>(["title"]);
 </script>
 ```
 
-##### Events directives
+We can bind values of props either by passing them directly or by using `v-bind` directive.
+
+```vue
+<template>
+  <div>
+    <h1>{{ title }}</h1>
+    <app-header :title="title"></app-header>
+    <app-header v-bind:title="title"></app-header>
+    <app-header v-bind:="{ title: title }"></app-header>
+  </div>
+</template>
+```
+
+Full list of available validation methods
+
+```vue
+<script lang="ts">
+import { defineProps } from "vue";
+
+defineProps({
+  // Basic type check
+  //  (`null` and `undefined` values will allow any type)
+  propA: Number,
+  // Multiple possible types
+  propB: [String, Number],
+  // Required string
+  propC: {
+    type: String,
+    required: true,
+  },
+  // Number with a default value
+  propD: {
+    type: Number,
+    default: 100,
+  },
+  // Object with a default value
+  propE: {
+    type: Object,
+    // Object or array defaults must be returned from
+    // a factory function. The function receives the raw
+    // props received by the component as the argument.
+    default(rawProps) {
+      return { message: "hello" };
+    },
+  },
+  // Custom validator function
+  propF: {
+    validator(value) {
+      // The value must match one of these strings
+      return ["success", "warning", "danger"].includes(value);
+    },
+  },
+  // Function with a default value
+  propG: {
+    type: Function,
+    // Unlike object or array default, this is not a factory function - this is a function to serve as a default value
+    default() {
+      return "Default function";
+    },
+  },
+});
+</script>
+```
+
+#### Attributes
+
+- Attributes can be defined using `attrs` option in Options API or `ctx.attrs` in setup function or `useAttrs` in `<script setup>`
+- Fallthrough attributes are passed to the root element of the component, they are `class`, `style`, and `id`. They also work with nested components.
+- Attributes `v-on` and `v-bind` are also Fallthrough but only passed to the first component in case of multi-level nesting components
+- Attributes `class`, `style` and `v-on` are merged with the root component
+- In case we have multi-root components, we need to:
+  - Use `inheritAttrs: false` in Options API to prevent automatic merging of attributes
+  - Define the attributes manually in the template using `v-bind="$attrs"`
+- `inherritAttrs` is `true` by default but when set to `false` we need to manually define the attributes in the template using `v-bind="$attrs"`
+- Attributes are not reactive, we need to either user props or update values in the `onUpdated()` lifecycle hook
+
+```vue
+<script>
+// use normal <script> to declare options
+export default {
+  inheritAttrs: false,
+};
+</script>
+
+<script setup>
+import { useAttrs } from "vue";
+
+const attrs = useAttrs();
+</script>
+
+<div class="btn-wrapper">
+  <button class="btn" v-bind="$attrs">click me</button>
+</div>
+```
+
+#### Events directives
 
 - Use `defineEmits` to define the events that can be emitted from the component. This is optional as Vue will
   infer the events from the component's template. Only used in setup function.
@@ -226,6 +361,11 @@ import { defineEmits } from "vue";
 
 const emits = defineEmits(["greet"]);
 
+// also with validation
+const emits = defineEmits({
+  greet: (name: string) => name.length > 0,
+});
+
 const greet = (name: string) => {
   console.log(`Hello ${name}`);
 };
@@ -236,9 +376,94 @@ const emitGreet = (name: string) => {
 </script>
 ```
 
+#### v-model
+
+If we need to pass a v-model from outside to an HTML with a v-model too, we can create a trick with a computed
+property and a custom event.
+
+```vue
+<!-- CustomInput.vue -->
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps(["modelValue"]);
+const emit = defineEmits(["update:modelValue"]);
+
+const value = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit("update:modelValue", value);
+  },
+});
+</script>
+
+<template>
+  <input v-model="value" />
+</template>
+```
+
+We can v-model to a single property. It can also be helpful if we need to do a v-model to multiple properties.
+
+`<MyComponent v-model:title="bookTitle" />`
+
+```vue
+<script setup>
+defineProps(["title"]);
+defineEmits(["update:title"]);
+</script>
+
+<template>
+  <input
+    type="text"
+    :value="title"
+    @input="$emit('update:title', $event.target.value)"
+  />
+</template>
+```
+
+Custom modifiers for v-model
+
+```vue
+<script setup>
+const props = defineProps({
+  modelValue: String,
+  modelModifiers: { default: () => ({}) },
+});
+
+const emit = defineEmits(["update:modelValue"]);
+
+function emitValue(e) {
+  let value = e.target.value;
+  if (props.modelModifiers.capitalize) {
+    value = value.charAt(0).toUpperCase() + value.slice(1);
+  }
+  emit("update:modelValue", value);
+}
+</script>
+
+<template>
+  <input type="text" :value="modelValue" @input="emitValue" />
+</template>
+
+// Add for argument v-model with modifiers
+// - Defining
+<script setup>
+const props = defineProps(["title", "titleModifiers"]);
+defineEmits(["update:title"]);
+
+console.log(props.titleModifiers); // { capitalize: true }
+</script>
+
+// - Usage
+<template>
+  <MyComponent v-model:title.capitalize="myText">
+</template>
+```
+
 #### Important Directives
 
-- `v-model` - Two-way binding
 - `v-if` - Conditional rendering. Also, there is `v-else` and `v-else-if`.
 - `v-for` - Looping and rendering a list. Also there is
   - `v-for="(item, index) in items`: to have access to index
@@ -272,12 +497,13 @@ const emitGreet = (name: string) => {
 - Special directives for forms
   - `:value="text"` to pass value to form element
   - `@input="eventHandler"` to listen to form element event
-  - `v-model="text"` to bind both `:value` and `@input` to a certain reactive state
+  - `v-model="text"` to bind both `:value` and `@input` to a certain reactive state. But with SFC it binds to `:modelValue` and `@update:modelValue` instead.
   - We can pass `ref([])` to checkbox & multi-select to append values to it when checked
   - Special modifiers for `v-model`
     - `.lazy` To call event callback after `change` instead of `input`
     - `.number` Cast values to number
     - `.trim` remove white spaces
+    - It can also support custom modifiers by reading `props.modelModifiers` property.
 - Access DOM element after mounted using `ref` hook
   - `ref` is a special attribute that can be used to bind to a DOM element or a component `const input = ref(null)`.
   - Also works with `v-for` and will store an array of refs.
@@ -339,23 +565,43 @@ hooks:
 
 Couple of ways to do composition in Vue:
 
-- Mixins
-- Custom Directives
-- Custom Filters
-- Custom Render Functions
+- Mixins (not recommended for Vue 3)
 - Custom Slots
+- Composables
+- Custom Directives
 - Plugins
+- Custom Filters (deprecated only for Vue 2)
+- Custom Render Functions
 
-#### Slots
+#### Mixins
 
-We can use slots to pass content/components to a component. It's like `children` in React.
+Mixins are a way to reuse code across components. They are not recommended for Vue 3. Options are combined with the component's options.
+
+```js
+const mixin = {
+  created() {
+    console.log(1);
+  },
+};
+
+createApp({
+  created() {
+    console.log(2);
+  },
+  mixins: [mixin],
+});
+```
+
+##### Slots
+
+We can use slots to pass content/components to a component. It's like `children` in React. They are like HoC.
 
 - Default slot: `<slot></slot>`
-- Named slot: `<slot name="header"></slot>`
-- Scoped slot: `<slot v-bind:user="user"></slot>`
-- Dynamic slot: `<slot :name="dynamicSlotName"></slot>`
 - Fallback content: `<slot>Fallback content</slot>`
-- Slot props: `<slot v-bind:user="user"></slot>`
+- Named slot: `<slot name="header"></slot>`
+- Dynamic slot: `<slot :name="dynamicSlotName"></slot>`
+- Scoped slot: `<slot v-bind:user="user"></slot>`
+- Named scoped slot: `<slot name="header" v-bind:user="user"></slot>`
 
 ```vue
 <template>
@@ -364,7 +610,256 @@ We can use slots to pass content/components to a component. It's like `children`
     <slot name="footer"></slot>
   </div>
 </template>
+
+<BaseLayout>
+<template v-bind:header>
+  <h1>Here might be a page title</h1>
+</template>
+<template #header> <!-- # is short for v-bind -->
+  <h1>Here might be a page title</h1>
+</template>
+
+<template #default> <!-- optional default-->
+  <p>A paragraph for the main content.</p>
+  <p>And another one.</p>
+</template>
+
+<template #footer>
+  <p>Here's some contact info</p>
+</template>
+
+<template v-slot:[dynamicSlotName]>
+  ...
+</template>
+</BaseLayout>
 ```
+
+###### Scoped Slots
+
+They are used to pass a state from the children to the parent. It's like using `filter` and `map` methods
+
+Example for child Component with a scoped slot:
+
+```vue
+<template>
+  <div>
+    <slot v-bind:user="user">
+      {{ user.lastName }}
+    </slot>
+  </div>
+</template>
+```
+
+Example for parent Component using the scoped slot values and then using it to render a template in the child component:
+
+```vue
+<template>
+  <div>
+    <User>
+      <template v-slot:default="slotProps">
+        {{ slotProps.user.firstName }}
+      </template>
+
+      <!-- Also using destructuring: -->
+      <template v-slot:default="{ user }">
+        {{ user.firstName }}
+      </template>
+    </User>
+  </div>
+</template>
+```
+
+Named Scoped slots are also to pass state from the children to the parent using named slots.
+
+Example for child Component with a named scoped slot:
+
+```vue
+<template>
+  <div>
+    <slot name="header" v-bind:user="user">
+      {{ user.lastName }}
+    </slot>
+  </div>
+</template>
+```
+
+Example for parent Component using the named scoped slot values and then using it to render a template in the child component:
+
+```vue
+<template>
+  <div>
+    <User>
+      <template v-slot:header="slotProps">
+        {{ slotProps.user.firstName }}
+      </template>
+
+      <!-- Also using destructuring: -->
+      <template v-slot:header="{ user }">
+        {{ user.firstName }}
+      </template>
+    </User>
+  </div>
+</template>
+```
+
+##### Composables
+
+Composables are functions that can be used to share logic between components. They are like custom hooks in React.
+
+```js
+import { ref, computed } from "vue";
+
+export function useCounter() {
+  const count = ref(0);
+  const double = computed(() => count.value * 2);
+  const increment = () => {
+    count.value++;
+  };
+
+  return {
+    count,
+    double,
+    increment,
+  };
+}
+```
+
+They are better than using many mixins will result in namespace collisions and inter-dependencies are harder to manage.
+
+If we are going to have pure logic then we use composables, otherwise we can use Renderless Components.
+
+##### Custom Directives
+
+They are used for custom DOM manipulation. They are like custom hooks but they are attached to the DOM.
+
+```js
+// Register a global custom directive called `v-focus`
+app.directive("focus", {
+  // When the bound element is inserted into the DOM...
+  mounted(el) {
+    // Focus the element
+    el.focus();
+  },
+});
+
+// Register a local custom directive called `v-focus`
+export default {
+  directives: {
+    focus: {
+      // When the bound element is inserted into the DOM...
+      mounted(el) {
+        // Focus the element
+        el.focus();
+      },
+    },
+  },
+};
+```
+
+Also with Composition API:
+
+```vue
+<script setup>
+// enables v-focus in templates
+const vFocus = {
+  mounted: (el) => el.focus(),
+};
+</script>
+
+<template>
+  <input v-focus />
+</template>
+```
+
+Custom Directives can:
+
+- Accept life cycle hooks
+
+```js
+const myDirective = {
+  // called before bound element's attributes
+  // or event listeners are applied
+  created(el, binding, vnode, prevVnode) {
+    // see below for details on arguments
+  },
+  // called right before the element is inserted into the DOM.
+  beforeMount(el, binding, vnode, prevVnode) {},
+  // called when the bound element's parent component
+  // and all its children are mounted.
+  mounted(el, binding, vnode, prevVnode) {},
+  // called before the parent component is updated
+  beforeUpdate(el, binding, vnode, prevVnode) {},
+  // called after the parent component and
+  // all of its children have updated
+  updated(el, binding, vnode, prevVnode) {},
+  // called before the parent component is unmounted
+  beforeUnmount(el, binding, vnode, prevVnode) {},
+  // called when the parent component is unmounted
+  unmounted(el, binding, vnode, prevVnode) {},
+};
+
+// el: the element the directive is bound to
+// binding: an object containing the following properties: name, value, oldValue, expression, arg, modifiers
+// vnode: the virtual node the directive is bound to
+// prevVnode: the previous virtual node the directive was bound to
+```
+
+- Dynamic arguments
+
+```html
+<div v-example:[arg]="value"></div>
+```
+
+- Shorter definition
+
+```js
+const myDirective = (el, binding) => {
+  // do something with el and binding
+};
+```
+
+##### Plugins
+
+Plugins are used to add global features to Vue like components, directives, providers, etc.
+
+```js
+import { createApp } from "vue";
+
+const app = createApp({});
+
+app.use(myPlugin, {
+  /* optional options */
+});
+
+const myPlugin = {
+  install(app, options) {
+    // configure the app
+  },
+};
+```
+
+#### Async Components
+
+We can use `defineAsyncComponent` to load components asynchronously. It returns a promise that resolves to a component.
+
+```js
+const AsyncComponent = defineAsyncComponent(() => import("./MyComponent.vue"));
+
+// Long form
+const AsyncComponent = defineAsyncComponent({
+  loader: () => import("./MyComponent.vue"),
+  loadingComponent: LoadingComponent,
+  errorComponent: ErrorComponent,
+  delay: 200,
+  timeout: 3000,
+  suspensible: false,
+  onError: (err) => {
+    // handle error
+  },
+});
+```
+
+##### Plugins
 
 #### Architecture Features
 
@@ -492,6 +987,166 @@ unwatch();
 </script>
 ```
 
+##### Shared State and Store Management
+
+Vue provides a `provide` and `inject` API to share state between components. This is similar to React's Context API.
+
+This is useful to:
+
+- Share state between components without having to pass it down as props (props drilling)
+- Share state between components on same level without having to use a parent component to pass it down as props
+
+```vue
+<script setup>
+import { provide } from "vue";
+
+const state = reactive({
+  count: 0,
+});
+
+provide("state", state); /** key, value */
+provide("state", readonly(state)); /** readonly state */
+
+export const DependencySymbol = Symbol();
+provide(DependencySymbol, new Dependency()); // symbols can help to avoid clashes because of strings
+</script>
+
+<script>
+import { inject } from "vue";
+
+const state = inject("state");
+const state = inject("state", "default value");
+const state = inject("state", () => new DefaultFactory()); // Useful to avoid creating an object if it's not used
+</script>
+```
+
+Also, we can create an app wide provider
+
+```js
+const app = createApp(App);
+app.provide("state", state);
+```
+
+We can also export a normal reactive object and use it as a store between components. This is useful when we don't want to use the `provide` and `inject` API.
+
+```js
+// store.js
+import { reactive } from "vue";
+
+export const store = reactive({
+  count: 0,
+  increment() {
+    this.count++;
+  },
+});
+```
+
+```vue
+<template>
+  <button @click="store.increment()">From B: {{ store.count }}</button>
+</template>
+```
+
+Or use a store library like [Vuex](https://vuex.vuejs.org/) and [Pinia](https://pinia.vuejs.org/).
+
+### Built-in Components
+
+- `<component :is="button">` - Dynamically render a component. Useful for rendering different components based on a condition.
+
+```vue
+<script setup>
+import Button from "./Button.vue";
+</script>
+<template>
+  <component :is="Button"></component>
+</template>
+```
+
+- `<Transition>` - Add transition effects to a component. Useful for adding fade in/out effects to a component. We can also listen to js events.
+
+```vue
+<template>
+  <Transition
+    name="custom-classes"
+    enter-active-class="animate__animated animate__tada"
+    leave-active-class="animate__animated animate__bounceOutRight"
+    @before-enter="onBeforeEnter"
+    @enter="onEnter"
+    @after-enter="onAfterEnter"
+    @enter-cancelled="onEnterCancelled"
+    @before-leave="onBeforeLeave"
+    @leave="onLeave"
+    @after-leave="onAfterLeave"
+    @leave-cancelled="onLeaveCancelled"
+  >
+    <p v-if="show">hello</p>
+  </Transition>
+</template>
+```
+
+- `<TransitionGroup>` - Add transition effects to a list of components. Useful for adding fade in/out effects to a list of components.
+
+```vue
+<template>
+  <TransitionGroup
+    tag="ul"
+    :css="false"
+    @before-enter="onBeforeEnter"
+    @enter="onEnter"
+    @leave="onLeave"
+  >
+    <li
+      v-for="(item, index) in computedList"
+      :key="item.msg"
+      :data-index="index"
+    >
+      {{ item.msg }}
+    </li>
+  </TransitionGroup>
+</template>
+```
+
+- `<KeepAlive>` - Cache a component. Useful for caching a component so that it doesn't get destroyed when it's not visible so we don't need to re-run lifecycle hooks (aka mounted). Though two life cycle hooks `activated` and `deactivated` are called when the component is cached and uncached respectively.
+
+```vue
+<template>
+  <KeepAlive>
+    <component :is="activeComponent" />
+  </KeepAlive>
+  <KeepAlive :include="/a|b/">
+    <component :is="view" />
+  </KeepAlive>
+  <KeepAlive :max="10">
+    <component :is="activeComponent" />
+  </KeepAlive>
+</template>
+```
+
+- `<Teleport>` - Teleport a component to a different location in the DOM. Useful for rendering a component outside of the current component's DOM tree. But props and events still works as normal.
+
+```vue
+<template>
+  <Teleport to="#teleport-target">
+    <div>hello</div>
+  </Teleport>
+</template>
+```
+
+- `<Suspense>` - If we have components tree with async render method, instead of having multiple spinners we can use `<Suspense>` to show a single spinner until all the async components are loaded.
+
+```vue
+<template>
+  <Suspense>
+    <template #default>
+      <component :is="activeComponent" />
+    </template>
+    <template #fallback>
+      <div>loading...</div>
+    </template>
+  </Suspense>
+</template>
+```
+
 ## Extra
 
 ### Why Vue vs React?
@@ -548,6 +1203,93 @@ Some things to note:
   app.mount("#app");
 </script>
 ```
+
+#### SPC Custom Blocks
+
+They are a way to add custom blocks to SFCs (ex: script, template & style) and use them in build tools. This is useful for adding custom blocks to SFCs that are not supported by default.
+They are then handled by loaders (either Vite or Webpack) using custom loaders.
+
+[Read Full Documentation](https://vue-loader.vuejs.org/guide/custom-blocks.html)
+
+```vue
+<docs>
+## This is an Example component.
+</docs>
+
+<template>
+  <h2 class="red">{{ msg }}</h2>
+</template>
+```
+
+```js
+// wepback.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        resourceQuery: /blockType=docs/,
+        loader: require.resolve("./docs-loader.js"),
+      },
+    ],
+  },
+};
+```
+
+#### Routing
+
+- [Vue Router](https://router.vuejs.org/)
+
+and a simple example:
+
+```vue
+<script setup>
+import { ref, computed } from "vue";
+import Home from "./Home.vue";
+import About from "./About.vue";
+import NotFound from "./NotFound.vue";
+
+const routes = {
+  "/": Home,
+  "/about": About,
+};
+
+const currentPath = ref(window.location.hash);
+
+window.addEventListener("hashchange", () => {
+  currentPath.value = window.location.hash;
+});
+
+const currentView = computed(() => {
+  return routes[currentPath.value.slice(1) || "/"] || NotFound;
+});
+</script>
+
+<template>
+  <a href="#/">Home</a> | <a href="#/about">About</a> |
+  <a href="#/non-existent-path">Broken Link</a>
+  <component :is="currentView" />
+</template>
+```
+
+### Tooling
+
+- Project Creation:
+  - [Vite](https://vitejs.dev/)
+  - [Vue CLI](https://cli.vuejs.org/) (Webpack based)
+- IDE Support:
+  - [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- Browser DevTools:
+  - [Vue DevTools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+- TypeScript Support:
+  - [Full guide](https://vuejs.org/guide/typescript/overview.html)
+- Testing:
+  - [Cypress](https://www.cypress.io/)
+  - [Vue Testing Library](https://testing-library.com/docs/vue-testing-library/intro/)
+  - [Vitest](https://vitest.dev/)
+  - [Jest](https://jestjs.io/)
+- Linting & Formatting:
+  - [eslint-plugin-vue](https://github.com/vuejs/eslint-plugin-vue)
+  - [Prettier](https://prettier.io/)
 
 ## Extra links
 
