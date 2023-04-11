@@ -1271,6 +1271,185 @@ const currentView = computed(() => {
 </template>
 ```
 
+### Server Side Rendering
+
+It's possible to render Vue components on the server and send the HTML to the client. This is useful:
+
+- SEO and to improve web vitals
+- Faster time to render
+- Create universal code that can be used on both server and client
+
+Example:
+
+```js
+// app.js
+
+export function createApp() {
+  return createSSRApp({
+    data: () => ({ count: 1 }),
+    template: `<button @click="count++">{{ count }}</button>`,
+  });
+}
+```
+
+```js
+// server.js
+import express from "express";
+import { createApp } from "./app.js";
+import { renderToString } from "vue/server-renderer";
+
+const server = express();
+
+server.get("/", (req, res) => {
+  const app = createApp();
+
+  renderToString(app).then((html) => {
+    res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Vue SSR Example</title>
+      </head>
+      <body>
+        <div id="app">${html}</div>
+      </body>
+    </html>
+    `);
+  });
+});
+
+server.listen(3000, () => {
+  console.log("ready");
+});
+```
+
+We also need to do Hydration on the client side to make it interactive again.
+
+```js
+// client.js
+import { createApp } from "./app.js";
+
+const { app } = createApp(); // this has `createSSRApp` inside of it `createApp`
+
+app.mount("#app");
+```
+
+Some caveats:
+
+- We can't use `document` or `window` in the server code or code that needs to manipulate the DOM
+- Lifecycle hooks like `mounted` won't be called on the server
+- In case you need to `fetch` then use `node-fetch`
+- If you need to have state for your app, you can create a store and pass it to the app
+
+```js
+// app.js (shared between server and client)
+import { createSSRApp } from "vue";
+import { createStore } from "./store.js";
+
+// called on each request
+export function createApp() {
+  const app = createSSRApp(/* ... */);
+  // create new instance of store per request
+  const store = createStore(/* ... */);
+  // provide store at the app level
+  app.provide("store", store);
+  // also expose store for hydration purposes
+  return { app, store };
+}
+```
+
+- Directives don't run om the server, but if you need it to render to add attributes then you can use `getSSRProps`
+
+```js
+const myDirective = {
+  mounted(el, binding) {
+    // client-side implementation:
+    // directly update the DOM
+    el.id = binding.value;
+  },
+  getSSRProps(binding) {
+    // server-side implementation:
+    // return the props to be rendered.
+    // getSSRProps only receives the directive binding.
+    return {
+      id: binding.value,
+    };
+  },
+};
+```
+
+- Teleport won't run as well, but they are exposed in the `renderToString` function, so you will have to add it manually
+
+```js
+const ctx = {};
+const html = await renderToString(app, ctx);
+
+console.log(ctx.teleports); // { '#teleported': 'teleported content' }
+```
+
+### TypeScript
+
+Some notes:
+
+- Vite doesn't type check your code, so you need to use a separate tool like `vue-tsc` or `tsc`, this to save performance
+- Some important `tsconfig.json` configs
+  - [Read here](https://vuejs.org/guide/typescript/overview.html#configuring-tsconfig-json)
+
+There are two ways type-checking can be done in VueJs:
+
+- runtime type-checking: which uses Javascript and we pass the types using options.
+  - They also support default values.
+- type-based type-checking: which uses TypeScript and we pass the types using generics.
+  - They don't support default values but you can use `withDefaults` to define them.
+
+```vue
+<script setup lang="ts">
+import { defineProps } from "vue";
+// runtime type-checking
+const props = defineProps({
+  foo: { type: String, required: true },
+  bar: Number,
+});
+
+props.foo; // string
+props.bar; // number | undefined
+</script>
+
+<script setup lang="ts">
+import { defineProps } from "vue";
+// type-based type-checking
+interface Props {
+  foo: string;
+  bar?: number;
+}
+
+const props = defineProps<Props>();
+</script>
+```
+
+Some usage notes:
+
+- Use `lang="ts"` in your `<script>` tags to support TypeScript
+- If you use `ts-loader`, you need to set `options.appendTsSuffixTo` to `[/\.vue$/]`, to automatically append `.ts` to imports in `.vue` files
+- When using Options API
+  - `defineComponent` is used for type inference in Options API
+  - `PropType<T>` is used for type inference for complex types in props
+  - We can define the types for input & return values in `emits` and it will be inferred from there when used
+  - With `computed`, we can define the returned type
+- When using Composition API
+  - `defineProps<T>` is used for type inference in props
+  - `defineEmits<T>` is used for type inference in emits
+  - `ref<T>` is used for type inference in refs
+    - Using refs for DOM elements will need to have also type `null`, ex: `ref<HTMLInputElement | null>(null)`
+    - Using refs for components is helpful to get access to their exposed methods. We can use `ref<InstanceType<typeof MyComponent> | null>(null)` to get access to the methods
+  - `reactive<T>` is used for type inference in reactive objects
+  - `computed<T>` is used for type inference in computed properties
+  - For Provide/Inject, there are two ways:
+    - Use Symbol-based keys, then we can use `const key = Symbol() as InjectionKey<T>` to create the key and it will be inferred when we use inject/provide
+    - Use String-based keys, then we can use `inject<T>` to infer the type
+- If you need to extend Vue config you can extend the interface `ComponentCustomProperties` to add your own properties
+- If you need to extend the Options API types, you can extend interface `ComponentCustomOptions` to add them
+
 ### Tooling
 
 - Project Creation:
@@ -1290,6 +1469,10 @@ const currentView = computed(() => {
 - Linting & Formatting:
   - [eslint-plugin-vue](https://github.com/vuejs/eslint-plugin-vue)
   - [Prettier](https://prettier.io/)
+- Frameworks:
+  - [Nuxt](https://nuxtjs.org/)
+  - [Quasar](https://quasar.dev/)
+  - [VitePress](https://vitepress.vuejs.org/)
 
 ## Extra links
 
