@@ -560,6 +560,154 @@ For Kubernetes resources you can:
 
 #### Securing Kubernetes
 
+There are two main concepts when securing Pods:
+
+- Defense in depth: Adding more security every layer aka. multiple bike locks
+- Least privilege: Restrict everything and then start granting access on only required resources
+
+`securityContext` option can be configured on the Pod or Container level and has many options like:
+
+- User permissions and access control to objects like files using User ID (UID) or Group ID (GID)
+- `readOnlyRootFilesystem` mounts the container's root filesystem as read-only
+- `allowPrivilegeEscalation` controls whether a process can gain more privileges than its parent process
+- Run as privileged or unprivileged
+- Linux kernel security options like:
+  - Seccomp: Restricting system calls espcially in privileged mode
+  - SELinux: Is used to monitor and control access of programs running in Fedora, CentOS and RHEL. Also check: https://www.youtube.com/watch?v=fibllWD1_4s
+  - AppArmor: Program profiles to restrict capabolities of individual programs
+
+If security context applied to both pod and container, the container has higher priority
+
+Some settings:
+
+- `runAsNonRoot`: pod/container must run as nonroot user, otherwise it will fail
+- `runAsUser/runAsGroup`: overwrite the default user/group of the container
+- `fsgroup`: change the group of the files/directors in a volume
+- `allowPrivilegeEscalation`: can the container process gain more previleges
+- `privileged`: should container run as privilege
+- `readOnlyRootFilesystem`: mounts the container's root filesystem as read-only.
+
+[amicontained](https://github.com/genuinetools/amicontained) is a tool that can help you check if you have created the correct configurations that will be used when creating containers.
+
+If we want to apply security rules across a namespace instead of each Pod we can use Pod Security feature. For Pod Security, we have Policy Standards and Modes for each one.
+
+- Policy Standards can be: `Privileged`, `Baseline`, `Restricted`
+- Modes can be: `Audit`, `Warn`, `Enforce`
+
+We defined them as labels for a kind of `Namespace` using these props:
+
+- `pod-security.kubernetes.io/<MODE>: <POLICY>`
+- `pod-security.kubernetes.io/<MODE>-version: <VERSION>`
+
+We can also check these rules for namespaces before applying them to see which pods will violate these rules using:
+
+```sh
+kubectl label --dry-run=server --overwrite ns --all pod-security.kubernetes.io/enforce=baseline
+```
+
+[Kubernetes Security Profiles Operator](https://github.com/kubernetes-sigs/security-profiles-operator) can be used to create profiles and make it easier to use SELinux, seccomp and AppArmor
+
+Service Account management:
+
+It important to disable access to the kubernetes api when pods don't need it for the default service account created by kubenetes in every namespace
+
+```yml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+automountServiceAccountToken: false
+```
+
+Using different RuntimeClass can improve security too, projects like:
+
+- [Kata Containers](https://katacontainers.io/)
+- [Firecracker](https://firecracker-microvm.github.io/)
+- [gVisor](https://gvisor.dev/)
+
+k8s interacts with each node containerization system using RuntimeClass Interface and then we can declare resources to use custom RuntimeClass in their yml file
+
+```yml
+spec:
+  runtimeClassName: firecracker
+```
+
+Using `NetworkPolicy` resource to restrict network access between pods or enable them
+
+When we use Network Policy, we need to install a controller to implement it, like:
+
+- [Calico](https://www.tigera.io/project-calico/)
+- [Cilium](https://cilium.io/)
+- [Weave Net](https://www.weave.works/oss/net/)
+
+Using Service Mesh to do more control of service-to-service communication
+
+Tools that can help with checking if k8s is deployed securely or not:
+
+- [kube-bench](https://github.com/aquasecurity/kube-bench)
+
+#### Policy and Governance
+
+Once we start to have many resources and types, we need some way to manage them.
+
+- Policy: are set of rules, constraints and conditions that can be applied to resources
+- Governance: is the process of applying policies to resources and enforcing them
+
+Admission Flow: is how a requests flows in the k8s API server
+
+[![Admission Flow](https://d33wubrfki0l68.cloudfront.net/af21ecd38ec67b3d81c1b762221b4ac777fcf02d/7c60e/images/blog/2019-03-21-a-guide-to-kubernetes-admission-controllers/admission-controller-phases.png)](https://d33wubrfki0l68.cloudfront.net/af21ecd38ec67b3d81c1b762221b4ac777fcf02d/7c60e/images/blog/2019-03-21-a-guide-to-kubernetes-admission-controllers/admission-controller-phases.png)
+
+Admission Controllers: are plugins that can be used to validate or mutate requests before they are persisted to etcd and they can be defined as k8s resources .
+
+`MutatingWebhookConfiguration` and `ValidatingWebhookConfiguration` are used to configure endpoints that k8s can send requests to and they can respond with either admit or deny directive
+
+[Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) is a tool that can be used to evaluate resources, mutate and audit and check if they are compliant with policies and it uses OPA as a policy engine
+
+[OPA](https://www.openpolicyagent.org/) is a policy engine uses Rego as a query language and it can be used to write policies and it can be used by many tools including even applications. They can also be tested by tools like [Conftest](https://www.conftest.dev/). Also, Rego has a playground [Rego Playground](https://play.openpolicyagent.org/)
+
+Gatekeeper also has some important features:
+
+- Create constraints
+- Run audits to find violations
+- Run mutatuins across resources to fix violations
+- Creating constraints that compares between values in resources
+- Expose metrics to Prometheus
+- There is also a [Policy Library](https://github.com/open-policy-agent/gatekeeper-library)
+
+## Multi-Cluster
+
+Kubernetes can be used to manage multiple clusters, reasons to do so can be:
+
+- Increase resiliency and redundancy
+- Avoid having single point of failure
+- Due to regalations or policies for data to be in a specific region
+- Decrease latency
+- Strong isolation between teams
+
+Few things to consider when moving to multi-cluster:
+
+- You need to have automation in everything to make it easier to manage and enforce consistency
+- Versioning between utils used in clusters like: scannin, auditing, logging, monitoring, etc.
+- Managing identities and access control tools
+
+For directing traffic between clusters we can use:
+
+- GeoDNS: works on the IP level and route traffic to the nearest cluster.
+- Load Balancer: can work on TCP or HTTP level and route traffic to the nearest cluster.
+
+For managing state between clusters we can use Replication and then we can multiple readers to read from the database and one writer to write to it. But the question will be how to make data consistent between clusters. There are two approaches:
+
+- Strong consistency, which gurentees that all readers will see the same data and write is only successful if all data is replicated to all clusters. Good for important read workloads data like financial data.
+- Eventual consistency, which gurentees that data will be replicated to all clusters at some point in time but write is successful immediately. Good for heavy write workloads.
+
+It's better to externalize this task as it's very complex and need good expertise.
+
+On the application level, when we need to replicate it to multiple clusters, we have couple of options:
+
+- Replicated Silos: We basically replicate our whole cluster as it is in every region regardless of the workload. This is the easiest way to do it but it's not the most efficient way as it can become expensive and it doesn't need to be scaled in certain low populated regions.
+- Sharding: We can shard our data across couple of regions and then replicate it to different clusters. This is the most efficient way to do it but it's more complex.
+- Microservice Routing: imagine we have a new service that we've created, do we need to deploy it in every cluster or maybe in some regions only. This design is about individual services deployment independendly of each other in a multi-cluster environment. This is done by having a load balancer for each individual service and it should manage it's own data replication. It may add more work on the teams but it's will be more efficient both from costs and speed.
+
 ## Questions
 
 What should be in a Pod?
