@@ -240,6 +240,18 @@ Linq operations can be divided into Immediate and Deferred. Deferred can also be
 
 [More on LINQ operations types](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/classification-of-standard-query-operators-by-manner-of-execution)
 
+### Nullable Reference
+
+This is an opt-in feature. It's enabled by adding `#nullable enable` at the top of the file or by adding it to the project file `<Nullable>enable</Nullable>`
+
+- `?`: To make a type nullable otherwise it's non-nullable
+- `!`: To tell the compiler that we are sure that the value is not null
+- `??`: To assign a default value if the value is null
+- `??=`: To assign a default value if the value is null and return the value
+- `?? throw`: To throw an exception if the value is null
+- `?? new`: To create a new object if the value is null
+- `?? default`: To assign a default value if the value is null
+
 ### Async Programming
 
 ### Questions
@@ -284,6 +296,7 @@ struct are value-typed, so when you assign the value of a variable to another va
 
 ## Important Commands
 
+- `dotnet new`: To create a new Project
 - `dotnet publish`: To publish the app
 
 When publishing too, we can either publish as:
