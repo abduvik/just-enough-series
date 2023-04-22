@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+spec:
+  selector:
+    app: myapp # Array of resources labels
+  ports:
+    - port: <Port> # Service port
+      targetPort: <Target Port> ## Port in the pod
+
+-------
+# selector-less service to connect to an external resource
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+
+# Because without a selector, k8s won't create an endpoint to filter the pods, so we need to create it manually.      
+apiVersion: v1
+kind: Endpoints
+metadata:
+ # This name must match the name of your service
+  name: my-database-server
+subsets:
+  - addresses:
+  # Replace this IP with the real IP of your server
+  - ip: 1.2.3.4
+  ports:
+  # Replace this port with the port(s) you want to expose
+  - port: 1433
